@@ -59,15 +59,15 @@ public class MainActivity extends ActionBarActivity
 
     private Fragment getTargetFragment(int position){
         int sectionNumber = position + 1;
-        Fragment targetFragment = new DevelopmentListFragment();
+        Fragment targetFragment = CreateTaskFragment.newInstance(sectionNumber);
         if(sectionNumber == 1){
-            targetFragment = new TaskListFragment();
+            targetFragment = CreateTaskFragment.newInstance(sectionNumber);
         }
         else if(sectionNumber == 2){
-            targetFragment = new CreateTaskFragment();
+            targetFragment = CreateTaskFragment.newInstance(sectionNumber);
         }
         else if(sectionNumber == 3){
-            targetFragment = new DevelopmentListFragment();
+            targetFragment = CreateTaskFragment.newInstance(sectionNumber);
         }
         return targetFragment;
     }
