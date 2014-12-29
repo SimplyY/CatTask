@@ -134,7 +134,16 @@ public class MainActivity extends ActionBarActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            int sectionNumber = getArguments().getInt("ARG_SECTION_NUMBER");
+
+            View rootView = getRootView(sectionNumber);
+            return rootView;
+        }
+
+        private View getRootView(int sectionNumbert){
+            View rootView;
+
+            //TODO
             return rootView;
         }
 
