@@ -1,0 +1,137 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.administrator.button.PlantsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/task_finish_date"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/fragment_maginleft"
+
+                android:layout_weight="1"
+                android:text="@string/create_task_finish_date"
+                android:textSize="@dimen/create_task_textsize" />
+
+            <!--<DatePicker-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/datePicker" />-->
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/task_spend_time"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/fragment_maginleft"
+
+                android:layout_weight="1"
+                android:text="@string/create_task_spend_time"
+                android:textSize="@dimen/create_task_textsize" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/task_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/fragment_maginleft"
+
+                android:layout_weight="1"
+                android:text="@string/create_task_task_content"
+                android:textSize="@dimen/create_task_textsize" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/remind_method"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/fragment_maginleft"
+
+                android:layout_weight="1"
+                android:text="@string/create_task_remind_method"
+                android:textSize="@dimen/create_task_textsize" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/task_attribute"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/fragment_maginleft"
+
+                android:layout_weight="1"
+                android:text="@string/create_task_task_attribute"
+                android:textSize="@dimen/create_task_textsize" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/spendTime"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/create_task_button"
+                android:textSize="@dimen/create_task_textsize" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
