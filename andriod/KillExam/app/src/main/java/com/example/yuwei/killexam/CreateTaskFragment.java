@@ -17,7 +17,10 @@ import android.view.ViewGroup;
  * Use the {@link CreateTaskFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CreateTaskFragment extends Fragment {
+public class CreateTaskFragment extends Fragment
+//        implements
+//    DataPickerDialogFragment.DatePickerDialogHandler
+{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "sectionNumber";
 
