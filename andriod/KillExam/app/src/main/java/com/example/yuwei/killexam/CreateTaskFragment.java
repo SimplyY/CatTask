@@ -1,12 +1,12 @@
 package com.example.yuwei.killexam;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 
 /**
@@ -17,14 +17,17 @@ import android.view.ViewGroup;
  * Use the {@link CreateTaskFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CreateTaskFragment extends Fragment {
+public class CreateTaskFragment extends Fragment
+//        implements
+//    DataPickerDialogFragment.DatePickerDialogHandler
+{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "sectionNumber";
 
 
     private int sectionNumber;
 
-    private OnFragmentInteractionListener mListener;
+    private OnFragmentInteractionListener mListenerAcitivity;
 
 
     /**
@@ -61,10 +64,20 @@ public class CreateTaskFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_create_task, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    public void createTask(Task newTask) {
+        MainActivity mainActivity = (MainActivity) mListenerAcitivity;
+        EditText contentEditText = (EditText) mainActivity.findViewById(R.id.task_content_edit);
+
+        String auther = "me";
+        String finishTime = "";
+        String spendTime = "";
+        String content = contentEditText.getText().toString();
+        String belong = "";
+        int remindMethod = 1;
+        int attribute = 1;
+
+        if (mListenerAcitivity != null) {
+            mListenerAcitivity.getTask(newTask);
         }
     }
 
@@ -72,7 +85,7 @@ public class CreateTaskFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListenerAcitivity = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -82,7 +95,7 @@ public class CreateTaskFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mListenerAcitivity = null;
     }
 
     /**
@@ -95,9 +108,8 @@ public class CreateTaskFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+    public static interface OnFragmentInteractionListener {
+        public void getTask(Task newTask);
     }
 
 }

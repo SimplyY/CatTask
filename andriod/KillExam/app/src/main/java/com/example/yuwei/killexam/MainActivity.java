@@ -1,40 +1,41 @@
 package com.example.yuwei.killexam;
 
-import android.app.Activity;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks
+        ,CreateTaskFragment.OnFragmentInteractionListener{
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
+    private Fragment targetFragment;
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
 
+    private MyDatabaseHelper tasksDataBase;
+    private Task newTask;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        createTasksDatabase();
         setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -45,6 +46,10 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+    }
+
+    private void createTasksDatabase(){
+        tasksDataBase = new MyDatabaseHelper(this, "MyTasks.db", null, 1);
     }
 
     @Override
@@ -59,15 +64,15 @@ public class MainActivity extends ActionBarActivity
 
     private Fragment getTargetFragment(int position){
         int sectionNumber = position + 1;
-        Fragment targetFragment = CreateTaskFragment.newInstance(sectionNumber);
+        targetFragment = TaskListFragment.newInstance(sectionNumber);
         if(sectionNumber == 1){
             targetFragment = CreateTaskFragment.newInstance(sectionNumber);
         }
         else if(sectionNumber == 2){
-            targetFragment = CreateTaskFragment.newInstance(sectionNumber);
+            targetFragment = TaskListFragment.newInstance(sectionNumber);
         }
         else if(sectionNumber == 3){
-            targetFragment = CreateTaskFragment.newInstance(sectionNumber);
+            targetFragment = DevelopmentListFragment.newInstance(sectionNumber);
         }
         return targetFragment;
     }
@@ -84,6 +89,45 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.title_section3);
                 break;
         }
+    }
+
+    private void onClick_CreateTask(View view){
+        if(isTaskComplete()){
+            addTaskToDatebase();
+        }else{
+            Toast.makeText(this,"任务信息不完整，请填写完整", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void getTask(Task newTask){
+        this.newTask = newTask;
+    }
+
+    private boolean isTaskComplete(){
+        CreateTaskFragment createTaskFragment = (CreateTaskFragment) targetFragment;
+        createTaskFragment.createTask(newTask);
+
+        return true;
+
+    }
+
+
+    private void addTaskToDatebase(){
+        SQLiteDatabase db = tasksDataBase.getWritableDatabase();
+
+        ContentValues newTaskValues = new ContentValues();
+
+        newTaskValues.put("auther", newTask.getAuther());
+        newTaskValues.put("finish_time", newTask.getFinishTime());
+        newTaskValues.put("spend_time", newTask.getSpendTime());
+        newTaskValues.put("task_content", newTask.getContent());
+        newTaskValues.put("task_belong", newTask.getBelong());
+        newTaskValues.put("task_remind_method", newTask.getRemindMethod());
+        newTaskValues.put("task_attribute",newTask.getAttribute());
+
+        db.insert("tasks", null, newTaskValues);
+
     }
 
     public void restoreActionBar() {

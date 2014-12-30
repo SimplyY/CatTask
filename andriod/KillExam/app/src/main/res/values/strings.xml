@@ -18,4 +18,5 @@
     <string name="create_task_remind_method">提醒方式</string>
     <string name="create_task_task_attribute">任务性质</string>
     <string name="create_task_button">创建任务</string>
+    <string name="uncomplete_task">任务信息不完整，请填写完整</string>
 </resources>
