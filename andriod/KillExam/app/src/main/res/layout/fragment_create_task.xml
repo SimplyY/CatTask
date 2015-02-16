@@ -62,7 +62,7 @@
                 android:text="@string/create_task_spend_time"
                 android:textSize="@dimen/create_task_textsize" />
             <Button
-                android:id="@+id/SpendTimePicker"
+                android:id="@+id/spendTimePicker"
                 android:text="@string/create_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

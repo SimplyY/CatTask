@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="custom_text_color">#000000</color>
+    <color name="custom_divider_color">#000000</color>
+    <color name="custom_keyboard_indicator_color">#000000</color>
+</resources>

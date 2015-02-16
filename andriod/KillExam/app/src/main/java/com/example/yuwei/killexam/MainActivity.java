@@ -57,13 +57,13 @@ public class MainActivity extends ActionBarActivity
         int sectionNumber = position + 1;
         Fragment targetFragment = PlaceholderFragment.newInstance(sectionNumber);
         if(sectionNumber == 1){
-            targetFragment = CreateTaskFragment.newInstance(sectionNumber);
+            targetFragment = new CreateTaskFragment(sectionNumber);
         }
         else if(sectionNumber == 2){
-            targetFragment = CreateTaskFragment.newInstance(sectionNumber);
+            targetFragment = new CreateTaskFragment(sectionNumber);
         }
         else if(sectionNumber == 3){
-            targetFragment = CreateTaskFragment.newInstance(sectionNumber);
+            targetFragment = new CreateTaskFragment(sectionNumber);
         }
         return targetFragment;
     }
@@ -151,40 +151,6 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
-    public static class CreateTaskFragment extends Fragment {
-        // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private static final String ARG_PARAM1 = "sectionNumber";
 
-        private int sectionNumber;
-
-        public static CreateTaskFragment newInstance(int sectionNumber) {
-            CreateTaskFragment fragment = new CreateTaskFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_PARAM1, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public CreateTaskFragment() {
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            if (getArguments() != null) {
-                sectionNumber = getArguments().getInt(ARG_PARAM1);
-            }
-
-
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            // Inflate the layout for this fragment
-            return inflater.inflate(R.layout.fragment_create_task, container, false);
-        }
-
-    }
 
 }
