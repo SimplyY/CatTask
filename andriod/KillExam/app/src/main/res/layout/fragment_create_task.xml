@@ -11,7 +11,7 @@
 
 
         <LinearLayout
-            android:id="@+id/task_finish_date"
+            android:id="@+id/taskFinish_date"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_alignParentTop="true"
@@ -21,13 +21,22 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/fragment_maginleft"
 
                 android:layout_weight="1"
                 android:text="@string/create_task_finish_date"
                 android:textSize="@dimen/create_task_textsize" />
+
+            <Button
+                android:id="@+id/finishDatePicker"
+                android:text="@string/create_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1" ></Button>
+
 
             <!--<DatePicker-->
             <!--android:layout_width="wrap_content"-->
@@ -37,7 +46,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/task_spend_time"
+            android:id="@+id/taskSpendTime"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -52,12 +61,18 @@
                 android:layout_weight="1"
                 android:text="@string/create_task_spend_time"
                 android:textSize="@dimen/create_task_textsize" />
-
+            <Button
+                android:id="@+id/SpendTimePicker"
+                android:text="@string/create_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/task_content"
+            android:id="@+id/taskContent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -72,12 +87,17 @@
                 android:layout_weight="1"
                 android:text="@string/create_task_task_content"
                 android:textSize="@dimen/create_task_textsize" />
-
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/content"
+                android:layout_weight="1" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/remind_method"
+            android:id="@+id/remindMethod"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -92,11 +112,17 @@
                 android:layout_weight="1"
                 android:text="@string/create_task_remind_method"
                 android:textSize="@dimen/create_task_textsize" />
-
+            <Button
+                android:id="@+id/remindMethodPicker"
+                android:text="@string/create_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/task_attribute"
+            android:id="@+id/taskAttribute"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -111,7 +137,13 @@
                 android:layout_weight="1"
                 android:text="@string/create_task_task_attribute"
                 android:textSize="@dimen/create_task_textsize" />
-
+            <Button
+                android:id="@+id/taskAttributePicker"
+                android:text="@string/create_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
         </LinearLayout>
 
         <LinearLayout
@@ -122,12 +154,12 @@
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/createTask"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/create_task_button"
                 android:textSize="@dimen/create_task_textsize" />
-
 
         </LinearLayout>
 

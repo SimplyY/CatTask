@@ -18,4 +18,6 @@
     <string name="create_task_remind_method">提醒方式</string>
     <string name="create_task_task_attribute">任务性质</string>
     <string name="create_task_button">创建任务</string>
+
+    <string name="create_picker">点击输入</string>
 </resources>
