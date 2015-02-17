@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="task_attribute_array">
+        <item>一级</item>
+        <item>二级</item>
+        <item>三级</item>
+    </string-array>
+</resources>

@@ -32,7 +32,7 @@
             <Button
                 android:id="@+id/finishDatePicker"
                 android:text="@string/create_picker"
-                android:layout_width="wrap_content"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1" ></Button>
@@ -61,14 +61,16 @@
                 android:layout_weight="1"
                 android:text="@string/create_task_spend_time"
                 android:textSize="@dimen/create_task_textsize" />
-            <EditText
-                android:id="@+id/spendTimeText"
+
+            <NumberPicker
+                android:id="@+id/spendTimePicker"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1" />
+                android:layout_weight="0.70" />
 
         </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/taskContent"
@@ -89,9 +91,10 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:id="@+id/content"
-                android:layout_weight="1" />
+                android:layout_gravity="center|right"
+                android:id="@+id/taskContentText"
+                android:layout_weight="1"
+                android:inputType="textMultiLine" />
 
         </LinearLayout>
 
@@ -111,10 +114,11 @@
                 android:layout_weight="1"
                 android:text="@string/create_task_remind_method"
                 android:textSize="@dimen/create_task_textsize" />
-            <Button
-                android:id="@+id/remindMethodPicker"
+            <Spinner
+                android:id="@+id/remindMethodSpinner"
                 android:text="@string/create_picker"
-                android:layout_width="wrap_content"
+                android:textColor="#000000"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1" />
@@ -136,10 +140,13 @@
                 android:layout_weight="1"
                 android:text="@string/create_task_task_attribute"
                 android:textSize="@dimen/create_task_textsize" />
-            <Button
-                android:id="@+id/taskAttributePicker"
+
+
+            <Spinner
+                android:id="@+id/taskAttributeSpinner"
                 android:text="@string/create_picker"
-                android:layout_width="wrap_content"
+                android:textColor="#000000"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1" />
