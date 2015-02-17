@@ -61,9 +61,8 @@
                 android:layout_weight="1"
                 android:text="@string/create_task_spend_time"
                 android:textSize="@dimen/create_task_textsize" />
-            <Button
-                android:id="@+id/spendTimePicker"
-                android:text="@string/create_picker"
+            <EditText
+                android:id="@+id/spendTimeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

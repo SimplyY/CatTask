@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
 /**
@@ -80,19 +81,12 @@ public class CreateTaskFragment extends Fragment
         CalendarDatePickerDialog calendarDatePickerDialog = CalendarDatePickerDialog
                 .newInstance(this,now.getYear(), now.getMonthOfYear() - 1,
                         now.getDayOfMonth());
-        calendarDatePickerDialog.setTargetFragment(this,1);
+        calendarDatePickerDialog.setTargetFragment(this, 1);
         calendarDatePickerDialog.show(fm, FRAG_TAG_DATE_PICKER);
-//        DatePickerBuilder dpb = new DatePickerBuilder()
-//                .setFragmentManager(getChildFragmentManager())
-//                .setStyleResId(R.style.MyCustomBetterPickerTheme)
-//                .setTargetFragment(this);
-//        dpb.show();
+
     }
 
-    @Override
-    public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-        finishDateButton.setText("Year: " + year + "\nMonth: " + monthOfYear + "\nDay: " + dayOfMonth);
-    }
+
     @Override
     public void onResume() {
         // Example of reattaching to the fragment
@@ -103,4 +97,11 @@ public class CreateTaskFragment extends Fragment
             calendarDatePickerDialog.setOnDateSetListener(this);
         }
     }
+
+    @Override
+    public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+        finishDateButton.setText(year + "." + monthOfYear + "." + dayOfMonth);
+    }
+
+
 }
