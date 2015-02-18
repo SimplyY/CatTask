@@ -13,7 +13,7 @@
 
 
     <string name="create_task_finish_date">完成时间</string>
-    <string name="create_task_spend_time">花费时间(小时)</string>
+    <string name="create_task_spend_time">花费时间</string>
     <string name="create_task_task_content">任务内容</string>
     <string name="create_task_remind_method">提醒方式</string>
     <string name="create_task_task_attribute">任务性质</string>

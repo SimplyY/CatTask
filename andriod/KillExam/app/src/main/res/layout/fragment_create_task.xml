@@ -52,25 +52,57 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/fragment_maginleft"
+                android:layout_gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="@dimen/fragment_maginleft"
 
-                android:layout_weight="1"
-                android:text="@string/create_task_spend_time"
-                android:textSize="@dimen/create_task_textsize" />
+                    android:text="@string/create_task_spend_time"
+                    android:textSize="@dimen/create_task_textsize" />
+            </LinearLayout>
 
-            <NumberPicker
-                android:id="@+id/spendTimePicker"
 
-                android:layout_width="wrap_content"
+
+
+            <LinearLayout
+                android:layout_width="190dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.70" />
+                android:orientation="horizontal"
+                android:gravity="right">
+
+                <NumberPicker
+                    android:id="@+id/spendTimePickerHours"
+
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="0.70" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="时"
+                    android:textSize="30dp"/>
+                <NumberPicker
+                    android:id="@+id/spendTimePickerMinutes"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_weight="0.70"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="分"
+                    android:textSize="30dp"/>
+            </LinearLayout>
 
         </LinearLayout>
-
 
         <LinearLayout
             android:id="@+id/taskContent"
@@ -89,9 +121,9 @@
                 android:text="@string/create_task_task_content"
                 android:textSize="@dimen/create_task_textsize" />
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="25dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|right"
+                android:layout_gravity="center|left"
                 android:id="@+id/taskContentText"
                 android:layout_weight="1"
                 android:inputType="textMultiLine" />

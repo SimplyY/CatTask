@@ -19,8 +19,6 @@ import android.widget.Toast;
 
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
 
-import java.util.ArrayList;
-
 /**
  * Created by yuwei on 15/2/16.
  */
@@ -33,14 +31,16 @@ public class CreateTaskFragment extends Fragment
 
     private int sectionNumber;
     Button finishDateButton;
-    NumberPicker spendTimePicker;
+    NumberPicker spendTimePickerHours;
+    NumberPicker spendTimePickerMinutes;
     EditText taskContextText;
     Spinner remindMethodSpinner;
     Spinner taskAttributeSpinner;
     Button createTaskButton;
 
     private CurrentTime finishDate;
-    private int spendTime = 0;
+    private int spendHours = 0;
+    private int spentMinutes = 0;
     private String taskContext;
     private String remindMethod;
     private String taskAttribute;
@@ -95,14 +95,29 @@ public class CreateTaskFragment extends Fragment
     }
 
     private void initSpendTimePicker(View v){
-        spendTimePicker = (NumberPicker)v.findViewById(R.id.spendTimePicker);
-        spendTimePicker.setOnScrollListener(this);
-        spendTimePicker.setFormatter(this);
-        spendTimePicker.setMaxValue(100);
-        spendTimePicker.setMinValue(0);
+        spendTimePickerHours = (NumberPicker)v.findViewById(R.id.spendTimePickerHours);
+        spendTimePickerHours.setOnScrollListener(this);
+        spendTimePickerHours.setFormatter(this);
+        spendTimePickerHours.setMaxValue(100);
+        spendTimePickerHours.setMinValue(0);
+
+        spendTimePickerMinutes = (NumberPicker)v.findViewById(R.id.spendTimePickerMinutes);
+        spendTimePickerMinutes.setOnScrollListener(this);
+        spendTimePickerMinutes.setFormatter(this);
+        spendTimePickerMinutes.setMaxValue(60);
+        spendTimePickerMinutes.setMinValue(0);
 
     }
 
+//numberpicker formatter
+    @Override
+    public String format(int value){
+        String template = String.valueOf(value);
+        if (value < 10){
+            template = "0" + template;
+        }
+        return template;
+    }
     private void initTaskContextText(View v){
         taskContextText = (EditText)v.findViewById(R.id.taskContentText);
 
@@ -126,8 +141,6 @@ public class CreateTaskFragment extends Fragment
 
         taskAttributeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         taskAttributeSpinner.setAdapter(taskAttributeAdapter);
-
-
     }
 
     private void initCreateButton(View v){
@@ -139,15 +152,18 @@ public class CreateTaskFragment extends Fragment
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+//finishDatePicker on pick
             case R.id.finishDatePicker:
                 finishDataPick();
                 break;
-
+//createTaskButton onclick
             case R.id.createTask:
                 if(check()){
                     getTaskContext();
                     getAttribute();
                     getMethod();
+                    getHours();
+                    getMinuts();
                     writeTaskInDataBase();
                     quit();
                 }
@@ -175,7 +191,13 @@ public class CreateTaskFragment extends Fragment
 //  numberpicker record spendTime
     @Override
     public void onValueChange(NumberPicker picker, int oldVal, int newVal){
-        spendTime = newVal;
+        if (picker.getId() == R.id.spendTimePickerHours){
+            spendHours = newVal;
+        }
+        else if (picker.getId() == R.id.spendTimePickerMinutes){
+            spentMinutes = newVal;
+        }
+
     }
     public void onScrollStateChange(NumberPicker view, int scrollState){
 
@@ -224,15 +246,7 @@ public class CreateTaskFragment extends Fragment
         return checkDate;
     }
 
-//numberpicker formatter
-    //Override
-    public String format(int value){
-        String template = String.valueOf(value);
-        if (value < 10){
-            template = "0" + template;
-        }
-        return template;
-    }
+
 
 
 
@@ -245,6 +259,14 @@ public class CreateTaskFragment extends Fragment
     }
     private void getMethod(){
         remindMethod = remindMethodSpinner.getSelectedItem().toString();
+    }
+
+    private void getHours(){
+        spendHours = spendTimePickerHours.getValue();
+    }
+
+    private void getMinuts(){
+        spentMinutes = spendTimePickerMinutes.getValue();
     }
 
     private void writeTaskInDataBase(){
