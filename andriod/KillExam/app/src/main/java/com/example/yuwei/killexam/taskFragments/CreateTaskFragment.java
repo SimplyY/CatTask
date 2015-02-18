@@ -1,5 +1,7 @@
 package com.example.yuwei.killexam.taskFragments;
 
+import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
+import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.tools.MyDate;
 import com.example.yuwei.killexam.R;
@@ -25,6 +28,7 @@ import com.example.yuwei.killexam.tools.Task;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import android.support.v4.app.*;
 
 /**
  * Created by yuwei on 15/2/16.
@@ -361,6 +365,12 @@ public class CreateTaskFragment extends Fragment
     }
 
     private void quit(){
+        MainActivity activity = (MainActivity)this.getActivity();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+
+        MainActivity.PlaceholderFragment placeholderFragment = MainActivity.PlaceholderFragment.newInstance(1);
+        fragmentTransaction.replace(R.id.container, placeholderFragment)
+                .commit();
 
     }
 }
