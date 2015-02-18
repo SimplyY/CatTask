@@ -94,6 +94,8 @@ public class CreateTaskFragment extends Fragment
         finishDateButton.setOnClickListener(this);
     }
 
+
+
     private void initSpendTimePicker(View v){
         spendTimePickerHours = (NumberPicker)v.findViewById(R.id.spendTimePickerHours);
         spendTimePickerHours.setOnScrollListener(this);
@@ -109,6 +111,21 @@ public class CreateTaskFragment extends Fragment
 
     }
 
+    //  numberpicker record spendTime
+    @Override
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+        if (picker.getId() == R.id.spendTimePickerHours){
+            spendHours = newVal;
+        }
+        else if (picker.getId() == R.id.spendTimePickerMinutes){
+            spentMinutes = newVal;
+        }
+
+    }
+    @Override
+    public void onScrollStateChange(NumberPicker view, int scrollState){
+
+    }
 //numberpicker formatter
     @Override
     public String format(int value){
@@ -118,6 +135,7 @@ public class CreateTaskFragment extends Fragment
         }
         return template;
     }
+
     private void initTaskContextText(View v){
         taskContextText = (EditText)v.findViewById(R.id.taskContentText);
 
@@ -143,10 +161,25 @@ public class CreateTaskFragment extends Fragment
         taskAttributeSpinner.setAdapter(taskAttributeAdapter);
     }
 
+//spinner selected
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view,
+                               int pos, long id) {
+        ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
+        ((TextView) parent.getChildAt(0)).setTextSize(20);
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Another interface callback
+    }
+
     private void initCreateButton(View v){
         createTaskButton = (Button)v.findViewById(R.id.createTask);
         createTaskButton.setOnClickListener(this);
     }
+
 
 //Buttons onclick
     @Override
@@ -182,48 +215,28 @@ public class CreateTaskFragment extends Fragment
         calendarDatePickerDialog.show(fm, FRAG_TAG_DATE_PICKER);
     }
 
+//setFinishDate
     @Override
-    public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+    public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth){
         finishDate =  new CurrentTime(year, monthOfYear, dayOfMonth);
         finishDateButton.setText(finishDate.toString());
     }
 
-//  numberpicker record spendTime
-    @Override
-    public void onValueChange(NumberPicker picker, int oldVal, int newVal){
-        if (picker.getId() == R.id.spendTimePickerHours){
-            spendHours = newVal;
-        }
-        else if (picker.getId() == R.id.spendTimePickerMinutes){
-            spentMinutes = newVal;
-        }
 
-    }
-    public void onScrollStateChange(NumberPicker view, int scrollState){
-
-    }
-
-//spinner selected
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
-        ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
-        ((TextView) parent.getChildAt(0)).setTextSize(20);
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        // Another interface callback
-    }
 
     private boolean check(){
-        return checkFinishDate();
+        return checkFinishDate()&&checkContext()&&checkTime();
     }
 
     private boolean checkFinishDate(){
         CurrentTime current = new CurrentTime();
         boolean checkDate = true;
+
+        if (finishDate == null){
+            checkDate = false;
+            Toast.makeText(this.getActivity().getApplicationContext(), "任务时间必须选择", Toast.LENGTH_LONG).show();
+            return checkDate;
+        }
 
         if (finishDate.getYear() < current.getYear()){
             checkDate = false;
@@ -246,9 +259,21 @@ public class CreateTaskFragment extends Fragment
         return checkDate;
     }
 
+    private boolean checkContext(){
+        if (taskContextText.getText() == null){
+            Toast.makeText(this.getActivity().getApplicationContext(), "内容不能为空", Toast.LENGTH_LONG);
+            return false;
+        }
+        return true;
+    }
 
-
-
+    private boolean checkTime(){
+        if (spendTimePickerMinutes.getValue() == 0 && spendTimePickerHours.getValue() == 0){
+            Toast.makeText(this.getActivity().getApplicationContext(), "时间不能为零", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
 
     private void getTaskContext(){
         taskContext = taskContextText.getText().toString();
@@ -257,6 +282,7 @@ public class CreateTaskFragment extends Fragment
     private void getAttribute(){
         taskAttribute = taskAttributeSpinner.getSelectedItem().toString();
     }
+
     private void getMethod(){
         remindMethod = remindMethodSpinner.getSelectedItem().toString();
     }
