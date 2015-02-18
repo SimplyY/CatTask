@@ -1,4 +1,4 @@
-package com.example.yuwei.killexam;
+package com.example.yuwei.killexam.tools;
 import android.text.format.DateFormat;
 
 import java.util.Calendar;
@@ -6,14 +6,13 @@ import java.util.Date;
 /**
  * Created by yuwei on 15/2/16.
  */
-public class CurrentTime {
+public class MyDate {
     Date now;
-    Calendar calendar;
+    Calendar calendar = Calendar.getInstance();
     int year;
     int month;
     int day;
-    public CurrentTime() {
-        calendar = Calendar.getInstance();
+    public MyDate() {
         now = calendar.getTime();
 
         day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -21,8 +20,7 @@ public class CurrentTime {
         year = calendar.get(Calendar.YEAR);
     }
 
-    public CurrentTime(int year, int month, int day) {
-        calendar = Calendar.getInstance();
+    public MyDate(int year, int month, int day) {
         now = calendar.getTime();
 
         this.year = year;

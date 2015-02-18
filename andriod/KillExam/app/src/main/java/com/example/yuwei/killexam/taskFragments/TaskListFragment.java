@@ -1,4 +1,4 @@
-package com.example.yuwei.killexam;
+package com.example.yuwei.killexam.taskFragments;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.yuwei.killexam.R;
 
 
 public class TaskListFragment extends Fragment {

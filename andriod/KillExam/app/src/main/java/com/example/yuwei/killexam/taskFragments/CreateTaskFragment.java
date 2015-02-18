@@ -1,4 +1,4 @@
-package com.example.yuwei.killexam;
+package com.example.yuwei.killexam.taskFragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,6 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
+import com.example.yuwei.killexam.database.MyDatabaseHelper;
+import com.example.yuwei.killexam.tools.MyDate;
+import com.example.yuwei.killexam.R;
+import com.example.yuwei.killexam.tools.Task;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,16 +46,10 @@ public class CreateTaskFragment extends Fragment
     Spinner remindMethodSpinner;
     Spinner taskAttributeSpinner;
     Button createTaskButton;
+    private MyDate finishDate;
 
-    private CurrentTime finishDate;
 
-    private String taskName;
-    private int spendHours = 0;
-    private int spentMinutes = 0;
-    private String taskContext;
-    private String remindMethod;
-    private String taskAttribute;
-
+    private Task newTask = new Task();
 
 
     public CreateTaskFragment() {
@@ -128,12 +126,6 @@ public class CreateTaskFragment extends Fragment
     //  numberpicker record spendTime
     @Override
     public void onValueChange(NumberPicker picker, int oldVal, int newVal){
-        if (picker.getId() == R.id.spendTimePickerHours){
-            spendHours = newVal;
-        }
-        else if (picker.getId() == R.id.spendTimePickerMinutes){
-            spentMinutes = newVal;
-        }
 
     }
     @Override
@@ -206,12 +198,7 @@ public class CreateTaskFragment extends Fragment
 //createTaskButton onclick
             case R.id.createTask:
                 if(check()){
-                    getTaskName();
-                    getTaskContext();
-                    getAttribute();
-                    getMethod();
-                    getHours();
-                    getMinuts();
+                    getTaskInfo();
                     writeTaskInDataBase();
                     quit();
                 }
@@ -222,7 +209,7 @@ public class CreateTaskFragment extends Fragment
 
     public void finishDataPick(){
         FragmentManager fm = getChildFragmentManager();
-        CurrentTime now = new CurrentTime();
+        MyDate now = new MyDate();
         CalendarDatePickerDialog calendarDatePickerDialog = CalendarDatePickerDialog
                 .newInstance(this,now.getYear(), now.getMonth(),
                         now.getDay());
@@ -233,7 +220,8 @@ public class CreateTaskFragment extends Fragment
 //setFinishDate
     @Override
     public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth){
-        finishDate =  new CurrentTime(year, monthOfYear, dayOfMonth);
+        finishDate =  new MyDate(year, monthOfYear, dayOfMonth);
+        newTask.setFinishedTime(finishDate);
         finishDateButton.setText(finishDate.toString());
     }
 
@@ -264,7 +252,7 @@ public class CreateTaskFragment extends Fragment
     }
 
     private boolean checkFinishDate(){
-        CurrentTime current = new CurrentTime();
+        MyDate current = new MyDate();
         boolean checkDate = true;
 
         if (finishDate == null){
@@ -310,32 +298,66 @@ public class CreateTaskFragment extends Fragment
         return true;
     }
 
+    private void getTaskInfo(){
+
+        getTaskName();
+        getTaskContext();
+        getHours();
+        getMinuts();
+        getMethod();
+        getAttribute();
+        getTaskBelong();
+
+
+    }
+
     private void getTaskName(){
-        taskName = taskNameText.getText().toString();
-    }
-
-    private void getTaskContext(){
-        taskContext = taskContextText.getText().toString();
-    }
-
-    private void getAttribute(){
-        taskAttribute = taskAttributeSpinner.getSelectedItem().toString();
-    }
-
-    private void getMethod(){
-        remindMethod = remindMethodSpinner.getSelectedItem().toString();
+        String taskName = taskNameText.getText().toString();
+        newTask.setTaskName(taskName);
     }
 
     private void getHours(){
-        spendHours = spendTimePickerHours.getValue();
+        int spendHours = spendTimePickerHours.getValue();
+        newTask.setSpendHours(spendHours);
     }
 
     private void getMinuts(){
-        spentMinutes = spendTimePickerMinutes.getValue();
+        int spentMinutes = spendTimePickerMinutes.getValue();
+        newTask.setSpendMinutes(spentMinutes);
+    }
+
+    private void getTaskContext(){
+        String taskContext = taskContextText.getText().toString();
+        newTask.setTaskContext(taskContext);
+    }
+
+    private void getMethod(){
+        String remindMethod = remindMethodSpinner.getSelectedItem().toString();
+        newTask.setRemindMethod(remindMethod);
+    }
+
+
+    private void getAttribute(){
+        String taskAttribute = taskAttributeSpinner.getSelectedItem().toString();
+        newTask.setTaskAttribute(taskAttribute);
+    }
+
+    private void getTaskBelong(){
+        if (newTask.getTaskAttribute().equals("一级") == false){
+            newTask.setHasBelong(true);
+            setTaskBelong();
+        }
+        else{
+            newTask.setHasBelong(false);
+        }
+    }
+
+    private void setTaskBelong(){
+//TODO: create ListView to set task belong
     }
 
     private void writeTaskInDataBase(){
-
+        MyDatabaseHelper.writeNewTask(this.getActivity().getApplicationContext(), newTask);
     }
 
     private void quit(){
