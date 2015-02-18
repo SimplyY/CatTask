@@ -19,6 +19,9 @@ import android.widget.Toast;
 
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by yuwei on 15/2/16.
  */
@@ -30,6 +33,8 @@ public class CreateTaskFragment extends Fragment
     private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
 
     private int sectionNumber;
+
+    EditText taskNameText;
     Button finishDateButton;
     NumberPicker spendTimePickerHours;
     NumberPicker spendTimePickerMinutes;
@@ -39,6 +44,8 @@ public class CreateTaskFragment extends Fragment
     Button createTaskButton;
 
     private CurrentTime finishDate;
+
+    private String taskName;
     private int spendHours = 0;
     private int spentMinutes = 0;
     private String taskContext;
@@ -76,6 +83,8 @@ public class CreateTaskFragment extends Fragment
 
     private void initViews(View v){
 
+        initTaskNameText(v);
+
         initfinishDateButton(v);
 
         initSpendTimePicker(v);
@@ -89,6 +98,11 @@ public class CreateTaskFragment extends Fragment
         initCreateButton(v);
     }
 
+    private void initTaskNameText(View v){
+        taskNameText = (EditText) v.findViewById(R.id.taskNameText);
+
+    }
+
     private void initfinishDateButton(View v){
         finishDateButton = (Button)v.findViewById(R.id.finishDatePicker);
         finishDateButton.setOnClickListener(this);
@@ -100,13 +114,13 @@ public class CreateTaskFragment extends Fragment
         spendTimePickerHours = (NumberPicker)v.findViewById(R.id.spendTimePickerHours);
         spendTimePickerHours.setOnScrollListener(this);
         spendTimePickerHours.setFormatter(this);
-        spendTimePickerHours.setMaxValue(100);
+        spendTimePickerHours.setMaxValue(99);
         spendTimePickerHours.setMinValue(0);
 
         spendTimePickerMinutes = (NumberPicker)v.findViewById(R.id.spendTimePickerMinutes);
         spendTimePickerMinutes.setOnScrollListener(this);
         spendTimePickerMinutes.setFormatter(this);
-        spendTimePickerMinutes.setMaxValue(60);
+        spendTimePickerMinutes.setMaxValue(59);
         spendTimePickerMinutes.setMinValue(0);
 
     }
@@ -192,6 +206,7 @@ public class CreateTaskFragment extends Fragment
 //createTaskButton onclick
             case R.id.createTask:
                 if(check()){
+                    getTaskName();
                     getTaskContext();
                     getAttribute();
                     getMethod();
@@ -225,7 +240,27 @@ public class CreateTaskFragment extends Fragment
 
 
     private boolean check(){
-        return checkFinishDate()&&checkContext()&&checkTime();
+        return checkTestName()&&checkFinishDate()&&checkContext()&&checkTime();
+    }
+
+    private boolean checkTestName(){
+        if (checkEditText(taskNameText) == false){
+            Toast.makeText(this.getActivity().getApplicationContext(), "任务名不能为空，或者有空格", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkEditText(EditText text){
+        String template = text.getText().toString();
+        if (template.equals("")){
+            return false;
+        }
+        Matcher space = Pattern.compile(" +").matcher(template);
+        while (space.find()){
+            return false;
+        }
+        return true;
     }
 
     private boolean checkFinishDate(){
@@ -260,8 +295,8 @@ public class CreateTaskFragment extends Fragment
     }
 
     private boolean checkContext(){
-        if (taskContextText.getText() == null){
-            Toast.makeText(this.getActivity().getApplicationContext(), "内容不能为空", Toast.LENGTH_LONG);
+        if (checkEditText(taskContextText) == false){
+            Toast.makeText(this.getActivity().getApplicationContext(), "内容不能为空", Toast.LENGTH_LONG).show();
             return false;
         }
         return true;
@@ -273,6 +308,10 @@ public class CreateTaskFragment extends Fragment
             return false;
         }
         return true;
+    }
+
+    private void getTaskName(){
+        taskName = taskNameText.getText().toString();
     }
 
     private void getTaskContext(){
