@@ -2,6 +2,7 @@ package com.example.yuwei.killexam.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -87,6 +88,24 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         database.insert(TABLE_NAME, null, contentValues);
 
 
+    }
+
+
+    public static boolean checkNameHasExist(Context context, String name){
+        SQLiteOpenHelper databaseHelper = new MyDatabaseHelper(context,"task.db", null, 1);
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+
+        return checkName(database, name);
+    }
+
+    private static boolean checkName(SQLiteDatabase database, String name){
+        String where = NAME + "='" + name + "'";
+
+        Cursor cursor = database.query(TABLE_NAME, new String[]{NAME}, where, null, null, null, null);
+        if (cursor.getCount()>0){
+            return true;
+        }
+        return false;
     }
 
 }

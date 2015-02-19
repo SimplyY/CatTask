@@ -1,7 +1,5 @@
 package com.example.yuwei.killexam.taskFragments;
 
-import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,7 +26,6 @@ import com.example.yuwei.killexam.tools.Task;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import android.support.v4.app.*;
 
 /**
  * Created by yuwei on 15/2/16.
@@ -232,12 +229,16 @@ public class CreateTaskFragment extends Fragment
 
 
     private boolean check(){
-        return checkTestName()&&checkFinishDate()&&checkContext()&&checkTime();
+        return checkTeskName()&&checkFinishDate()&&checkContext()&&checkTime();
     }
 
-    private boolean checkTestName(){
+    private boolean checkTeskName(){
         if (checkEditText(taskNameText) == false){
-            Toast.makeText(this.getActivity().getApplicationContext(), "任务名不能为空，或者有空格", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getActivity().getApplicationContext(), "任务名不能为空，或者有空格", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(isNameHasExist(taskNameText) == true){
+            Toast.makeText(this.getActivity().getApplication(), "任务名已存在", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -255,13 +256,18 @@ public class CreateTaskFragment extends Fragment
         return true;
     }
 
+    private boolean isNameHasExist(EditText text){
+        String name = text.getText().toString();
+        return MyDatabaseHelper.checkNameHasExist(this.getActivity().getApplicationContext(), name);
+    }
+
     private boolean checkFinishDate(){
         MyDate current = new MyDate();
         boolean checkDate = true;
 
         if (finishDate == null){
             checkDate = false;
-            Toast.makeText(this.getActivity().getApplicationContext(), "任务时间必须选择", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getActivity().getApplicationContext(), "任务时间必须选择", Toast.LENGTH_SHORT).show();
             return checkDate;
         }
 
@@ -280,7 +286,7 @@ public class CreateTaskFragment extends Fragment
         }
 
         if (checkDate == false){
-            Toast.makeText(this.getActivity().getApplicationContext(), "任务完成时间不能比当前时间早", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getActivity().getApplicationContext(), "任务完成时间不能比当前时间早", Toast.LENGTH_SHORT).show();
 
         }
         return checkDate;
@@ -288,7 +294,7 @@ public class CreateTaskFragment extends Fragment
 
     private boolean checkContext(){
         if (checkEditText(taskContextText) == false){
-            Toast.makeText(this.getActivity().getApplicationContext(), "内容不能为空", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getActivity().getApplicationContext(), "内容不能为空", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -296,7 +302,7 @@ public class CreateTaskFragment extends Fragment
 
     private boolean checkTime(){
         if (spendTimePickerMinutes.getValue() == 0 && spendTimePickerHours.getValue() == 0){
-            Toast.makeText(this.getActivity().getApplicationContext(), "时间不能为零", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getActivity().getApplicationContext(), "时间不能为零", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

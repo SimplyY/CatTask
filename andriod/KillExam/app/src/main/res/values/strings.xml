@@ -20,4 +20,7 @@
     <string name="create_task_button">创建任务</string>
 
     <string name="create_picker">点击输入</string>
+    <string name="title_activity_choose_belong">chooseBelongActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>
