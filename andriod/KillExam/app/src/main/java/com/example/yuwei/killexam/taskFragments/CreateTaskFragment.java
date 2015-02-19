@@ -1,5 +1,6 @@
 package com.example.yuwei.killexam.taskFragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
+import com.example.yuwei.killexam.ChooseBelongActivity;
 import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.tools.MyDate;
@@ -124,7 +126,7 @@ public class CreateTaskFragment extends Fragment
 
     }
 
-    //  numberpicker record spendTime
+//numberpicker record spendTime
     @Override
     public void onValueChange(NumberPicker picker, int oldVal, int newVal){
 
@@ -362,21 +364,37 @@ public class CreateTaskFragment extends Fragment
         }
     }
 
-    private void setTaskBelong(){
-//TODO: create ListView to set task belong
-    }
+
 
     private void writeTaskInDataBase(){
         MyDatabaseHelper.writeNewTask(this.getActivity().getApplicationContext(), newTask);
     }
 
     private void quit(){
+        if (newTask.isHasBelong() == false){
+            quitCreateTaskFragment();
+        }
+        else{
+            setTaskBelong();
+        }
+    }
+
+    private void quitCreateTaskFragment(){
         MainActivity activity = (MainActivity)this.getActivity();
         android.support.v4.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-
         MainActivity.PlaceholderFragment placeholderFragment = MainActivity.PlaceholderFragment.newInstance(1);
         fragmentTransaction.replace(R.id.container, placeholderFragment)
                 .commit();
+    }
 
+    private void setTaskBelong(){
+        enterChooseTaskBelongActivity();
+    }
+
+    private void enterChooseTaskBelongActivity(){
+        MainActivity activity = (MainActivity)this.getActivity();
+        Intent intent = new Intent(activity,ChooseBelongActivity.class);
+        intent.putExtra("taskName", newTask.getTaskName());
+        startActivity(intent);
     }
 }

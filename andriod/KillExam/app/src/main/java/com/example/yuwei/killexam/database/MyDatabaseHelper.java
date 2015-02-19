@@ -77,7 +77,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 
         if (task.isHasBelong()){
             contentValues.put(HAS_BELONG, 1);
-            contentValues.put(BELONG, task.getBelong().toString());
         }
         else{
             contentValues.put(HAS_BELONG, 0);

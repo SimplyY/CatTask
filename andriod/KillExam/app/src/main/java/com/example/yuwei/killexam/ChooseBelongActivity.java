@@ -1,22 +1,32 @@
 package com.example.yuwei.killexam;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.logging.Logger;
 
 
 public class ChooseBelongActivity extends ActionBarActivity {
 
+    String newTaskName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent newTaskIntent = getIntent();
+        Bundle newTaskBundle = newTaskIntent.getExtras();
+        if (newTaskBundle != null){
+            newTaskName = (String)newTaskBundle.get("taskName");
+        }
+        else{
+            Log.e("danger", "chooseBelongActivity has no newTask");
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_belong);
     }
-
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
