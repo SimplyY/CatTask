@@ -395,6 +395,7 @@ public class CreateTaskFragment extends Fragment
         MainActivity activity = (MainActivity)this.getActivity();
         Intent intent = new Intent(activity,ChooseBelongActivity.class);
         intent.putExtra("taskName", newTask.getTaskName());
+        intent.putExtra("taskAttribute", newTask.getTaskAttribute());
         startActivity(intent);
     }
 }

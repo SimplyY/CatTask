@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.yuwei.killexam.tools.Task;
 
+import java.util.ArrayList;
+
 /**
  * Created by yuwei on 15/2/18.
  */
@@ -91,7 +93,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 
 
     public static boolean checkNameHasExist(Context context, String name){
-        SQLiteOpenHelper databaseHelper = new MyDatabaseHelper(context,"task.db", null, 1);
+        SQLiteOpenHelper databaseHelper = new MyDatabaseHelper(context, "task.db", null, 1);
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
 
         return checkName(database, name);
@@ -100,11 +102,56 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     private static boolean checkName(SQLiteDatabase database, String name){
         String where = NAME + "='" + name + "'";
 
-        Cursor cursor = database.query(TABLE_NAME, new String[]{NAME}, where, null, null, null, null);
+        Cursor cursor = database.query(TABLE_NAME, null, where, null, null, null, null);
         if (cursor.getCount()>0){
             return true;
         }
         return false;
     }
+
+    public static ArrayList<String> getBelongTasksNames(Context context, String belongTasksAttribute){
+
+        SQLiteOpenHelper databaseHelper = new MyDatabaseHelper(context, "task.db", null, 1);
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+
+        return getBelongTasksNamesFromDatabase(database, belongTasksAttribute);
+    }
+
+    private static ArrayList<String> getBelongTasksNamesFromDatabase(SQLiteDatabase database, String belongTasksAttribute){
+        ArrayList<String> belongTasksNames = new ArrayList<String>();
+
+        String where = ATTRIBUTE + "='" + belongTasksAttribute + "'";
+
+        Cursor cursor = database.query(TABLE_NAME, new String[]{NAME}, where, null, null, null, null);
+//        where
+
+        while (cursor.moveToNext()){
+
+            String belongTaskName = cursor.getString(cursor.getColumnIndex(NAME));
+
+            belongTasksNames.add(belongTaskName);
+        }
+
+        return belongTasksNames;
+    }
+
+    public static void setBelongTask(Context context, String newTaskName, String belongTaskName){
+        SQLiteOpenHelper databaseHelper = new MyDatabaseHelper(context, "task.db", null, 1);
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+
+        setBelongTaskInDatabase(database, newTaskName, belongTaskName);
+    }
+
+    private static void setBelongTaskInDatabase(SQLiteDatabase database, String newTaskName, String belongTaskName){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(BELONG, belongTaskName);
+        contentValues.put(HAS_BELONG, 1);
+
+        String where = NAME + "='" + newTaskName + "'";
+        database.update(TABLE_NAME, contentValues, where, null);
+
+    }
+
+
 
 }

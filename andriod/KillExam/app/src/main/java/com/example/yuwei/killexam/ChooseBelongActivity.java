@@ -6,27 +6,88 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
-import java.util.logging.Logger;
+import com.example.yuwei.killexam.database.MyDatabaseHelper;
+import com.example.yuwei.killexam.tools.BelongTaskAdapter;
+
+import java.util.ArrayList;
 
 
 public class ChooseBelongActivity extends ActionBarActivity {
 
-    String newTaskName;
+    private String newTaskName;
+    private String newTaskAttribute;
+    private String belongTasksAttribute;
+
+    private ArrayList<String> belongTasksNames = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getNewTaskInfo();
+        getBelongTasksAttribute();
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_choose_belong);
+
+        setBelongTasksView();
+
+    }
+
+    private void getNewTaskInfo(){
         Intent newTaskIntent = getIntent();
         Bundle newTaskBundle = newTaskIntent.getExtras();
         if (newTaskBundle != null){
             newTaskName = (String)newTaskBundle.get("taskName");
+            newTaskAttribute = (String)newTaskBundle.get("taskAttribute");
         }
         else{
             Log.e("danger", "chooseBelongActivity has no newTask");
         }
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choose_belong);
     }
+
+    private void getBelongTasksAttribute(){
+        if (newTaskAttribute.equals("二级")){
+            belongTasksAttribute = "一级";
+        }
+        else if (newTaskAttribute.equals("三级")){
+            belongTasksAttribute = "二级";
+        }
+        else if (newTaskAttribute.equals("四级")){
+            belongTasksAttribute = "三级";
+        }
+    }
+
+    private void setBelongTasksView(){
+        initBelongTasks();
+
+        BelongTaskAdapter adapter = new BelongTaskAdapter(this, R.layout.belong_task_item, belongTasksNames);
+
+        ListView belongTaskListView = (ListView) findViewById(R.id.BelongTasksListView);
+        belongTaskListView.setAdapter(adapter);
+
+        belongTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String belongTaskName = belongTasksNames.get(position);
+                MyDatabaseHelper.setBelongTask(ChooseBelongActivity.this, newTaskName, belongTaskName);
+                quit();
+            }
+        });
+
+    }
+
+    private void initBelongTasks(){
+         belongTasksNames = MyDatabaseHelper.getBelongTasksNames(this, belongTasksAttribute);
+    }
+
+    private void quit(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
