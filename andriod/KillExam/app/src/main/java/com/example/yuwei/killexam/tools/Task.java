@@ -1,19 +1,21 @@
 package com.example.yuwei.killexam.tools;
 
+import java.io.Serializable;
+
 /**
  * Created by yuwei on 15/2/18.
  */
-public class Task {
+public class Task implements Serializable {
 
     private String taskName;
     private MyDate finishedTime;
     private int spendHours = 0;
     private int spendMinutes = 0;
     private String taskContext;
-    private String remindMethod;
+    private String remindMethod = "不提醒";
     private String taskAttribute;
     private Task belong;
-    private boolean hasBelong;
+    private boolean hasBelong = false;
 
 
     public String toString(){
@@ -91,4 +93,5 @@ public class Task {
     public void setHasBelong(boolean hasBelong) {
         this.hasBelong = hasBelong;
     }
+
 }

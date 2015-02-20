@@ -71,6 +71,13 @@ public class CreateTaskFragment extends Fragment
             sectionNumber = getArguments().getInt(ARG_PARAM1);
         }
 
+        newTask = (Task)savedInstanceState.get("task");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInsrtanceState){
+        super.onSaveInstanceState(savedInsrtanceState);
+        savedInsrtanceState.putSerializable("task", newTask);
     }
 
     @Override
@@ -79,29 +86,77 @@ public class CreateTaskFragment extends Fragment
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_create_task, container, false);
         initViews(v);
+        setTimerForAttributeSpinner();
         return v;
     }
 
+    private void setTimerForAttributeSpinner(){
+//        TODO:
+    }
+
     private void initViews(View v){
+        initTaskAttributeSpinner(v);
 
         initTaskNameText(v);
+
+        initTaskContextText(v);
 
         initfinishDateButton(v);
 
         initSpendTimePicker(v);
 
-        initTaskContextText(v);
-
         initRemindMethodSpinner(v);
-
-        initTaskAttributeSpinner(v);
 
         initCreateButton(v);
     }
 
+
+    private void initTaskAttributeSpinner(View v){
+        taskAttributeSpinner = (Spinner)v.findViewById(R.id.taskAttributeSpinner);
+        taskAttributeSpinner.setOnItemSelectedListener(this);
+        ArrayAdapter<CharSequence> taskAttributeAdapter = ArrayAdapter.createFromResource(this.getActivity().getApplicationContext(),
+                R.array.task_attribute_array, android.R.layout.simple_spinner_item);
+
+        taskAttributeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        taskAttributeSpinner.setAdapter(taskAttributeAdapter);
+
+        setAttributeSpinnerPosition();
+    }
+
+    private void setAttributeSpinnerPosition(){
+        String attribute = newTask.getTaskAttribute();
+        if (attribute != null){
+            int position = 1;
+            if (attribute.equals("一级")){
+                position = 1;
+            }
+            else if (attribute.equals("二级")){
+                position = 2;
+            }
+            else if (attribute.equals("三级") ){
+                position = 3;
+            }
+            else if (attribute.equals("四级")){
+                position = 4;
+            }
+
+            taskAttributeSpinner.setSelection(position);
+
+        }
+
+
+    }
+
     private void initTaskNameText(View v){
         taskNameText = (EditText) v.findViewById(R.id.taskNameText);
+        setNameText();
+    }
 
+    private void setNameText(){
+        String taskName = newTask.getTaskName();
+        if (taskName != null){
+            taskNameText.setText(taskName);
+        }
     }
 
     private void initfinishDateButton(View v){
@@ -123,6 +178,9 @@ public class CreateTaskFragment extends Fragment
         spendTimePickerMinutes.setFormatter(this);
         spendTimePickerMinutes.setMaxValue(59);
         spendTimePickerMinutes.setMinValue(0);
+
+        spendTimePickerHours.setValue(newTask.getSpendHours());
+        spendTimePickerMinutes.setValue(newTask.getSpendMinutes());
 
     }
 
@@ -158,16 +216,30 @@ public class CreateTaskFragment extends Fragment
 
         remindMethodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         remindMethodSpinner.setAdapter(remindMethodAdapter);
+
+        setMethodSpinnerPosition();
     }
 
-    private void initTaskAttributeSpinner(View v){
-        taskAttributeSpinner = (Spinner)v.findViewById(R.id.taskAttributeSpinner);
-        taskAttributeSpinner.setOnItemSelectedListener(this);
-        ArrayAdapter<CharSequence> taskAttributeAdapter = ArrayAdapter.createFromResource(this.getActivity().getApplicationContext(),
-                R.array.task_attribute_array, android.R.layout.simple_spinner_item);
+    private void setMethodSpinnerPosition(){
+        String remindMethod = newTask.getRemindMethod();
+        int position = 1;
+        if (remindMethod.equals("不提醒")){
+            position = 1;
+        }
+        if (remindMethod.equals("每天")){
+            position = 2;
+        }
+        if (remindMethod.equals("每周")){
+            position = 3;
+        }
+        if (remindMethod.equals("每月")){
+            position = 4;
+        }
+        if (remindMethod.equals("每年")){
+            position = 5;
+        }
 
-        taskAttributeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        taskAttributeSpinner.setAdapter(taskAttributeAdapter);
+        remindMethodSpinner.setSelection(position);
     }
 
 //spinner selected
@@ -231,7 +303,7 @@ public class CreateTaskFragment extends Fragment
 
 
     private boolean check(){
-        return checkTeskName()&&checkFinishDate()&&checkContext()&&checkTime();
+        return checkTeskName()&&checkContext()&&checkFinishDate()&&checkTime();
     }
 
     private boolean checkTeskName(){
