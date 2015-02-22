@@ -1,6 +1,7 @@
 package com.example.yuwei.killexam;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
 import com.example.yuwei.killexam.taskFragments.CreateTaskFragment;
+import com.example.yuwei.killexam.tools.Task;
 
 
 public class MainActivity extends ActionBarActivity
@@ -42,6 +44,42 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        getBelongInCreateTask();
+    }
+
+    private void getBelongInCreateTask(){
+        Intent intent = getIntent();
+        String enterFragment = intent.getStringExtra("enterFragment");
+
+        if (enterFragment != null) {
+            switch (enterFragment) {
+                case "CreateTaskFragment":
+                    enterCreateTask(intent);
+                    break;
+            }
+        }
+    }
+
+    private void enterCreateTask(Intent intent){
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment targetFragment = getTargetFragment(2);
+
+        getNewTask((CreateTaskFragment)targetFragment, intent);
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, targetFragment)
+                .commit();
+
+    }
+
+    private void getNewTask(CreateTaskFragment fragment, Intent intent){
+        Bundle bundle = intent.getExtras();
+
+        if (bundle != null) {
+            Task task = (Task) bundle.get("task");
+            fragment.setNewTask(task);
+        }
     }
 
     @Override

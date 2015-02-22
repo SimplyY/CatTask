@@ -56,6 +56,9 @@ public class CreateTaskFragment extends Fragment
 
     private Task newTask;
 
+    public void setNewTask(Task newTask) {
+        this.newTask = newTask;
+    }
 
     public CreateTaskFragment() {
     }
@@ -291,6 +294,7 @@ public class CreateTaskFragment extends Fragment
 
     private void initIsHasBelongTextView(View v){
         isHasBelongTextView = (TextView) v.findViewById(R.id.isHasBelongTextView);
+        setButtonTextDepnedBelong();
     }
 
 
@@ -305,7 +309,7 @@ public class CreateTaskFragment extends Fragment
 //createTaskButton onclick
             case R.id.createTask:
                 if(check()){
-                    getTaskInfo();
+                    getTaskInfoWithoutCheck();
                     writeTaskInDataBase();
                     quit();
                 }
@@ -341,7 +345,6 @@ public class CreateTaskFragment extends Fragment
 //当需要设置belong的时候return false
     private boolean checkAttribute(){
         if (taskAttributeSpinner.getSelectedItemPosition() != 0 && newTask.isHasBelong() == false){
-            setIsntHasTaskBelong();
             setTaskBelong();
             return false;
         }
@@ -358,6 +361,8 @@ public class CreateTaskFragment extends Fragment
             Toast.makeText(this.getActivity().getApplication(), "任务名已存在", Toast.LENGTH_SHORT).show();
             return false;
         }
+
+        newTask.setTaskName(taskNameEditText.getText().toString());
         return true;
     }
 
@@ -417,6 +422,8 @@ public class CreateTaskFragment extends Fragment
             Toast.makeText(this.getActivity().getApplicationContext(), "内容不能为空", Toast.LENGTH_SHORT).show();
             return false;
         }
+
+        newTask.setTaskContext(taskContextText.getText().toString());
         return true;
     }
 
@@ -425,29 +432,15 @@ public class CreateTaskFragment extends Fragment
             Toast.makeText(this.getActivity().getApplicationContext(), "时间不能为零", Toast.LENGTH_SHORT).show();
             return false;
         }
+
+        newTask.setSpendHours(spendTimePickerHours.getValue());
+        newTask.setSpendMinutes(spendTimePickerMinutes.getValue());
         return true;
     }
 
-    //TODO 改成用构造器方式
-    private void getTaskInfo(){
-
-        String taskName = taskNameEditText.getText().toString();
-        String taskContext = taskContextText.getText().toString();
-
-        int spendHours = spendTimePickerHours.getValue();
-        int spentMinutes = spendTimePickerMinutes.getValue();
+    private void getTaskInfoWithoutCheck(){
         String remindMethod = remindMethodSpinner.getSelectedItem().toString();
-        String taskAttribute = taskAttributeSpinner.getSelectedItem().toString();
-
-        newTask = new Task(taskName, finishDate, taskContext, spendHours, spentMinutes, remindMethod, taskAttribute);
-    }
-
-    private void setIsntHasTaskBelong(){
-        String attribute = (String)taskAttributeSpinner.getSelectedItem();
-        newTask.setTaskAttribute(attribute);
-        if (attribute.equals("一级") == true){
-            newTask.setHasBelong(false);
-        }
+        newTask.setRemindMethod(remindMethod);
     }
 
 

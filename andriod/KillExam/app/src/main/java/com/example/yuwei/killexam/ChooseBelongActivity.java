@@ -91,6 +91,7 @@ public class ChooseBelongActivity extends ActionBarActivity {
     private void quit(){
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("task", newTask);
+        intent.putExtra("enterFragment", "CreateTaskFragment");
         startActivity(intent);
     }
 

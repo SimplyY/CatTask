@@ -26,16 +26,6 @@ public class Task implements Serializable {
     public Task() {
     }
 
-    public Task(String taskName, MyDate finishedTime, String taskContext, int spendHours, int spendMinutes, String remindMethod, String taskAttribute){
-        this.taskName = taskName;
-        this.finishedTime = finishedTime;
-        this.taskContext = taskContext;
-        this.spendHours = spendHours;
-        this.spendMinutes = spendMinutes;
-        this.remindMethod = remindMethod;
-        this.taskAttribute = taskAttribute;
-    }
-
     public String toString(){
         return taskName;
     }
