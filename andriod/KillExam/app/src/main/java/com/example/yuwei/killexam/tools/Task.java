@@ -1,6 +1,5 @@
 package com.example.yuwei.killexam.tools;
 
-import android.content.Context;
 
 import java.io.Serializable;
 
@@ -17,8 +16,8 @@ public class Task implements Serializable {
     private int spendHours = 0;
     private int spendMinutes = 0;
     private String taskContext;
-    private String remindMethod = "不提醒";
-    private String taskAttribute;
+    private SpinnerValue remindMethod;
+    private SpinnerValue taskAttribute;
 
     private boolean hasBelong = false;
     private String belongName;
@@ -50,11 +49,11 @@ public class Task implements Serializable {
         return taskContext;
     }
 
-    public String getRemindMethod() {
+    public SpinnerValue getRemindMethod() {
         return remindMethod;
     }
 
-    public String getTaskAttribute() {
+    public SpinnerValue getTaskAttribute() {
         return taskAttribute;
     }
 
@@ -86,11 +85,11 @@ public class Task implements Serializable {
         this.taskContext = taskContext;
     }
 
-    public void setRemindMethod(String remindMethod) {
+    public void setRemindMethod(SpinnerValue remindMethod) {
         this.remindMethod = remindMethod;
     }
 
-    public void setTaskAttribute(String taskAttribute) {
+    public void setTaskAttribute(SpinnerValue taskAttribute) {
         this.taskAttribute = taskAttribute;
     }
 

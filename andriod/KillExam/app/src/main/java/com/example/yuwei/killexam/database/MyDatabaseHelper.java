@@ -73,10 +73,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         contentValues.put(FINISH_TIME, task.getFinishedTime().toString());
         contentValues.put(SPEND_HOURS, task.getSpendHours());
         contentValues.put(SPEND_MINUTES, task.getSpendMinutes());
-        contentValues.put(REMIND_METHOD, task.getRemindMethod());
         contentValues.put(CONTEXT, task.getTaskContext());
-        contentValues.put(REMIND_METHOD, task.getRemindMethod());
-        contentValues.put(ATTRIBUTE, task.getTaskAttribute());
+        contentValues.put(REMIND_METHOD, task.getRemindMethod().getSelectedName());
+        contentValues.put(ATTRIBUTE, task.getTaskAttribute().getSelectedName());
 
         if (task.isHasBelong()){
             contentValues.put(HAS_BELONG, 1);

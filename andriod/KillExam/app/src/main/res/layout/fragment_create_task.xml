@@ -37,7 +37,7 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1" />
+                android:layout_weight="0.85" />
         </LinearLayout>
 
 
@@ -215,7 +215,7 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1" />
+                android:layout_weight="0.85" />
         </LinearLayout>
 
 
@@ -230,7 +230,7 @@
 
             <TextView
                 android:id="@+id/isHasBelongTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/fragment_maginleft"
                 android:layout_gravity="center"
@@ -240,12 +240,12 @@
 
             <Button
                 android:id="@+id/createTask"
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:text="@string/create_task_button"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:textSize="@dimen/create_task_textsize" />
+                 />
 
         </LinearLayout>
 

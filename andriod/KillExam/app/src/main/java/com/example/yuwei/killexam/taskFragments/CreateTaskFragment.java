@@ -24,6 +24,7 @@ import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.tools.MyDate;
 import com.example.yuwei.killexam.R;
+import com.example.yuwei.killexam.tools.SpinnerValue;
 import com.example.yuwei.killexam.tools.Task;
 
 import java.util.regex.Matcher;
@@ -41,17 +42,19 @@ public class CreateTaskFragment extends Fragment
 
     private int sectionNumber;
 
-    EditText taskNameEditText;
-    Button finishDateButton;
-    NumberPicker spendTimePickerHours;
-    NumberPicker spendTimePickerMinutes;
-    EditText taskContextText;
-    Spinner remindMethodSpinner;
-    Spinner taskAttributeSpinner;
-    Button createTaskButton;
-    TextView isHasBelongTextView;
+    private View mView;
 
-    private MyDate finishDate;
+    private EditText mTaskNameEditText;
+    private Button mFinishDateButton;
+    private NumberPicker mSpendTimePickerHours;
+    private NumberPicker mSpendTimePickerMinutes;
+    private EditText mTaskContextText;
+    private Spinner mRemindMethodSpinner;
+    private Spinner mTaskAttributeSpinner;
+    private Button mCreateTaskButton;
+    private TextView mIsHasBelongTextView;
+
+    private MyDate mFinishDate;
 
 
     private Task newTask;
@@ -102,66 +105,44 @@ public class CreateTaskFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_create_task, container, false);
-        initViews(v);
-        return v;
+        mView = inflater.inflate(R.layout.fragment_create_task, container, false);
+        initViews();
+        return mView;
     }
 
 
+    private void initViews(){
+        initTaskAttributeSpinner();
 
+        initTaskNameText();
 
-//TODO view为成员变量
-    private void initViews(View v){
-        initTaskAttributeSpinner(v);
+        initTaskContextText();
 
-        initTaskNameText(v);
+        initfinishDateButton();
 
-        initTaskContextText(v);
+        initSpendTimePicker();
 
-        initfinishDateButton(v);
+        initRemindMethodSpinner();
 
-        initSpendTimePicker(v);
+        initCreateButton();
 
-        initRemindMethodSpinner(v);
-
-        initCreateButton(v);
-
-        initIsHasBelongTextView(v);
+        initIsHasBelongTextView();
     }
 
 
-    private void initTaskAttributeSpinner(View v){
-        taskAttributeSpinner = (Spinner)v.findViewById(R.id.taskAttributeSpinner);
-        taskAttributeSpinner.setOnItemSelectedListener(this);
+    private void initTaskAttributeSpinner(){
+        mTaskAttributeSpinner = (Spinner)mView.findViewById(R.id.taskAttributeSpinner);
+        mTaskAttributeSpinner.setOnItemSelectedListener(this);
         ArrayAdapter<CharSequence> taskAttributeAdapter = ArrayAdapter.createFromResource(this.getActivity().getApplicationContext(),
                 R.array.task_attribute_array, android.R.layout.simple_spinner_item);
 
         taskAttributeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        taskAttributeSpinner.setAdapter(taskAttributeAdapter);
+        mTaskAttributeSpinner.setAdapter(taskAttributeAdapter);
 
-        setAttributeSpinnerPosition();
-    }
+        SpinnerValue taskAttribute = SpinnerValue.initSpinnerValue(R.array.task_attribute_array, getResources());
+        newTask.setTaskAttribute(taskAttribute);
+        mTaskAttributeSpinner.setSelection(taskAttribute.getPosition());
 
-    private void setAttributeSpinnerPosition(){
-        String attribute = newTask.getTaskAttribute();
-        if (attribute != null){
-            int position = 0;
-            if (attribute.equals("一级")){
-                position = 0;
-            }
-            else if (attribute.equals("二级")){
-                position = 1;
-            }
-            else if (attribute.equals("三级") ){
-                position = 2;
-            }
-            else if (attribute.equals("四级")){
-                position = 3;
-            }
-
-            taskAttributeSpinner.setSelection(position);
-
-        }
     }
 
     //spinner selected
@@ -179,53 +160,52 @@ public class CreateTaskFragment extends Fragment
     }
 
     private void setButtonTextDepnedBelong(){
-        if (taskAttributeSpinner.getSelectedItemPosition() != 0){
-            isHasBelongTextView.setText("有父任务");
-            createTaskButton.setText("选择父任务");
+        if (mTaskAttributeSpinner.getSelectedItemPosition() != 0){
+            mIsHasBelongTextView.setText("有父任务");
+            mCreateTaskButton.setText("选择父任务");
         }
         else{
-            if (newTask.isHasBelong() && createTaskButton.getText().equals("选择父任务")){
-                isHasBelongTextView.setText("无父任务");
-                createTaskButton.setText("创建任务");
+            if (newTask.isHasBelong() && mCreateTaskButton.getText().equals("选择父任务")){
+                mIsHasBelongTextView.setText("无父任务");
+                mCreateTaskButton.setText("创建任务");
             }
         }
-
     }
 
-    private void initTaskNameText(View v){
-        taskNameEditText = (EditText) v.findViewById(R.id.taskNameText);
+    private void initTaskNameText(){
+        mTaskNameEditText = (EditText) mView.findViewById(R.id.taskNameText);
         setNameText();
     }
 
     private void setNameText(){
         String taskName = newTask.getTaskName();
         if (taskName != null){
-            taskNameEditText.setText(taskName);
+            mTaskNameEditText.setText(taskName);
         }
     }
 
-    private void initfinishDateButton(View v){
-        finishDateButton = (Button)v.findViewById(R.id.finishDatePicker);
-        finishDateButton.setOnClickListener(this);
+    private void initfinishDateButton(){
+        mFinishDateButton = (Button)mView.findViewById(R.id.finishDatePicker);
+        mFinishDateButton.setOnClickListener(this);
     }
 
 
 
-    private void initSpendTimePicker(View v){
-        spendTimePickerHours = (NumberPicker)v.findViewById(R.id.spendTimePickerHours);
-        spendTimePickerHours.setOnScrollListener(this);
-        spendTimePickerHours.setFormatter(this);
-        spendTimePickerHours.setMaxValue(99);
-        spendTimePickerHours.setMinValue(0);
+    private void initSpendTimePicker(){
+        mSpendTimePickerHours = (NumberPicker)mView.findViewById(R.id.spendTimePickerHours);
+        mSpendTimePickerHours.setOnScrollListener(this);
+        mSpendTimePickerHours.setFormatter(this);
+        mSpendTimePickerHours.setMaxValue(99);
+        mSpendTimePickerHours.setMinValue(0);
 
-        spendTimePickerMinutes = (NumberPicker)v.findViewById(R.id.spendTimePickerMinutes);
-        spendTimePickerMinutes.setOnScrollListener(this);
-        spendTimePickerMinutes.setFormatter(this);
-        spendTimePickerMinutes.setMaxValue(59);
-        spendTimePickerMinutes.setMinValue(0);
+        mSpendTimePickerMinutes = (NumberPicker)mView.findViewById(R.id.spendTimePickerMinutes);
+        mSpendTimePickerMinutes.setOnScrollListener(this);
+        mSpendTimePickerMinutes.setFormatter(this);
+        mSpendTimePickerMinutes.setMaxValue(59);
+        mSpendTimePickerMinutes.setMinValue(0);
 
-        spendTimePickerHours.setValue(newTask.getSpendHours());
-        spendTimePickerMinutes.setValue(newTask.getSpendMinutes());
+        mSpendTimePickerHours.setValue(newTask.getSpendHours());
+        mSpendTimePickerMinutes.setValue(newTask.getSpendMinutes());
 
     }
 
@@ -241,59 +221,35 @@ public class CreateTaskFragment extends Fragment
 ///numberpicker formatter
     @Override
     public String format(int value){
-        return value<10?"0" + value:"" + value;
+        return value<10 ? "0"+value:""+value;
     }
 
-    private void initTaskContextText(View v){
-        taskContextText = (EditText)v.findViewById(R.id.taskContentText);
+    private void initTaskContextText(){
+        mTaskContextText = (EditText)mView.findViewById(R.id.taskContentText);
 
     }
 
-    private void initRemindMethodSpinner(View v){
-        remindMethodSpinner = (Spinner)v.findViewById(R.id.remindMethodSpinner);
-        remindMethodSpinner.setOnItemSelectedListener(this);
+    private void initRemindMethodSpinner(){
+        mRemindMethodSpinner = (Spinner)mView.findViewById(R.id.remindMethodSpinner);
+        mRemindMethodSpinner.setOnItemSelectedListener(this);
         ArrayAdapter<CharSequence> remindMethodAdapter = ArrayAdapter.createFromResource(this.getActivity().getApplicationContext(),
                 R.array.remind_method_array, android.R.layout.simple_spinner_item);
-
         remindMethodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        remindMethodSpinner.setAdapter(remindMethodAdapter);
+        mRemindMethodSpinner.setAdapter(remindMethodAdapter);
 
-        setMethodSpinnerPosition();
+        SpinnerValue remindMethod = SpinnerValue.initSpinnerValue(R.array.remind_method_array, getResources());
+        newTask.setRemindMethod(remindMethod);
+        mRemindMethodSpinner.setSelection(remindMethod.getPosition());
+
     }
 
-    private void setMethodSpinnerPosition(){
-        String remindMethod = newTask.getRemindMethod();
-        if (remindMethod != null) {
-            int position = 0;
-            if (remindMethod.equals("不提醒")) {
-                position = 0;
-            }
-            if (remindMethod.equals("每天")) {
-                position = 1;
-            }
-            if (remindMethod.equals("每周")) {
-                position = 2;
-            }
-            if (remindMethod.equals("每月")) {
-                position = 3;
-            }
-            if (remindMethod.equals("每年")) {
-                position = 4;
-            }
-
-            remindMethodSpinner.setSelection(position);
-        }
+    private void initCreateButton(){
+        mCreateTaskButton = (Button)mView.findViewById(R.id.createTask);
+        mCreateTaskButton.setOnClickListener(this);
     }
 
-
-
-    private void initCreateButton(View v){
-        createTaskButton = (Button)v.findViewById(R.id.createTask);
-        createTaskButton.setOnClickListener(this);
-    }
-
-    private void initIsHasBelongTextView(View v){
-        isHasBelongTextView = (TextView) v.findViewById(R.id.isHasBelongTextView);
+    private void initIsHasBelongTextView(){
+        mIsHasBelongTextView = (TextView) mView.findViewById(R.id.isHasBelongTextView);
         setButtonTextDepnedBelong();
     }
 
@@ -306,7 +262,7 @@ public class CreateTaskFragment extends Fragment
             case R.id.finishDatePicker:
                 finishDataPick();
                 break;
-//createTaskButton onclick
+//mCreateTaskButton onclick
             case R.id.createTask:
                 if(check()){
                     getTaskInfoWithoutCheck();
@@ -331,9 +287,9 @@ public class CreateTaskFragment extends Fragment
 //setFinishDate
     @Override
     public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth){
-        finishDate =  new MyDate(year, monthOfYear, dayOfMonth);
-        newTask.setFinishedTime(finishDate);
-        finishDateButton.setText(finishDate.toString());
+        mFinishDate =  new MyDate(year, monthOfYear, dayOfMonth);
+        newTask.setFinishedTime(mFinishDate);
+        mFinishDateButton.setText(mFinishDate.toString());
     }
 
 
@@ -344,25 +300,33 @@ public class CreateTaskFragment extends Fragment
 
 //当需要设置belong的时候return false
     private boolean checkAttribute(){
-        if (taskAttributeSpinner.getSelectedItemPosition() != 0 && newTask.isHasBelong() == false){
-            setTaskBelong();
-            return false;
-        }
+        SpinnerValue attribute = newTask.getTaskAttribute();
+        newTask.getTaskAttribute().setSelectedName(mTaskAttributeSpinner.getSelectedItem().toString());
 
+        if (attribute.getPosition() != 0 && newTask.isHasBelong() == false) {
+                preserveSomeTaskInfo();
+                setTaskBelong();
+                return false;
+        }
         return true;
     }
 
+    private void preserveSomeTaskInfo(){
+        newTask.setTaskName(mTaskNameEditText.getText().toString());
+        newTask.setTaskContext(mTaskContextText.getText().toString());
+    }
+
     private boolean checkTaskName(){
-        if (checkEditText(taskNameEditText) == false){
+        if (checkEditText(mTaskNameEditText) == false){
             Toast.makeText(this.getActivity().getApplicationContext(), "任务名不能为空，或者有空格", Toast.LENGTH_SHORT).show();
             return false;
         }
-        else if(isNameHasExist(taskNameEditText)){
+        else if(isNameHasExist(mTaskNameEditText)){
             Toast.makeText(this.getActivity().getApplication(), "任务名已存在", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        newTask.setTaskName(taskNameEditText.getText().toString());
+        newTask.setTaskName(mTaskNameEditText.getText().toString());
         return true;
     }
 
@@ -372,7 +336,6 @@ public class CreateTaskFragment extends Fragment
             return false;
         }
         Matcher space = Pattern.compile(" +").matcher(template);
-       //TODO
         if (space.find()){
             return false;
         }
@@ -384,27 +347,26 @@ public class CreateTaskFragment extends Fragment
         return MyDatabaseHelper.checkNameHasExist(this.getActivity().getApplicationContext(), name);
     }
 
-    //TODO 将时间转成long型比较
     private boolean checkFinishDate(){
 
         MyDate current = new MyDate();
         boolean checkDate = true;
 
-        if (finishDate == null){
+        if (mFinishDate == null){
             checkDate = false;
             Toast.makeText(this.getActivity().getApplicationContext(), "任务时间必须选择", Toast.LENGTH_SHORT).show();
             return checkDate;
         }
 
-        if (finishDate.getYear() < current.getYear()){
+        if (mFinishDate.getYear() < current.getYear()){
             checkDate = false;
         }
-        if (finishDate.getYear() == current.getYear()){
-            if (finishDate.getMonth() < current.getMonth()){
+        if (mFinishDate.getYear() == current.getYear()){
+            if (mFinishDate.getMonth() < current.getMonth()){
                 checkDate = false;
             }
-            if (finishDate.getMonth() == current.getMonth()){
-                if (finishDate.getDay() < current.getDay()){
+            if (mFinishDate.getMonth() == current.getMonth()){
+                if (mFinishDate.getDay() < current.getDay()){
                     checkDate = false;
                 }
             }
@@ -418,29 +380,31 @@ public class CreateTaskFragment extends Fragment
     }
 
     private boolean checkContext(){
-        if (checkEditText(taskContextText) == false){
+        if (checkEditText(mTaskContextText) == false){
             Toast.makeText(this.getActivity().getApplicationContext(), "内容不能为空", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        newTask.setTaskContext(taskContextText.getText().toString());
+        newTask.setTaskContext(mTaskContextText.getText().toString());
         return true;
     }
 
     private boolean checkTime(){
-        if (spendTimePickerMinutes.getValue() == 0 && spendTimePickerHours.getValue() == 0){
+        if (mSpendTimePickerMinutes.getValue() == 0 && mSpendTimePickerHours.getValue() == 0){
             Toast.makeText(this.getActivity().getApplicationContext(), "时间不能为零", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        newTask.setSpendHours(spendTimePickerHours.getValue());
-        newTask.setSpendMinutes(spendTimePickerMinutes.getValue());
+        newTask.setSpendHours(mSpendTimePickerHours.getValue());
+        newTask.setSpendMinutes(mSpendTimePickerMinutes.getValue());
         return true;
     }
 
     private void getTaskInfoWithoutCheck(){
-        String remindMethod = remindMethodSpinner.getSelectedItem().toString();
-        newTask.setRemindMethod(remindMethod);
+        String remindMethodName = mRemindMethodSpinner.getSelectedItem().toString();
+
+        SpinnerValue remindMethod = newTask.getRemindMethod();
+        remindMethod.setSelectedName(remindMethodName);
     }
 
 

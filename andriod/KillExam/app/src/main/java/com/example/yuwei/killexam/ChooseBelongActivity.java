@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
-import com.example.yuwei.killexam.tools.BelongTaskAdapter;
+import com.example.yuwei.killexam.adapter.BelongTaskAdapter;
 import com.example.yuwei.killexam.tools.Task;
 
 import java.util.ArrayList;
@@ -20,10 +20,9 @@ import java.util.ArrayList;
 public class ChooseBelongActivity extends ActionBarActivity {
 
     private Task newTask;
-    private String newTaskName;
-    private String newTaskAttribute;
+    private String newTaskAttributeName;
 
-    private String belongTasksAttribute;
+    private String belongTasksAttributeName;
 
     private ArrayList<String> belongTasksNames = new ArrayList<String>();
 
@@ -44,8 +43,7 @@ public class ChooseBelongActivity extends ActionBarActivity {
         Bundle newTaskBundle = newTaskIntent.getExtras();
         if (newTaskBundle != null) {
             newTask = (Task) newTaskBundle.get("task");
-            newTaskAttribute = newTask.getTaskAttribute();
-            newTaskName = newTask.getTaskName();
+            newTaskAttributeName = newTask.getTaskAttribute().getSelectedName();
         }
         else{
             Log.e("danger", "chooseBelongActivity has no newTask");
@@ -53,14 +51,14 @@ public class ChooseBelongActivity extends ActionBarActivity {
     }
 
     private void getBelongTasksAttribute(){
-        if (newTaskAttribute.equals("二级")){
-            belongTasksAttribute = "一级";
+        if (newTaskAttributeName.equals("二级")){
+            belongTasksAttributeName = "一级";
         }
-        else if (newTaskAttribute.equals("三级")){
-            belongTasksAttribute = "二级";
+        else if (newTaskAttributeName.equals("三级")){
+            belongTasksAttributeName = "二级";
         }
-        else if (newTaskAttribute.equals("四级")){
-            belongTasksAttribute = "三级";
+        else if (newTaskAttributeName.equals("四级")){
+            belongTasksAttributeName = "三级";
         }
     }
 
@@ -85,7 +83,7 @@ public class ChooseBelongActivity extends ActionBarActivity {
     }
 
     private void initBelongTasks(){
-         belongTasksNames = MyDatabaseHelper.getBelongTasksNames(this, belongTasksAttribute);
+         belongTasksNames = MyDatabaseHelper.getBelongTasksNames(this, belongTasksAttributeName);
     }
 
     private void quit(){
