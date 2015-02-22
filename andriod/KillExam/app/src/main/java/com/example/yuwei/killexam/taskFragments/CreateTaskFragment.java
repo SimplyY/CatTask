@@ -51,6 +51,8 @@ public class CreateTaskFragment extends Fragment
     private EditText mTaskContextText;
     private Spinner mRemindMethodSpinner;
     private Spinner mTaskAttributeSpinner;
+    private int selectedAttributePositionNow;
+    private int selectedAttributePositionBefore;
     private Button mCreateTaskButton;
     private TextView mIsHasBelongTextView;
 
@@ -139,9 +141,11 @@ public class CreateTaskFragment extends Fragment
         taskAttributeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mTaskAttributeSpinner.setAdapter(taskAttributeAdapter);
 
-        SpinnerValue taskAttribute = SpinnerValue.initSpinnerValue(R.array.task_attribute_array, getResources());
-        newTask.setTaskAttribute(taskAttribute);
-        mTaskAttributeSpinner.setSelection(taskAttribute.getPosition());
+        if (newTask.getTaskAttribute() == null){
+            SpinnerValue taskAttribute = SpinnerValue.initSpinnerValue(R.array.task_attribute_array, getResources());
+            newTask.setTaskAttribute(taskAttribute);
+        }
+        mTaskAttributeSpinner.setSelection(newTask.getTaskAttribute().getPosition());
 
     }
 
@@ -160,14 +164,25 @@ public class CreateTaskFragment extends Fragment
     }
 
     private void setButtonTextDepnedBelong(){
-        if (mTaskAttributeSpinner.getSelectedItemPosition() != 0){
-            mIsHasBelongTextView.setText("有父任务");
-            mCreateTaskButton.setText("选择父任务");
+        selectedAttributePositionNow = mTaskAttributeSpinner.getSelectedItemPosition();
+        selectedAttributePositionBefore = newTask.getTaskAttribute().getPosition();
+        if (selectedAttributePositionNow != 0 ){
+            if (newTask.isHasBelong() && selectedAttributePositionNow == selectedAttributePositionBefore){
+                final int theMaxNameLength = 3;
+                String taskName = newTask.getBelongName();
+                String name = taskName.length()>theMaxNameLength?taskName.substring(0,3):taskName;
+                mIsHasBelongTextView.setText("父任务为  " + name);
+                mCreateTaskButton.setText("创建任务");
+            }
+            else {
+                mIsHasBelongTextView.setText("父任务为空");
+                mCreateTaskButton.setText("点击选择");
+            }
         }
         else{
             if (newTask.isHasBelong() && mCreateTaskButton.getText().equals("选择父任务")){
-                mIsHasBelongTextView.setText("无父任务");
-                mCreateTaskButton.setText("创建任务");
+                mIsHasBelongTextView.setText("父任务为空");
+                mCreateTaskButton.setText("点击创建任务");
             }
         }
     }
@@ -237,9 +252,11 @@ public class CreateTaskFragment extends Fragment
         remindMethodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mRemindMethodSpinner.setAdapter(remindMethodAdapter);
 
-        SpinnerValue remindMethod = SpinnerValue.initSpinnerValue(R.array.remind_method_array, getResources());
-        newTask.setRemindMethod(remindMethod);
-        mRemindMethodSpinner.setSelection(remindMethod.getPosition());
+        if (newTask.getRemindMethod() == null){
+            SpinnerValue remindMethod = SpinnerValue.initSpinnerValue(R.array.remind_method_array, getResources());
+            newTask.setRemindMethod(remindMethod);
+        }
+        mRemindMethodSpinner.setSelection(newTask.getRemindMethod().getPosition());
 
     }
 
@@ -303,10 +320,12 @@ public class CreateTaskFragment extends Fragment
         SpinnerValue attribute = newTask.getTaskAttribute();
         newTask.getTaskAttribute().setSelectedName(mTaskAttributeSpinner.getSelectedItem().toString());
 
-        if (attribute.getPosition() != 0 && newTask.isHasBelong() == false) {
+        if (attribute.getPosition() != 0 ) {
+            if (newTask.isHasBelong() == false || selectedAttributePositionNow != selectedAttributePositionBefore){
                 preserveSomeTaskInfo();
                 setTaskBelong();
                 return false;
+            }
         }
         return true;
     }

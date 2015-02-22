@@ -30,7 +30,7 @@ public class MyDate {
 
     @Override
     public String toString() {
-        return (String)DateFormat.format("MMMM, d, yyyy ", calendar.getTime());
+        return year + "." + month + "." + day;
     }
 
     public int getYear() {

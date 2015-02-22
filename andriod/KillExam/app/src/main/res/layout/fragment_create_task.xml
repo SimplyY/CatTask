@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
                 android:id="@+id/taskNameText"
-                android:layout_weight="1"
+                android:layout_weight="0.95"
                 android:inputType="textMultiLine" />
         </LinearLayout>
 
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
                 android:id="@+id/taskContentText"
-                android:layout_weight="1"
+                android:layout_weight="0.95"
                 android:inputType="textMultiLine" />
 
         </LinearLayout>
