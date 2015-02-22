@@ -1,11 +1,16 @@
 package com.example.yuwei.killexam.tools;
 
+import android.content.Context;
+
 import java.io.Serializable;
 
 /**
  * Created by yuwei on 15/2/18.
  */
+
+//notice: 所有的belong通过belongName查询
 public class Task implements Serializable {
+
 
     private String taskName;
     private MyDate finishedTime;
@@ -14,9 +19,22 @@ public class Task implements Serializable {
     private String taskContext;
     private String remindMethod = "不提醒";
     private String taskAttribute;
-    private Task belong;
-    private boolean hasBelong = false;
 
+    private boolean hasBelong = false;
+    private String belongName;
+
+    public Task() {
+    }
+
+    public Task(String taskName, MyDate finishedTime, String taskContext, int spendHours, int spendMinutes, String remindMethod, String taskAttribute){
+        this.taskName = taskName;
+        this.finishedTime = finishedTime;
+        this.taskContext = taskContext;
+        this.spendHours = spendHours;
+        this.spendMinutes = spendMinutes;
+        this.remindMethod = remindMethod;
+        this.taskAttribute = taskAttribute;
+    }
 
     public String toString(){
         return taskName;
@@ -54,8 +72,8 @@ public class Task implements Serializable {
         return hasBelong;
     }
 
-    public Task getBelong() {
-        return belong;
+    public String getBelongName() {
+        return belongName;
     }
 
     public void setTaskName(String taskName) {
@@ -86,12 +104,12 @@ public class Task implements Serializable {
         this.taskAttribute = taskAttribute;
     }
 
-    public void setBelong(Task belong) {
-        this.belong = belong;
-    }
 
     public void setHasBelong(boolean hasBelong) {
         this.hasBelong = hasBelong;
     }
 
+    public void setBelongName(String belongName) {
+        this.belongName = belongName;
+    }
 }

@@ -41,7 +41,7 @@ public class CreateTaskFragment extends Fragment
 
     private int sectionNumber;
 
-    EditText taskNameText;
+    EditText taskNameEditText;
     Button finishDateButton;
     NumberPicker spendTimePickerHours;
     NumberPicker spendTimePickerMinutes;
@@ -49,10 +49,12 @@ public class CreateTaskFragment extends Fragment
     Spinner remindMethodSpinner;
     Spinner taskAttributeSpinner;
     Button createTaskButton;
+    TextView isHasBelongTextView;
+
     private MyDate finishDate;
 
 
-    private Task newTask = new Task();
+    private Task newTask;
 
 
     public CreateTaskFragment() {
@@ -67,11 +69,24 @@ public class CreateTaskFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             sectionNumber = getArguments().getInt(ARG_PARAM1);
         }
 
-        newTask = (Task)savedInstanceState.get("task");
+        if (savedInstanceState != null){
+            newTask = (Task)savedInstanceState.get("task");
+        }
+
+        Task theTask = (Task)this.getActivity().getIntent().getParcelableExtra("task");
+
+        if (theTask!= null){
+            newTask = theTask;
+        }
+
+        if (newTask == null){
+            newTask = new Task();
+        }
     }
 
     @Override
@@ -86,14 +101,13 @@ public class CreateTaskFragment extends Fragment
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_create_task, container, false);
         initViews(v);
-        setTimerForAttributeSpinner();
         return v;
     }
 
-    private void setTimerForAttributeSpinner(){
-//        TODO:
-    }
 
+
+
+//TODO view为成员变量
     private void initViews(View v){
         initTaskAttributeSpinner(v);
 
@@ -108,6 +122,8 @@ public class CreateTaskFragment extends Fragment
         initRemindMethodSpinner(v);
 
         initCreateButton(v);
+
+        initIsHasBelongTextView(v);
     }
 
 
@@ -126,36 +142,62 @@ public class CreateTaskFragment extends Fragment
     private void setAttributeSpinnerPosition(){
         String attribute = newTask.getTaskAttribute();
         if (attribute != null){
-            int position = 1;
+            int position = 0;
             if (attribute.equals("一级")){
-                position = 1;
+                position = 0;
             }
             else if (attribute.equals("二级")){
-                position = 2;
+                position = 1;
             }
             else if (attribute.equals("三级") ){
-                position = 3;
+                position = 2;
             }
             else if (attribute.equals("四级")){
-                position = 4;
+                position = 3;
             }
 
             taskAttributeSpinner.setSelection(position);
 
         }
+    }
 
+    //spinner selected
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view,
+                               int pos, long id) {
+        ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
+        ((TextView) parent.getChildAt(0)).setTextSize(20);
+        setButtonTextDepnedBelong();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Another interface callback
+    }
+
+    private void setButtonTextDepnedBelong(){
+        if (taskAttributeSpinner.getSelectedItemPosition() != 0){
+            isHasBelongTextView.setText("有父任务");
+            createTaskButton.setText("选择父任务");
+        }
+        else{
+            if (newTask.isHasBelong() && createTaskButton.getText().equals("选择父任务")){
+                isHasBelongTextView.setText("无父任务");
+                createTaskButton.setText("创建任务");
+            }
+        }
 
     }
 
     private void initTaskNameText(View v){
-        taskNameText = (EditText) v.findViewById(R.id.taskNameText);
+        taskNameEditText = (EditText) v.findViewById(R.id.taskNameText);
         setNameText();
     }
 
     private void setNameText(){
         String taskName = newTask.getTaskName();
         if (taskName != null){
-            taskNameText.setText(taskName);
+            taskNameEditText.setText(taskName);
         }
     }
 
@@ -184,7 +226,7 @@ public class CreateTaskFragment extends Fragment
 
     }
 
-//numberpicker record spendTime
+///numberpicker record spendTime
     @Override
     public void onValueChange(NumberPicker picker, int oldVal, int newVal){
 
@@ -193,14 +235,10 @@ public class CreateTaskFragment extends Fragment
     public void onScrollStateChange(NumberPicker view, int scrollState){
 
     }
-//numberpicker formatter
+///numberpicker formatter
     @Override
     public String format(int value){
-        String template = String.valueOf(value);
-        if (value < 10){
-            template = "0" + template;
-        }
-        return template;
+        return value<10?"0" + value:"" + value;
     }
 
     private void initTaskContextText(View v){
@@ -222,43 +260,37 @@ public class CreateTaskFragment extends Fragment
 
     private void setMethodSpinnerPosition(){
         String remindMethod = newTask.getRemindMethod();
-        int position = 1;
-        if (remindMethod.equals("不提醒")){
-            position = 1;
-        }
-        if (remindMethod.equals("每天")){
-            position = 2;
-        }
-        if (remindMethod.equals("每周")){
-            position = 3;
-        }
-        if (remindMethod.equals("每月")){
-            position = 4;
-        }
-        if (remindMethod.equals("每年")){
-            position = 5;
-        }
+        if (remindMethod != null) {
+            int position = 0;
+            if (remindMethod.equals("不提醒")) {
+                position = 0;
+            }
+            if (remindMethod.equals("每天")) {
+                position = 1;
+            }
+            if (remindMethod.equals("每周")) {
+                position = 2;
+            }
+            if (remindMethod.equals("每月")) {
+                position = 3;
+            }
+            if (remindMethod.equals("每年")) {
+                position = 4;
+            }
 
-        remindMethodSpinner.setSelection(position);
+            remindMethodSpinner.setSelection(position);
+        }
     }
 
-//spinner selected
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
-        ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
-        ((TextView) parent.getChildAt(0)).setTextSize(20);
 
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        // Another interface callback
-    }
 
     private void initCreateButton(View v){
         createTaskButton = (Button)v.findViewById(R.id.createTask);
         createTaskButton.setOnClickListener(this);
+    }
+
+    private void initIsHasBelongTextView(View v){
+        isHasBelongTextView = (TextView) v.findViewById(R.id.isHasBelongTextView);
     }
 
 
@@ -303,15 +335,26 @@ public class CreateTaskFragment extends Fragment
 
 
     private boolean check(){
-        return checkTeskName()&&checkContext()&&checkFinishDate()&&checkTime();
+        return checkAttribute()&& checkTaskName()&&checkContext()&&checkFinishDate()&&checkTime();
     }
 
-    private boolean checkTeskName(){
-        if (checkEditText(taskNameText) == false){
+//当需要设置belong的时候return false
+    private boolean checkAttribute(){
+        if (taskAttributeSpinner.getSelectedItemPosition() != 0 && newTask.isHasBelong() == false){
+            setIsntHasTaskBelong();
+            setTaskBelong();
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean checkTaskName(){
+        if (checkEditText(taskNameEditText) == false){
             Toast.makeText(this.getActivity().getApplicationContext(), "任务名不能为空，或者有空格", Toast.LENGTH_SHORT).show();
             return false;
         }
-        else if(isNameHasExist(taskNameText) == true){
+        else if(isNameHasExist(taskNameEditText)){
             Toast.makeText(this.getActivity().getApplication(), "任务名已存在", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -324,7 +367,8 @@ public class CreateTaskFragment extends Fragment
             return false;
         }
         Matcher space = Pattern.compile(" +").matcher(template);
-        while (space.find()){
+       //TODO
+        if (space.find()){
             return false;
         }
         return true;
@@ -335,7 +379,9 @@ public class CreateTaskFragment extends Fragment
         return MyDatabaseHelper.checkNameHasExist(this.getActivity().getApplicationContext(), name);
     }
 
+    //TODO 将时间转成long型比较
     private boolean checkFinishDate(){
+
         MyDate current = new MyDate();
         boolean checkDate = true;
 
@@ -382,56 +428,24 @@ public class CreateTaskFragment extends Fragment
         return true;
     }
 
+    //TODO 改成用构造器方式
     private void getTaskInfo(){
 
-        getTaskName();
-        getTaskContext();
-        getHours();
-        getMinuts();
-        getMethod();
-        getAttribute();
-        getTaskBelong();
-
-
-    }
-
-    private void getTaskName(){
-        String taskName = taskNameText.getText().toString();
-        newTask.setTaskName(taskName);
-    }
-
-    private void getHours(){
-        int spendHours = spendTimePickerHours.getValue();
-        newTask.setSpendHours(spendHours);
-    }
-
-    private void getMinuts(){
-        int spentMinutes = spendTimePickerMinutes.getValue();
-        newTask.setSpendMinutes(spentMinutes);
-    }
-
-    private void getTaskContext(){
+        String taskName = taskNameEditText.getText().toString();
         String taskContext = taskContextText.getText().toString();
-        newTask.setTaskContext(taskContext);
-    }
 
-    private void getMethod(){
+        int spendHours = spendTimePickerHours.getValue();
+        int spentMinutes = spendTimePickerMinutes.getValue();
         String remindMethod = remindMethodSpinner.getSelectedItem().toString();
-        newTask.setRemindMethod(remindMethod);
-    }
-
-
-    private void getAttribute(){
         String taskAttribute = taskAttributeSpinner.getSelectedItem().toString();
-        newTask.setTaskAttribute(taskAttribute);
+
+        newTask = new Task(taskName, finishDate, taskContext, spendHours, spentMinutes, remindMethod, taskAttribute);
     }
 
-    private void getTaskBelong(){
-        if (newTask.getTaskAttribute().equals("一级") == false){
-            newTask.setHasBelong(true);
-            setTaskBelong();
-        }
-        else{
+    private void setIsntHasTaskBelong(){
+        String attribute = (String)taskAttributeSpinner.getSelectedItem();
+        newTask.setTaskAttribute(attribute);
+        if (attribute.equals("一级") == true){
             newTask.setHasBelong(false);
         }
     }
@@ -443,11 +457,8 @@ public class CreateTaskFragment extends Fragment
     }
 
     private void quit(){
-        if (newTask.isHasBelong() == false){
+        if (newTask.isHasBelong() == false) {
             quitCreateTaskFragment();
-        }
-        else{
-            setTaskBelong();
         }
     }
 
@@ -466,8 +477,8 @@ public class CreateTaskFragment extends Fragment
     private void enterChooseTaskBelongActivity(){
         MainActivity activity = (MainActivity)this.getActivity();
         Intent intent = new Intent(activity,ChooseBelongActivity.class);
-        intent.putExtra("taskName", newTask.getTaskName());
-        intent.putExtra("taskAttribute", newTask.getTaskAttribute());
+        intent.putExtra("task", newTask);
         startActivity(intent);
+
     }
 }

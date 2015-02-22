@@ -13,6 +13,7 @@ import java.util.ArrayList;
 /**
  * Created by yuwei on 15/2/18.
  */
+//TODO: 将业务逻辑和数据库剥离
 public class MyDatabaseHelper extends SQLiteOpenHelper{
 
 
@@ -28,7 +29,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     private static final String REMIND_METHOD = "remind_method";
     private static final String ATTRIBUTE = "attribute";
     private static final String HAS_BELONG = "has_belong";
-    private static final String BELONG = "belong";
+    private static final String BELONG_NAME = "belong";
     private static final String HAS_FINISHED = "has_finished";
 
 
@@ -42,7 +43,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             REMIND_METHOD + " text, " +
             ATTRIBUTE + " text, " +
             HAS_BELONG + " integer, " +
-            BELONG + " text, " +
+            BELONG_NAME + " text, " +
             HAS_FINISHED + " integer);";
 
 
@@ -79,10 +80,11 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 
         if (task.isHasBelong()){
             contentValues.put(HAS_BELONG, 1);
+            contentValues.put(BELONG_NAME, task.getBelongName());
         }
         else{
             contentValues.put(HAS_BELONG, 0);
-            contentValues.put(BELONG, "NULL");
+            contentValues.put(BELONG_NAME, "NULL");
         }
         contentValues.put(HAS_FINISHED, 0);
 
@@ -123,7 +125,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         String where = ATTRIBUTE + "='" + belongTasksAttribute + "'";
 
         Cursor cursor = database.query(TABLE_NAME, new String[]{NAME}, where, null, null, null, null);
-//        where
 
         while (cursor.moveToNext()){
 
@@ -134,24 +135,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 
         return belongTasksNames;
     }
-
-    public static void setBelongTask(Context context, String newTaskName, String belongTaskName){
-        SQLiteOpenHelper databaseHelper = new MyDatabaseHelper(context, "task.db", null, 1);
-        SQLiteDatabase database = databaseHelper.getWritableDatabase();
-
-        setBelongTaskInDatabase(database, newTaskName, belongTaskName);
-    }
-
-    private static void setBelongTaskInDatabase(SQLiteDatabase database, String newTaskName, String belongTaskName){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(BELONG, belongTaskName);
-        contentValues.put(HAS_BELONG, 1);
-
-        String where = NAME + "='" + newTaskName + "'";
-        database.update(TABLE_NAME, contentValues, where, null);
-
-    }
-
 
 
 }

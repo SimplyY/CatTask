@@ -12,14 +12,17 @@ import android.widget.ListView;
 
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.tools.BelongTaskAdapter;
+import com.example.yuwei.killexam.tools.Task;
 
 import java.util.ArrayList;
 
 
 public class ChooseBelongActivity extends ActionBarActivity {
 
+    private Task newTask;
     private String newTaskName;
     private String newTaskAttribute;
+
     private String belongTasksAttribute;
 
     private ArrayList<String> belongTasksNames = new ArrayList<String>();
@@ -39,9 +42,10 @@ public class ChooseBelongActivity extends ActionBarActivity {
     private void getNewTaskInfo(){
         Intent newTaskIntent = getIntent();
         Bundle newTaskBundle = newTaskIntent.getExtras();
-        if (newTaskBundle != null){
-            newTaskName = (String)newTaskBundle.get("taskName");
-            newTaskAttribute = (String)newTaskBundle.get("taskAttribute");
+        if (newTaskBundle != null) {
+            newTask = (Task) newTaskBundle.get("task");
+            newTaskAttribute = newTask.getTaskAttribute();
+            newTaskName = newTask.getTaskName();
         }
         else{
             Log.e("danger", "chooseBelongActivity has no newTask");
@@ -72,7 +76,8 @@ public class ChooseBelongActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String belongTaskName = belongTasksNames.get(position);
-                MyDatabaseHelper.setBelongTask(ChooseBelongActivity.this, newTaskName, belongTaskName);
+                newTask.setHasBelong(true);
+                newTask.setBelongName(belongTaskName);
                 quit();
             }
         });
@@ -85,6 +90,7 @@ public class ChooseBelongActivity extends ActionBarActivity {
 
     private void quit(){
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("task", newTask);
         startActivity(intent);
     }
 
