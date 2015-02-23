@@ -3,7 +3,6 @@ package com.example.yuwei.killexam.taskFragments;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +21,7 @@ import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDi
 import com.example.yuwei.killexam.ChooseBelongActivity;
 import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
+import com.example.yuwei.killexam.serve.CheckTask;
 import com.example.yuwei.killexam.tools.MyDate;
 import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.tools.SpinnerValue;
@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  * Created by yuwei on 15/2/16.
  */
 
-public class CreateTaskFragment extends Fragment
+public class CreateTaskFragment extends editableTaskFragment
         implements View.OnClickListener , OnValueChangeListener , OnScrollListener,Formatter,CalendarDatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "sectionNumber";
@@ -42,24 +42,6 @@ public class CreateTaskFragment extends Fragment
 
     private int sectionNumber;
 
-    private View mView;
-
-    private EditText mTaskNameEditText;
-    private Button mFinishDateButton;
-    private NumberPicker mSpendTimePickerHours;
-    private NumberPicker mSpendTimePickerMinutes;
-    private EditText mTaskContextText;
-    private Spinner mRemindMethodSpinner;
-    private Spinner mTaskAttributeSpinner;
-    private int selectedAttributePositionNow;
-    private int selectedAttributePositionBefore;
-    private Button mCreateTaskButton;
-    private TextView mIsHasBelongTextView;
-
-    private MyDate mFinishDate;
-
-
-    private Task newTask;
 
     public void setNewTask(Task newTask) {
         this.newTask = newTask;
@@ -164,27 +146,9 @@ public class CreateTaskFragment extends Fragment
     }
 
     private void setButtonTextDepnedBelong(){
-        selectedAttributePositionNow = mTaskAttributeSpinner.getSelectedItemPosition();
-        selectedAttributePositionBefore = newTask.getTaskAttribute().getPosition();
-        if (selectedAttributePositionNow != 0 ){
-            if (newTask.isHasBelong() && selectedAttributePositionNow == selectedAttributePositionBefore){
-                final int theMaxNameLength = 3;
-                String taskName = newTask.getBelongName();
-                String name = taskName.length()>theMaxNameLength?taskName.substring(0,3):taskName;
-                mIsHasBelongTextView.setText("父任务为  " + name);
-                mCreateTaskButton.setText("创建任务");
-            }
-            else {
-                mIsHasBelongTextView.setText("父任务为空");
-                mCreateTaskButton.setText("点击选择");
-            }
-        }
-        else{
-            if (newTask.isHasBelong() && mCreateTaskButton.getText().equals("选择父任务")){
-                mIsHasBelongTextView.setText("父任务为空");
-                mCreateTaskButton.setText("点击创建任务");
-            }
-        }
+
+        CheckTask.setTextIsHasBelongCheckAttribute();
+
     }
 
     private void initTaskNameText(){
@@ -281,8 +245,7 @@ public class CreateTaskFragment extends Fragment
                 break;
 //mCreateTaskButton onclick
             case R.id.createTask:
-                if(check()){
-                    getTaskInfoWithoutCheck();
+                if(CheckTask.checkAll()){
                     writeTaskInDataBase();
                     quit();
                 }
@@ -311,123 +274,6 @@ public class CreateTaskFragment extends Fragment
 
 
 
-    private boolean check(){
-        return checkAttribute()&& checkTaskName()&&checkContext()&&checkFinishDate()&&checkTime();
-    }
-
-//当需要设置belong的时候return false
-    private boolean checkAttribute(){
-        SpinnerValue attribute = newTask.getTaskAttribute();
-        newTask.getTaskAttribute().setSelectedName(mTaskAttributeSpinner.getSelectedItem().toString());
-
-        if (attribute.getPosition() != 0 ) {
-            if (newTask.isHasBelong() == false || selectedAttributePositionNow != selectedAttributePositionBefore){
-                preserveSomeTaskInfo();
-                setTaskBelong();
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private void preserveSomeTaskInfo(){
-        newTask.setTaskName(mTaskNameEditText.getText().toString());
-        newTask.setTaskContext(mTaskContextText.getText().toString());
-    }
-
-    private boolean checkTaskName(){
-        if (checkEditText(mTaskNameEditText) == false){
-            Toast.makeText(this.getActivity().getApplicationContext(), "任务名不能为空，或者有空格", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        else if(isNameHasExist(mTaskNameEditText)){
-            Toast.makeText(this.getActivity().getApplication(), "任务名已存在", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        newTask.setTaskName(mTaskNameEditText.getText().toString());
-        return true;
-    }
-
-    private boolean checkEditText(EditText text){
-        String template = text.getText().toString();
-        if (template.equals("")){
-            return false;
-        }
-        Matcher space = Pattern.compile(" +").matcher(template);
-        if (space.find()){
-            return false;
-        }
-        return true;
-    }
-
-    private boolean isNameHasExist(EditText text){
-        String name = text.getText().toString();
-        return MyDatabaseHelper.checkNameHasExist(this.getActivity().getApplicationContext(), name);
-    }
-
-    private boolean checkFinishDate(){
-
-        MyDate current = new MyDate();
-        boolean checkDate = true;
-
-        if (mFinishDate == null){
-            checkDate = false;
-            Toast.makeText(this.getActivity().getApplicationContext(), "任务时间必须选择", Toast.LENGTH_SHORT).show();
-            return checkDate;
-        }
-
-        if (mFinishDate.getYear() < current.getYear()){
-            checkDate = false;
-        }
-        if (mFinishDate.getYear() == current.getYear()){
-            if (mFinishDate.getMonth() < current.getMonth()){
-                checkDate = false;
-            }
-            if (mFinishDate.getMonth() == current.getMonth()){
-                if (mFinishDate.getDay() < current.getDay()){
-                    checkDate = false;
-                }
-            }
-        }
-
-        if (checkDate == false){
-            Toast.makeText(this.getActivity().getApplicationContext(), "任务完成时间不能比当前时间早", Toast.LENGTH_SHORT).show();
-
-        }
-        return checkDate;
-    }
-
-    private boolean checkContext(){
-        if (checkEditText(mTaskContextText) == false){
-            Toast.makeText(this.getActivity().getApplicationContext(), "内容不能为空", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        newTask.setTaskContext(mTaskContextText.getText().toString());
-        return true;
-    }
-
-    private boolean checkTime(){
-        if (mSpendTimePickerMinutes.getValue() == 0 && mSpendTimePickerHours.getValue() == 0){
-            Toast.makeText(this.getActivity().getApplicationContext(), "时间不能为零", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        newTask.setSpendHours(mSpendTimePickerHours.getValue());
-        newTask.setSpendMinutes(mSpendTimePickerMinutes.getValue());
-        return true;
-    }
-
-    private void getTaskInfoWithoutCheck(){
-        String remindMethodName = mRemindMethodSpinner.getSelectedItem().toString();
-
-        SpinnerValue remindMethod = newTask.getRemindMethod();
-        remindMethod.setSelectedName(remindMethodName);
-    }
-
-
-
     private void writeTaskInDataBase(){
         MyDatabaseHelper.writeNewTask(this.getActivity().getApplicationContext(), newTask);
     }
@@ -446,15 +292,5 @@ public class CreateTaskFragment extends Fragment
                 .commit();
     }
 
-    private void setTaskBelong(){
-        enterChooseTaskBelongActivity();
-    }
 
-    private void enterChooseTaskBelongActivity(){
-        MainActivity activity = (MainActivity)this.getActivity();
-        Intent intent = new Intent(activity,ChooseBelongActivity.class);
-        intent.putExtra("task", newTask);
-        startActivity(intent);
-
-    }
 }
