@@ -22,31 +22,28 @@ import java.util.regex.Pattern;
 public class CheckTask {
 //TODO: 将业务逻辑剥离于serve里，这里写对task的内容进行核查是否违法的业务
 
-    static private editableTaskFragment mFragment;
+    private editableTaskFragment mFragment;
 
-    static private EditText mTaskNameEditText;
-    static private Button mFinishDateButton;
-    static private NumberPicker mSpendTimePickerHours;
-    static private NumberPicker mSpendTimePickerMinutes;
-    static private EditText mTaskContextText;
-    static private Spinner mRemindMethodSpinner;
-    static private Spinner mTaskAttributeSpinner;
-    static private Button mCreateTaskButton;
-    static private TextView mIsHasBelongTextView;
+    private EditText mTaskNameEditText;
+    private NumberPicker mSpendTimePickerHours;
+    private NumberPicker mSpendTimePickerMinutes;
+    private EditText mTaskContextText;
+    private Spinner mRemindMethodSpinner;
+    private Spinner mTaskAttributeSpinner;
+    private Button mCreateTaskButton;
+    private TextView mIsHasBelongTextView;
 
-    static private MyDate mFinishDate;
-    static private Task newTask;
-
+    private MyDate mFinishDate;
+    private Task newTask;
 
 
-    static int selectedAttributePositionNow;
-    static int selectedAttributePositionBefore;
+    int selectedAttributePositionNow;
+    int selectedAttributePositionBefore;
 
-    public static void initCheck(editableTaskFragment fragment) {
+    public CheckTask(editableTaskFragment fragment) {
         mFragment = fragment;
 
         mTaskAttributeSpinner = fragment.mTaskAttributeSpinner;
-        mFinishDateButton = fragment.mFinishDateButton;
         mSpendTimePickerHours = fragment.mSpendTimePickerHours;
         mSpendTimePickerMinutes = fragment.mSpendTimePickerMinutes;
         mTaskContextText = fragment.mTaskContextText;
@@ -54,14 +51,19 @@ public class CheckTask {
         mTaskAttributeSpinner = fragment.mTaskAttributeSpinner;
         mCreateTaskButton = fragment.mCreateTaskButton;
         mIsHasBelongTextView = fragment.mIsHasBelongTextView;
+        mTaskNameEditText = fragment.mTaskNameEditText;
 
-        mFinishDate = fragment.mFinishDate;
         newTask = fragment.newTask;
+
+    }
+
+    public void setFinishDate(){
+        mFinishDate = mFragment.mFinishDate;
     }
 
 
     //  动态设置底部对父任务描述和最后一个button
-    public static void setTextIsHasBelongCheckAttribute() {
+    public void setTextIsHasBelongCheckAttribute() {
 
         final int THE_MAX_NAME_LENGTH_IN_IS_HAS_BELONG_TEXT = 3;
 
@@ -86,20 +88,20 @@ public class CheckTask {
             }
         } else {
 //更改attribute为1级，但是之前设置好了belong
-            if (newTask.isHasBelong() && mCreateTaskButton.getText().equals(CHOOSE_CHINESE)) {
+            if (newTask.isHasBelong() == true) {
                 mIsHasBelongTextView.setText(BELONG_TASK_CHINESE + NULL_CHINESE);
                 mCreateTaskButton.setText(CREATE_TASK_CHINESE);
             }
         }
     }
 
-//核查所有的输入以及获取合法值
-    public static boolean checkAll() {
+    //核查所有的输入以及获取合法值
+    public boolean checkAll() {
         return checkAttribute() && checkTaskName() && checkContext() && checkFinishDate() && checkTime() && checkRimendMethod();
     }
 
-//当需要设置belong的时候return false，
-    private static boolean checkAttribute() {
+    //当需要设置belong的时候return false，
+    private boolean checkAttribute() {
         SpinnerValue attribute = newTask.getTaskAttribute();
         newTask.getTaskAttribute().setSelectedName(mTaskAttributeSpinner.getSelectedItem().toString());
 
@@ -113,12 +115,12 @@ public class CheckTask {
         return true;
     }
 
-    private static void preserveSomeTaskInfo() {
+    private void preserveSomeTaskInfo() {
         newTask.setTaskName(mTaskNameEditText.getText().toString());
         newTask.setTaskContext(mTaskContextText.getText().toString());
     }
 
-    private static boolean checkTaskName() {
+    private boolean checkTaskName() {
         final String TASK_NAME_HAS_SAPCE = "任务名不能为空，或者有空格";
         final String TASK_NAME_HAS_EXIST = "任务名已存在";
 
@@ -134,7 +136,7 @@ public class CheckTask {
         return true;
     }
 
-    private static boolean checkEditText(EditText text) {
+    private boolean checkEditText(EditText text) {
         String template = text.getText().toString();
         if (template.equals("")) {
             return false;
@@ -146,12 +148,12 @@ public class CheckTask {
         return true;
     }
 
-    private static boolean isNameHasExist(EditText text) {
+    private boolean isNameHasExist(EditText text) {
         String name = text.getText().toString();
         return MyDatabaseHelper.checkNameHasExist(mFragment.getActivity().getApplicationContext(), name);
     }
 
-    private static boolean checkFinishDate() {
+    private boolean checkFinishDate() {
         final String TIME_MUST_BE_SELECTED = "任务时间必须选择";
         final String TASK_TIME_CANNT_BE_EARLY_THAN_CURRUNT = "任务完成时间不能比当前时间早";
 
@@ -185,7 +187,7 @@ public class CheckTask {
         return checkDate;
     }
 
-    private static boolean checkContext() {
+    private boolean checkContext() {
         final String TASK_CONTEXT_CANNT_BE_NULL = "内容不能为空";
 
         if (checkEditText(mTaskContextText) == false) {
@@ -197,7 +199,7 @@ public class CheckTask {
         return true;
     }
 
-    private static boolean checkTime() {
+    private boolean checkTime() {
         final String TIME_CANNT_BE_ZERO = "时间不能为零";
 
         if (mSpendTimePickerMinutes.getValue() == 0 && mSpendTimePickerHours.getValue() == 0) {
@@ -210,7 +212,7 @@ public class CheckTask {
         return true;
     }
 
-    private static boolean checkRimendMethod() {
+    private boolean checkRimendMethod() {
 
         String remindMethodName = mRemindMethodSpinner.getSelectedItem().toString();
 

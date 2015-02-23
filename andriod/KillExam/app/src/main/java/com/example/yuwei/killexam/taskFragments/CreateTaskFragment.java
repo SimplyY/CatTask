@@ -1,6 +1,5 @@
 package com.example.yuwei.killexam.taskFragments;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -15,10 +14,8 @@ import android.widget.NumberPicker.*;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
-import com.example.yuwei.killexam.ChooseBelongActivity;
 import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.serve.CheckTask;
@@ -26,9 +23,6 @@ import com.example.yuwei.killexam.tools.MyDate;
 import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.tools.SpinnerValue;
 import com.example.yuwei.killexam.tools.Task;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by yuwei on 15/2/16.
@@ -42,7 +36,8 @@ public class CreateTaskFragment extends editableTaskFragment
 
     private int sectionNumber;
 
-
+    CheckTask checkTask;
+    
     public void setNewTask(Task newTask) {
         this.newTask = newTask;
     }
@@ -91,6 +86,11 @@ public class CreateTaskFragment extends editableTaskFragment
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_create_task, container, false);
         initViews();
+
+        checkTask = new CheckTask(this);
+
+        setButtonTextDepnedBelong();
+
         return mView;
     }
 
@@ -102,7 +102,7 @@ public class CreateTaskFragment extends editableTaskFragment
 
         initTaskContextText();
 
-        initfinishDateButton();
+        initFinishDateButton();
 
         initSpendTimePicker();
 
@@ -111,6 +111,7 @@ public class CreateTaskFragment extends editableTaskFragment
         initCreateButton();
 
         initIsHasBelongTextView();
+
     }
 
 
@@ -131,7 +132,7 @@ public class CreateTaskFragment extends editableTaskFragment
 
     }
 
-    //spinner selected
+    //any spinner selected
     @Override
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
@@ -147,7 +148,7 @@ public class CreateTaskFragment extends editableTaskFragment
 
     private void setButtonTextDepnedBelong(){
 
-        CheckTask.setTextIsHasBelongCheckAttribute();
+        checkTask.setTextIsHasBelongCheckAttribute();
 
     }
 
@@ -163,11 +164,10 @@ public class CreateTaskFragment extends editableTaskFragment
         }
     }
 
-    private void initfinishDateButton(){
+    private void initFinishDateButton(){
         mFinishDateButton = (Button)mView.findViewById(R.id.finishDatePicker);
         mFinishDateButton.setOnClickListener(this);
     }
-
 
 
     private void initSpendTimePicker(){
@@ -231,7 +231,6 @@ public class CreateTaskFragment extends editableTaskFragment
 
     private void initIsHasBelongTextView(){
         mIsHasBelongTextView = (TextView) mView.findViewById(R.id.isHasBelongTextView);
-        setButtonTextDepnedBelong();
     }
 
 
@@ -245,7 +244,7 @@ public class CreateTaskFragment extends editableTaskFragment
                 break;
 //mCreateTaskButton onclick
             case R.id.createTask:
-                if(CheckTask.checkAll()){
+                if(checkTask.checkAll()){
                     writeTaskInDataBase();
                     quit();
                 }
@@ -270,6 +269,7 @@ public class CreateTaskFragment extends editableTaskFragment
         mFinishDate =  new MyDate(year, monthOfYear, dayOfMonth);
         newTask.setFinishedTime(mFinishDate);
         mFinishDateButton.setText(mFinishDate.toString());
+        checkTask.setFinishDate();
     }
 
 
