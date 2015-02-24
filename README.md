@@ -1,4 +1,4 @@
-﻿KillExam
+KillExam
 ========
 这里是 KillExam（考试斩）。
 

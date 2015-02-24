@@ -97,7 +97,7 @@ public class CheckTask {
 
     //核查所有的输入以及获取合法值
     public boolean checkAll() {
-        return checkAttribute() && checkTaskName() && checkContext() && checkFinishDate() && checkTime() && checkRimendMethod();
+        return checkAttribute() && checkTaskName() && checkFinishDate() && checkTime() && checkRimendMethod();
     }
 
     //当需要设置belong的时候return false，
@@ -187,17 +187,7 @@ public class CheckTask {
         return checkDate;
     }
 
-    private boolean checkContext() {
-        final String TASK_CONTEXT_CANNT_BE_NULL = "内容不能为空";
 
-        if (checkEditText(mTaskContextText) == false) {
-            Toast.makeText(mFragment.getActivity().getApplicationContext(), TASK_CONTEXT_CANNT_BE_NULL, Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        newTask.setTaskContext(mTaskContextText.getText().toString());
-        return true;
-    }
 
     private boolean checkTime() {
         final String TIME_CANNT_BE_ZERO = "时间不能为零";

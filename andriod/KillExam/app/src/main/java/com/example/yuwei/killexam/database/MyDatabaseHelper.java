@@ -20,12 +20,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     private static String DATABASE_NAME;
 
     private static final String TABLE_NAME = "task";
+
     private static final String ID = "id";
     private static final String NAME = "name";
+    private static final String COLOR_TAG = "color_tag";
+
     private static final String FINISH_TIME = "finish_time";
     private static final String SPEND_HOURS = "spend_time_hours";
     private static final String SPEND_MINUTES = "spend_time_minutes";
-    private static final String CONTEXT = "context";
     private static final String REMIND_METHOD = "remind_method";
     private static final String ATTRIBUTE = "attribute";
     private static final String HAS_BELONG = "has_belong";
@@ -39,7 +41,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             FINISH_TIME + " integer, " +
             SPEND_HOURS + " integer, " +
             SPEND_MINUTES + " integer, " +
-            CONTEXT + " text, " +
             REMIND_METHOD + " text, " +
             ATTRIBUTE + " text, " +
             HAS_BELONG + " integer, " +
@@ -70,10 +71,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     private static void insertNewTask(SQLiteDatabase database, Task task){
         ContentValues contentValues = new ContentValues();
         contentValues.put(NAME, task.getTaskName());
+        contentValues.put(COLOR_TAG, task.getTagColor().getSelectedName());
         contentValues.put(FINISH_TIME, task.getFinishedTime().toString());
         contentValues.put(SPEND_HOURS, task.getSpendHours());
         contentValues.put(SPEND_MINUTES, task.getSpendMinutes());
-        contentValues.put(CONTEXT, task.getTaskContext());
         contentValues.put(REMIND_METHOD, task.getRemindMethod().getSelectedName());
         contentValues.put(ATTRIBUTE, task.getTaskAttribute().getSelectedName());
 

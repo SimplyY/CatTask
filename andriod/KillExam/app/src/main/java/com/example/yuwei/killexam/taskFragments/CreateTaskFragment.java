@@ -98,9 +98,9 @@ public class CreateTaskFragment extends editableTaskFragment
     private void initViews(){
         initTaskAttributeSpinner();
 
-        initTaskNameText();
+        initColorTagSpinner();
 
-        initTaskContextText();
+        initTaskNameText();
 
         initFinishDateButton();
 
@@ -116,19 +116,21 @@ public class CreateTaskFragment extends editableTaskFragment
 
 
     private void initTaskAttributeSpinner(){
-        mTaskAttributeSpinner = (Spinner)mView.findViewById(R.id.taskAttributeSpinner);
-        mTaskAttributeSpinner.setOnItemSelectedListener(this);
-        ArrayAdapter<CharSequence> taskAttributeAdapter = ArrayAdapter.createFromResource(this.getActivity().getApplicationContext(),
-                R.array.task_attribute_array, android.R.layout.simple_spinner_item);
-
-        taskAttributeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mTaskAttributeSpinner.setAdapter(taskAttributeAdapter);
 
         if (newTask.getTaskAttribute() == null){
             SpinnerValue taskAttribute = SpinnerValue.initSpinnerValue(R.array.task_attribute_array, getResources());
             newTask.setTaskAttribute(taskAttribute);
         }
         mTaskAttributeSpinner.setSelection(newTask.getTaskAttribute().getPosition());
+
+    }
+
+    private void initColorTagSpinner(){
+        mTaskColorTagSpinner = (Spinner)mView.findViewById(R.id.taskColorTagSpinner);
+        mTaskColorTagSpinner.setOnItemSelectedListener(this);
+        ArrayAdapter<CharSequence> taskColorTagAdapter = ArrayAdapter.createFromResource(this.getActivity().getApplicationContext(),
+                R.array.tag_color_array, android.R.layout.simple_spinner_item);
+
 
     }
 
@@ -201,11 +203,6 @@ public class CreateTaskFragment extends editableTaskFragment
     @Override
     public String format(int value){
         return value<10 ? "0"+value:""+value;
-    }
-
-    private void initTaskContextText(){
-        mTaskContextText = (EditText)mView.findViewById(R.id.taskContentText);
-
     }
 
     private void initRemindMethodSpinner(){

@@ -10,12 +10,12 @@ import java.io.Serializable;
 //notice: 所有的belong通过belongName查询
 public class Task implements Serializable {
 
-
+    private SpinnerValue tagColor;
     private String taskName;
+    private String taskContext;
     private MyDate finishedTime;
     private int spendHours = 0;
     private int spendMinutes = 0;
-    private String taskContext;
     private SpinnerValue remindMethod;
     private SpinnerValue taskAttribute;
 
@@ -31,6 +31,10 @@ public class Task implements Serializable {
 
     public String getTaskName() {
         return taskName;
+    }
+
+    public SpinnerValue getTagColor() {
+        return tagColor;
     }
 
     public MyDate getFinishedTime() {
@@ -67,6 +71,10 @@ public class Task implements Serializable {
 
     public void setTaskName(String taskName) {
         this.taskName = taskName;
+    }
+
+    public void setTagColor(SpinnerValue tagColor) {
+        this.tagColor = tagColor;
     }
 
     public void setFinishedTime(MyDate finishedTime) {

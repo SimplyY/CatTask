@@ -4,7 +4,7 @@ lt application files
 
 # for mac
 *.DS_Store
-
+*.swp
 # IDE for andriod studio
 *.idea/
 andriod/KillExam/app/src/main/.idea
