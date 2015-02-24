@@ -208,7 +208,7 @@
                 android:text="@string/create_task_remind_method"
                 android:textSize="@dimen/create_task_textsize" />
             <Spinner
-                android:id="@+id/remindMethodSpinner"
+                android:id="@+id/task_remindMethodSpinner"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

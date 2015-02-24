@@ -46,7 +46,6 @@ public class CheckTask {
         mTaskAttributeSpinner = fragment.mTaskAttributeSpinner;
         mSpendTimePickerHours = fragment.mSpendTimePickerHours;
         mSpendTimePickerMinutes = fragment.mSpendTimePickerMinutes;
-        mTaskContextText = fragment.mTaskContextText;
         mRemindMethodSpinner = fragment.mRemindMethodSpinner;
         mTaskAttributeSpinner = fragment.mTaskAttributeSpinner;
         mCreateTaskButton = fragment.mCreateTaskButton;
@@ -57,7 +56,7 @@ public class CheckTask {
 
     }
 
-    public void setFinishDate(){
+    public void setFinishDate() {
         mFinishDate = mFragment.mFinishDate;
     }
 
@@ -87,11 +86,11 @@ public class CheckTask {
                 mCreateTaskButton.setText(CHOOSE_CHINESE);
             }
         } else {
-//更改attribute为1级，但是之前设置好了belong
-            if (newTask.isHasBelong() == true) {
-                mIsHasBelongTextView.setText(BELONG_TASK_CHINESE + NULL_CHINESE);
-                mCreateTaskButton.setText(CREATE_TASK_CHINESE);
-            }
+//attribute为1级
+
+            mIsHasBelongTextView.setText(BELONG_TASK_CHINESE + NULL_CHINESE);
+            mCreateTaskButton.setText(CREATE_TASK_CHINESE);
+
         }
     }
 
@@ -117,7 +116,6 @@ public class CheckTask {
 
     private void preserveSomeTaskInfo() {
         newTask.setTaskName(mTaskNameEditText.getText().toString());
-        newTask.setTaskContext(mTaskContextText.getText().toString());
     }
 
     private boolean checkTaskName() {
@@ -186,7 +184,6 @@ public class CheckTask {
         }
         return checkDate;
     }
-
 
 
     private boolean checkTime() {

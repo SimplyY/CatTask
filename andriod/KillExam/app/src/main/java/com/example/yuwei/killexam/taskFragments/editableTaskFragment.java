@@ -3,6 +3,7 @@ package com.example.yuwei.killexam.taskFragments;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,16 +11,19 @@ import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
 import com.example.yuwei.killexam.ChooseBelongActivity;
 import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.tools.MyDate;
+import com.example.yuwei.killexam.tools.SpinnerValue;
 import com.example.yuwei.killexam.tools.Task;
 
 /**
  * Created by yuwei on 15/2/23.
  */
-public class editableTaskFragment extends Fragment {
+public abstract class editableTaskFragment extends Fragment
+        implements View.OnClickListener , NumberPicker.OnValueChangeListener, NumberPicker.OnScrollListener,NumberPicker.Formatter,CalendarDatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener{
 
     protected View mView;
 
@@ -30,7 +34,6 @@ public class editableTaskFragment extends Fragment {
     public Button mFinishDateButton;
     public NumberPicker mSpendTimePickerHours;
     public NumberPicker mSpendTimePickerMinutes;
-    public EditText mTaskContextText;
     public Spinner mRemindMethodSpinner;
     public Button mCreateTaskButton;
     public TextView mIsHasBelongTextView;
@@ -40,14 +43,40 @@ public class editableTaskFragment extends Fragment {
 
     public Task newTask;
 
-    private void initSpinner(int viewId, int arrayId){
-        mTaskAttributeSpinner = (Spinner)mView.findViewById(viewId);
-        mTaskAttributeSpinner.setOnItemSelectedListener(this);
-        ArrayAdapter<CharSequence> taskAttributeAdapter = ArrayAdapter.createFromResource(this.getActivity().getApplicationContext(),
+    protected void setAdapterForSpinner(Spinner spinner, int arrayId){
+        spinner.setOnItemSelectedListener(this);
+        ArrayAdapter<CharSequence> Adapter = ArrayAdapter.createFromResource(this.getActivity().getApplicationContext(),
                 arrayId, android.R.layout.simple_spinner_item);
 
-        taskAttributeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mTaskAttributeSpinner.setAdapter(taskAttributeAdapter);
+        Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(Adapter);
+
+    }
+
+    protected void setAttributeValue(){
+        if (newTask.getTaskAttribute() == null){
+            SpinnerValue taskAttribute = SpinnerValue.initSpinnerValue(R.array.task_attribute_array, getResources());
+            newTask.setTaskAttribute(taskAttribute);
+        }
+
+        mTaskAttributeSpinner.setSelection(newTask.getTaskAttribute().getPosition());
+    }
+
+    protected void setTagColorValue(){
+        if (newTask.getTagColor() == null){
+            SpinnerValue tagColor = SpinnerValue.initSpinnerValue(R.array.tag_color_array, getResources());
+            newTask.setTagColor(tagColor);
+        }
+
+        mTaskColorTagSpinner.setSelection(newTask.getTagColor().getPosition());
+    }
+
+    protected void setRemindMethodValue(){
+        if (newTask.getRemindMethod() == null){
+            SpinnerValue remindMethod = SpinnerValue.initSpinnerValue(R.array.task_remind_method_array, getResources());
+            newTask.setRemindMethod(remindMethod);
+        }
+        mRemindMethodSpinner.setSelection(newTask.getRemindMethod().getPosition());
 
     }
 

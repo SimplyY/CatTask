@@ -7,10 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.NumberPicker.*;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,15 +19,13 @@ import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.serve.CheckTask;
 import com.example.yuwei.killexam.tools.MyDate;
 import com.example.yuwei.killexam.R;
-import com.example.yuwei.killexam.tools.SpinnerValue;
 import com.example.yuwei.killexam.tools.Task;
 
 /**
  * Created by yuwei on 15/2/16.
  */
 
-public class CreateTaskFragment extends editableTaskFragment
-        implements View.OnClickListener , OnValueChangeListener , OnScrollListener,Formatter,CalendarDatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener {
+public class CreateTaskFragment extends editableTaskFragment{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "sectionNumber";
     private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
@@ -96,42 +92,43 @@ public class CreateTaskFragment extends editableTaskFragment
 
 
     private void initViews(){
-        initTaskAttributeSpinner();
+        initAttributeSpinner();
 
         initColorTagSpinner();
 
-        initTaskNameText();
+        initRemindMethodSpinner();
 
-        initFinishDateButton();
+        initTaskNameText();
 
         initSpendTimePicker();
 
-        initRemindMethodSpinner();
+        initFinishDateButton();
 
         initCreateButton();
 
         initIsHasBelongTextView();
-
     }
 
 
-    private void initTaskAttributeSpinner(){
+    private void initAttributeSpinner(){
+        mTaskAttributeSpinner = (Spinner)mView.findViewById(R.id.taskAttributeSpinner);
 
-        if (newTask.getTaskAttribute() == null){
-            SpinnerValue taskAttribute = SpinnerValue.initSpinnerValue(R.array.task_attribute_array, getResources());
-            newTask.setTaskAttribute(taskAttribute);
-        }
-        mTaskAttributeSpinner.setSelection(newTask.getTaskAttribute().getPosition());
-
+        setAdapterForSpinner(mTaskAttributeSpinner, R.array.task_attribute_array);
+        setAttributeValue();
     }
 
     private void initColorTagSpinner(){
         mTaskColorTagSpinner = (Spinner)mView.findViewById(R.id.taskColorTagSpinner);
-        mTaskColorTagSpinner.setOnItemSelectedListener(this);
-        ArrayAdapter<CharSequence> taskColorTagAdapter = ArrayAdapter.createFromResource(this.getActivity().getApplicationContext(),
-                R.array.tag_color_array, android.R.layout.simple_spinner_item);
+        setAdapterForSpinner(mTaskColorTagSpinner, R.array.tag_color_array);
 
+        setTagColorValue();
+    }
 
+    private void initRemindMethodSpinner(){
+        mRemindMethodSpinner = (Spinner)mView.findViewById(R.id.task_remindMethodSpinner);
+        setAdapterForSpinner(mRemindMethodSpinner, R.array.task_remind_method_array);
+
+        setRemindMethodValue();
     }
 
     //any spinner selected
@@ -205,21 +202,6 @@ public class CreateTaskFragment extends editableTaskFragment
         return value<10 ? "0"+value:""+value;
     }
 
-    private void initRemindMethodSpinner(){
-        mRemindMethodSpinner = (Spinner)mView.findViewById(R.id.remindMethodSpinner);
-        mRemindMethodSpinner.setOnItemSelectedListener(this);
-        ArrayAdapter<CharSequence> remindMethodAdapter = ArrayAdapter.createFromResource(this.getActivity().getApplicationContext(),
-                R.array.remind_method_array, android.R.layout.simple_spinner_item);
-        remindMethodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mRemindMethodSpinner.setAdapter(remindMethodAdapter);
-
-        if (newTask.getRemindMethod() == null){
-            SpinnerValue remindMethod = SpinnerValue.initSpinnerValue(R.array.remind_method_array, getResources());
-            newTask.setRemindMethod(remindMethod);
-        }
-        mRemindMethodSpinner.setSelection(newTask.getRemindMethod().getPosition());
-
-    }
 
     private void initCreateButton(){
         mCreateTaskButton = (Button)mView.findViewById(R.id.createTask);

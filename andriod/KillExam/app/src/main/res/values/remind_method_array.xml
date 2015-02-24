@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="remind_method_array">
+    <string-array name="task_remind_method_array">
         <item>不提醒</item>
         <item>每天</item>
         <item>每周</item>
