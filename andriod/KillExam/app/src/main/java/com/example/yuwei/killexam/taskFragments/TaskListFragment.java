@@ -35,7 +35,6 @@ public class TaskListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_task_list, container, false);
 
         initTaskListView();
@@ -44,14 +43,14 @@ public class TaskListFragment extends Fragment {
     }
 
     private void initTaskListView(){
-        ArrayList<Task> taskArrayList = MyDatabaseHelper.getTaskArray();
+        ArrayList<Task> taskArrayList = MyDatabaseHelper.getTaskArray(getActivity());
 
-        TaskListAdapter adapter = new TaskListAdapter(getActivity(), R.layout.task_item, taskArrayList);
+        if (taskArrayList.isEmpty() == false){
+            TaskListAdapter adapter = new TaskListAdapter(getActivity().getApplicationContext(), R.layout.task_item, taskArrayList);
 
-        ListView taskListView = (ListView)this.getActivity().findViewById(R.id.taskListView);
+            ListView taskListView = (ListView)mView.findViewById(R.id.taskListView);
 
-        taskListView.setAdapter(adapter);
+            taskListView.setAdapter(adapter);
+        }
     }
-
-
 }

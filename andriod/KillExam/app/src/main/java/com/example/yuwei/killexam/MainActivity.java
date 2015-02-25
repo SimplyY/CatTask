@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
 import com.example.yuwei.killexam.taskFragments.CreateTaskFragment;
+import com.example.yuwei.killexam.taskFragments.TaskListFragment;
 import com.example.yuwei.killexam.tools.Task;
 
 
@@ -102,7 +103,7 @@ public class MainActivity extends ActionBarActivity
         int sectionNumber = position + 1;
         Fragment targetFragment = PlaceholderFragment.newInstance(sectionNumber);
         if(sectionNumber == 1){
-            targetFragment = new CreateTaskFragment();
+            targetFragment = new TaskListFragment();
         }
         else if(sectionNumber == 2){
             targetFragment = new CreateTaskFragment();

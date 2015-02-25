@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.yuwei.killexam.R;
+import com.example.yuwei.killexam.tools.MyDate;
+import com.example.yuwei.killexam.tools.SpinnerValue;
 import com.example.yuwei.killexam.tools.Task;
 
 import java.util.ArrayList;
@@ -25,7 +28,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     private static final String NAME = "name";
     private static final String COLOR_TAG = "color_tag";
 
-    private static final String FINISH_TIME = "finish_time";
+    private static final String FINISH_DATE = "finish_time";
     private static final String SPEND_HOURS = "spend_time_hours";
     private static final String SPEND_MINUTES = "spend_time_minutes";
     private static final String REMIND_METHOD = "remind_method";
@@ -37,7 +40,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     private static final String CREATE_TASK_TABLE = "create table task (" +
             ID + " integer primary key autoincrement, " +
             NAME + " text, " +
-            FINISH_TIME + " integer, " +
+            COLOR_TAG + " text, " +
+            FINISH_DATE + " integer, " +
             SPEND_HOURS + " integer, " +
             SPEND_MINUTES + " integer, " +
             REMIND_METHOD + " text, " +
@@ -74,16 +78,68 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         return cursor;
     }
 
+    private static String getStringFromCursor(Cursor cursor, String columnName){
+        return cursor.getString(cursor.getColumnIndex(columnName));
+    }
+
+    private static int getIntFromCursor(Cursor cursor, String columnName){
+        return cursor.getInt(cursor.getColumnIndex(columnName));
+    }
+
+    private static Task getCompleteTask(Cursor cursor, Context context){
+        Task task = new Task();
+
+        String attribute = getStringFromCursor(cursor, ATTRIBUTE);
+        SpinnerValue taskAttribute = SpinnerValue.initSpinnerValue(R.array.task_attribute_array, context.getResources());
+        taskAttribute.setSelectedName(attribute);
+        task.setTaskAttribute(taskAttribute);
+
+        String name = getStringFromCursor(cursor, NAME);
+        task.setTaskName(name);
+
+        String colorTag = getStringFromCursor(cursor, COLOR_TAG);
+        SpinnerValue tagColor = SpinnerValue.initSpinnerValue(R.array.tag_color_array, context.getResources());
+        tagColor.setSelectedName(colorTag);
+        task.setTagColor(tagColor);
+
+        String finishDateString = getStringFromCursor(cursor, FINISH_DATE);
+        MyDate finishDate =  new MyDate(finishDateString);
+        task.setFinishedDate(finishDate);
+
+        int spendHours = getIntFromCursor(cursor, SPEND_HOURS);
+        task.setSpendHours(spendHours);
+
+        int spendMinutes = getIntFromCursor(cursor, SPEND_MINUTES);
+        task.setSpendMinutes(spendMinutes);
+
+        String remindMethodString = getStringFromCursor(cursor, REMIND_METHOD);
+        SpinnerValue remindMethod = SpinnerValue.initSpinnerValue(R.array.task_remind_method_array, context.getResources());
+        remindMethod.setSelectedName(remindMethodString);
+        task.setRemindMethod(remindMethod);
+
+        int hasBelong = getIntFromCursor(cursor, HAS_BELONG);
+        task.setHasBelong(hasBelong == 1);
+
+        String belongName = getStringFromCursor(cursor, BELONG_NAME);
+        task.setBelongName(hasBelong==1 ? belongName:null);
+
+        int hasFinished = getIntFromCursor(cursor, HAS_FINISHED);
+        task.setHasFinished(hasFinished);
+
+        return task;
+
+    }
+
 
     private static ContentValues getTaskContentValues(Task task){
         ContentValues contentValues = new ContentValues();
+        contentValues.put(ATTRIBUTE, task.getTaskAttribute().getSelectedName());
         contentValues.put(NAME, task.getTaskName());
         contentValues.put(COLOR_TAG, task.getTagColor().getSelectedName());
-        contentValues.put(FINISH_TIME, task.getFinishedTime().toString());
+        contentValues.put(FINISH_DATE, task.getFinishedDate().toString());
         contentValues.put(SPEND_HOURS, task.getSpendHours());
         contentValues.put(SPEND_MINUTES, task.getSpendMinutes());
         contentValues.put(REMIND_METHOD, task.getRemindMethod().getSelectedName());
-        contentValues.put(ATTRIBUTE, task.getTaskAttribute().getSelectedName());
 
         if (task.isHasBelong()){
             contentValues.put(HAS_BELONG, 1);
@@ -139,6 +195,21 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         }
         cursor.close();
         return belongTasksNames;
+    }
+
+//取出所有的task
+    public static ArrayList<Task> getTaskArray(Context context){
+        SQLiteDatabase database = getDatabase(context);
+        ArrayList<Task> taskArrayList = new ArrayList<>();
+
+        Cursor cursor = database.query(TASK_TABLE_NAME, null, null, null, null, null, null);
+
+        while (cursor.moveToNext()){
+            Task theTask = getCompleteTask(cursor, context);
+            taskArrayList.add(theTask);
+        }
+
+        return taskArrayList;
     }
 
 //更新某个任务是否完成

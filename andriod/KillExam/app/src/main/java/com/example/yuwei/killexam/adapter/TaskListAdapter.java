@@ -82,9 +82,10 @@ public class TaskListAdapter extends ArrayAdapter<Task>{
     }
 
     private void setSpaceTextView(){
+//        TODO:spaceNumber still is zero
         int spaceNumber = getSpaceNumber(theTask);
 
-        int spaceLength = viewHolder.spaceTextView.getWidth();
+        int spaceLength = 20;
         viewHolder.spaceTextView.setWidth(spaceLength * spaceNumber);
 
     }
@@ -106,7 +107,7 @@ public class TaskListAdapter extends ArrayAdapter<Task>{
     }
 
     private void setTaskFinishTimeTextView(){
-        viewHolder.taskFinishTimeTextView.setText(theTask.getFinishedTime().listString());
+        viewHolder.taskFinishTimeTextView.setText(theTask.getFinishedDate().listString());
     }
 
     private int getSpaceNumber(Task theTask){

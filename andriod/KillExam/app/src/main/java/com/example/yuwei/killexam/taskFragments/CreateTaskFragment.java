@@ -234,7 +234,7 @@ public class CreateTaskFragment extends editableTaskFragment{
     @Override
     public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth){
         mFinishDate =  new MyDate(year, monthOfYear, dayOfMonth);
-        newTask.setFinishedTime(mFinishDate);
+        newTask.setFinishedDate(mFinishDate);
         mFinishDateButton.setText(mFinishDate.toString());
         checkTask.setFinishDate();
     }
@@ -252,7 +252,7 @@ public class CreateTaskFragment extends editableTaskFragment{
     private void quitCreateTaskFragment(){
         MainActivity activity = (MainActivity)this.getActivity();
         android.support.v4.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-        MainActivity.PlaceholderFragment placeholderFragment = MainActivity.PlaceholderFragment.newInstance(1);
+        MainActivity.PlaceholderFragment placeholderFragment = MainActivity.PlaceholderFragment.newInstance(0);
         fragmentTransaction.replace(R.id.container, placeholderFragment)
                 .commit();
     }
