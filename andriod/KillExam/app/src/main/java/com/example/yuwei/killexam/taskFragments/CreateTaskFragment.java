@@ -27,10 +27,7 @@ import com.example.yuwei.killexam.tools.Task;
 
 public class CreateTaskFragment extends editableTaskFragment{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "sectionNumber";
     private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
-
-    private int sectionNumber;
 
     CheckTask checkTask;
     
@@ -41,19 +38,10 @@ public class CreateTaskFragment extends editableTaskFragment{
     public CreateTaskFragment() {
     }
 
-    public CreateTaskFragment(int sectionNumber) {
-        Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, sectionNumber);
-        setArguments(args);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            sectionNumber = getArguments().getInt(ARG_PARAM1);
-        }
 
         if (savedInstanceState != null){
             newTask = (Task)savedInstanceState.get("task");
@@ -250,8 +238,6 @@ public class CreateTaskFragment extends editableTaskFragment{
         mFinishDateButton.setText(mFinishDate.toString());
         checkTask.setFinishDate();
     }
-
-
 
     private void writeTaskInDataBase(){
         MyDatabaseHelper.writeNewTask(this.getActivity().getApplicationContext(), newTask);

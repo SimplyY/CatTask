@@ -82,9 +82,15 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+//侧滑栏中的选项被选中时调用
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
+
+        replaceFragment(position);
+        onSectionAttached(position);
+    }
+
+    private void replaceFragment(int position){
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment targetFragment = getTargetFragment(position);
         fragmentManager.beginTransaction()
@@ -96,19 +102,21 @@ public class MainActivity extends ActionBarActivity
         int sectionNumber = position + 1;
         Fragment targetFragment = PlaceholderFragment.newInstance(sectionNumber);
         if(sectionNumber == 1){
-            targetFragment = new CreateTaskFragment(sectionNumber);
+            targetFragment = new CreateTaskFragment();
         }
         else if(sectionNumber == 2){
-            targetFragment = new CreateTaskFragment(sectionNumber);
+            targetFragment = new CreateTaskFragment();
         }
         else if(sectionNumber == 3){
-            targetFragment = new CreateTaskFragment(sectionNumber);
+            targetFragment = new CreateTaskFragment();
         }
+
         return targetFragment;
     }
 
-    public void onSectionAttached(int number) {
-        switch (number) {
+    public void onSectionAttached(int position) {
+        int sectionNumber = position + 1;
+        switch (sectionNumber) {
             case 1:
                 mTitle = getString(R.string.title_section1);
                 break;

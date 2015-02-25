@@ -21,6 +21,8 @@ public class Task implements Serializable {
     private boolean hasBelong = false;
     private String belongName;
 
+    private int hasFinished = 0;
+
     public Task() {
     }
 
@@ -65,6 +67,10 @@ public class Task implements Serializable {
         return belongName;
     }
 
+    public int getHasFinished() {
+        return hasFinished;
+    }
+
     public void setTaskName(String taskName) {
         this.taskName = taskName;
     }
@@ -100,5 +106,9 @@ public class Task implements Serializable {
 
     public void setBelongName(String belongName) {
         this.belongName = belongName;
+    }
+
+    public void setHasFinished(int hasFinished) {
+        this.hasFinished = hasFinished;
     }
 }

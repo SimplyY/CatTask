@@ -30,7 +30,7 @@ public class MyDate {
 
     @Override
     public String toString() {
-        return year + "." + month + "." + day;
+        return year + "年" + month + "月" + day + "日";
     }
 
     public int getYear() {
@@ -43,5 +43,9 @@ public class MyDate {
 
     public int getDay() {
         return day;
+    }
+
+    public String listString(){
+        return this.toString().substring(5);
     }
 }

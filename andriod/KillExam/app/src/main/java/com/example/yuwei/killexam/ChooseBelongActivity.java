@@ -70,6 +70,7 @@ public class ChooseBelongActivity extends ActionBarActivity {
         ListView belongTaskListView = (ListView) findViewById(R.id.BelongTasksListView);
         belongTaskListView.setAdapter(adapter);
 
+//当父任务被选择时
         belongTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -19,7 +19,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 
     private static String DATABASE_NAME;
 
-    private static final String TABLE_NAME = "task";
+    private static final String TASK_TABLE_NAME = "task";
 
     private static final String ID = "id";
     private static final String NAME = "name";
@@ -33,7 +33,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     private static final String HAS_BELONG = "has_belong";
     private static final String BELONG_NAME = "belong";
     private static final String HAS_FINISHED = "has_finished";
-
 
     private static final String CREATE_TASK_TABLE = "create table task (" +
             ID + " integer primary key autoincrement, " +
@@ -62,13 +61,21 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
-    public static void writeNewTask(Context context, Task task){
-        SQLiteOpenHelper databaseHelper = new MyDatabaseHelper(context,"task.db", null, 1);
+    private static SQLiteDatabase getDatabase(Context context){
+        SQLiteOpenHelper databaseHelper = new MyDatabaseHelper(context, "task.db", null, 1);
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
-        insertNewTask(database, task);
+        return database;
     }
 
-    private static void insertNewTask(SQLiteDatabase database, Task task){
+    private static Cursor getTaskCursor(SQLiteDatabase database, String name){
+        String where = NAME + "='" + name + "'";
+
+        Cursor cursor = database.query(TASK_TABLE_NAME, null, where, null, null, null, null);
+        return cursor;
+    }
+
+
+    private static ContentValues getTaskContentValues(Task task){
         ContentValues contentValues = new ContentValues();
         contentValues.put(NAME, task.getTaskName());
         contentValues.put(COLOR_TAG, task.getTagColor().getSelectedName());
@@ -86,25 +93,29 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             contentValues.put(HAS_BELONG, 0);
             contentValues.put(BELONG_NAME, "NULL");
         }
-        contentValues.put(HAS_FINISHED, 0);
 
-        database.insert(TABLE_NAME, null, contentValues);
+        if (task.getHasFinished() == 0){
+            contentValues.put(HAS_FINISHED, 0);
+        }
+        else{
+            contentValues.put(HAS_FINISHED, 1);
+        }
+        return contentValues;
+    }
 
+    public static void writeNewTask(Context context, Task task){
+        SQLiteDatabase database = getDatabase(context);
+        ContentValues contentValues = getTaskContentValues(task);
 
+        database.insert(TASK_TABLE_NAME, null, contentValues);
     }
 
 
+
+//核查任务名是否存在
     public static boolean checkNameHasExist(Context context, String name){
-        SQLiteOpenHelper databaseHelper = new MyDatabaseHelper(context, "task.db", null, 1);
-        SQLiteDatabase database = databaseHelper.getWritableDatabase();
-
-        return checkName(database, name);
-    }
-
-    private static boolean checkName(SQLiteDatabase database, String name){
-        String where = NAME + "='" + name + "'";
-
-        Cursor cursor = database.query(TABLE_NAME, null, where, null, null, null, null);
+        SQLiteDatabase database = getDatabase(context);
+        Cursor cursor = getTaskCursor(database, name);
         if (cursor.getCount()>0){
             return true;
         }
@@ -112,20 +123,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         return false;
     }
 
+//得到多有上一级任务的名字
     public static ArrayList<String> getBelongTasksNames(Context context, String belongTasksAttribute){
-
-        SQLiteOpenHelper databaseHelper = new MyDatabaseHelper(context, "task.db", null, 1);
-        SQLiteDatabase database = databaseHelper.getWritableDatabase();
-
-        return getBelongTasksNamesFromDatabase(database, belongTasksAttribute);
-    }
-
-    private static ArrayList<String> getBelongTasksNamesFromDatabase(SQLiteDatabase database, String belongTasksAttribute){
+        SQLiteDatabase database = getDatabase(context);
         ArrayList<String> belongTasksNames = new ArrayList<>();
 
         String where = ATTRIBUTE + "='" + belongTasksAttribute + "'";
 
-        Cursor cursor = database.query(TABLE_NAME, new String[]{NAME}, where, null, null, null, null);
+        Cursor cursor = database.query(TASK_TABLE_NAME, new String[]{NAME}, where, null, null, null, null);
 
         while (cursor.moveToNext()){
             String belongTaskName = cursor.getString(cursor.getColumnIndex(NAME));
@@ -136,5 +141,21 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         return belongTasksNames;
     }
 
+//更新某个任务是否完成
+    public static void updateIsTaskFinished(Context context, Task theTask, boolean isChecked){
+        int isFinished = isChecked?1:0;
+
+        theTask.setHasFinished(isFinished);
+
+        SQLiteDatabase database = getDatabase(context);
+
+        ContentValues contentValues = getTaskContentValues(theTask);
+
+        String where = NAME + "='" + theTask.getTaskName() + "'";
+
+        int suc = database.update(TASK_TABLE_NAME, contentValues, where, null);
+
+
+    }
 
 }

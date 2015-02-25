@@ -63,7 +63,7 @@ public class CheckTask {
     //  动态设置底部对父任务描述和最后一个button
     public void setTextIsHasBelongCheckAttribute() {
 
-        final int THE_MAX_NAME_LENGTH_IN_IS_HAS_BELONG_TEXT = 3;
+        final int THE_MAX_NAME_LENGTH_TEXT = 3;
 
         final String CREATE_TASK_CHINESE = "创建任务";
         final String BELONG_TASK_CHINESE = "父任务为  ";
@@ -75,7 +75,7 @@ public class CheckTask {
 //已经设置好belong时
             if (newTask.isHasBelong() && selectedAttributePositionNow == selectedAttributePositionBefore) {
                 String taskName = newTask.getBelongName();
-                String name = taskName.length() > THE_MAX_NAME_LENGTH_IN_IS_HAS_BELONG_TEXT ? taskName.substring(0, THE_MAX_NAME_LENGTH_IN_IS_HAS_BELONG_TEXT) : taskName;
+                String name = taskName.length() < THE_MAX_NAME_LENGTH_TEXT ? taskName:taskName.substring(0, THE_MAX_NAME_LENGTH_TEXT);
                 mIsHasBelongTextView.setText(BELONG_TASK_CHINESE + name);
                 mCreateTaskButton.setText(CREATE_TASK_CHINESE);
             }

@@ -39,6 +39,9 @@ public class SpinnerValue implements Serializable {
         return names[posioton];
     }
 
+    public String[] getNames() {
+        return names;
+    }
 
     public String getSelectedName() {
         return selectedName;
