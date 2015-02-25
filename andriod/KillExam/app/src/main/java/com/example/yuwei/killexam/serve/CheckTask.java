@@ -27,7 +27,6 @@ public class CheckTask {
     private EditText mTaskNameEditText;
     private NumberPicker mSpendTimePickerHours;
     private NumberPicker mSpendTimePickerMinutes;
-    private EditText mTaskContextText;
     private Spinner mRemindMethodSpinner;
     private Spinner mTaskAttributeSpinner;
     private Button mCreateTaskButton;
@@ -119,11 +118,11 @@ public class CheckTask {
     }
 
     private boolean checkTaskName() {
-        final String TASK_NAME_HAS_SAPCE = "任务名不能为空，或者有空格";
+        final String TASK_NAME_HAS_SPACE = "任务名不能为空，或者有空格";
         final String TASK_NAME_HAS_EXIST = "任务名已存在";
 
         if (checkEditText(mTaskNameEditText) == false) {
-            Toast.makeText(mFragment.getActivity().getApplicationContext(), TASK_NAME_HAS_SAPCE, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mFragment.getActivity().getApplicationContext(), TASK_NAME_HAS_SPACE, Toast.LENGTH_SHORT).show();
             return false;
         } else if (isNameHasExist(mTaskNameEditText)) {
             Toast.makeText(mFragment.getActivity().getApplication(), TASK_NAME_HAS_EXIST, Toast.LENGTH_SHORT).show();
@@ -153,36 +152,35 @@ public class CheckTask {
 
     private boolean checkFinishDate() {
         final String TIME_MUST_BE_SELECTED = "任务时间必须选择";
-        final String TASK_TIME_CANNT_BE_EARLY_THAN_CURRUNT = "任务完成时间不能比当前时间早";
+        final String TASK_TIME_CANNT_BE_EARLY_THAN_CURRENT = "任务完成时间不能比当前时间早";
 
         MyDate current = new MyDate();
-        boolean checkDate = true;
+        boolean checkDateIsRight = true;
 
         if (mFinishDate == null) {
-            checkDate = false;
             Toast.makeText(mFragment.getActivity().getApplicationContext(), TIME_MUST_BE_SELECTED, Toast.LENGTH_SHORT).show();
-            return checkDate;
+            return false;
         }
 
         if (mFinishDate.getYear() < current.getYear()) {
-            checkDate = false;
+            checkDateIsRight = false;
         }
         if (mFinishDate.getYear() == current.getYear()) {
             if (mFinishDate.getMonth() < current.getMonth()) {
-                checkDate = false;
+                checkDateIsRight = false;
             }
             if (mFinishDate.getMonth() == current.getMonth()) {
                 if (mFinishDate.getDay() < current.getDay()) {
-                    checkDate = false;
+                    checkDateIsRight = false;
                 }
             }
         }
 
-        if (checkDate == false) {
-            Toast.makeText(mFragment.getActivity().getApplicationContext(), TASK_TIME_CANNT_BE_EARLY_THAN_CURRUNT, Toast.LENGTH_SHORT).show();
+        if (checkDateIsRight == false) {
+            Toast.makeText(mFragment.getActivity().getApplicationContext(), TASK_TIME_CANNT_BE_EARLY_THAN_CURRENT, Toast.LENGTH_SHORT).show();
 
         }
-        return checkDate;
+        return checkDateIsRight;
     }
 
 

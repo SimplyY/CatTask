@@ -12,7 +12,6 @@ public class Task implements Serializable {
 
     private SpinnerValue tagColor;
     private String taskName;
-    private String taskContext;
     private MyDate finishedTime;
     private int spendHours = 0;
     private int spendMinutes = 0;
@@ -49,9 +48,6 @@ public class Task implements Serializable {
         return spendMinutes;
     }
 
-    public String getTaskContext() {
-        return taskContext;
-    }
 
     public SpinnerValue getRemindMethod() {
         return remindMethod;
@@ -87,10 +83,6 @@ public class Task implements Serializable {
 
     public void setSpendMinutes(int spentMinutes) {
         this.spendMinutes = spentMinutes;
-    }
-
-    public void setTaskContext(String taskContext) {
-        this.taskContext = taskContext;
     }
 
     public void setRemindMethod(SpinnerValue remindMethod) {

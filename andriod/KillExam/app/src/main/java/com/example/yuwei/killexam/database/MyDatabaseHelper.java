@@ -108,6 +108,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         if (cursor.getCount()>0){
             return true;
         }
+        cursor.close();
         return false;
     }
 
@@ -120,19 +121,18 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     }
 
     private static ArrayList<String> getBelongTasksNamesFromDatabase(SQLiteDatabase database, String belongTasksAttribute){
-        ArrayList<String> belongTasksNames = new ArrayList<String>();
+        ArrayList<String> belongTasksNames = new ArrayList<>();
 
         String where = ATTRIBUTE + "='" + belongTasksAttribute + "'";
 
         Cursor cursor = database.query(TABLE_NAME, new String[]{NAME}, where, null, null, null, null);
 
         while (cursor.moveToNext()){
-
             String belongTaskName = cursor.getString(cursor.getColumnIndex(NAME));
 
             belongTasksNames.add(belongTaskName);
         }
-
+        cursor.close();
         return belongTasksNames;
     }
 
