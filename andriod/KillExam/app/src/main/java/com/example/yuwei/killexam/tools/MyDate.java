@@ -1,12 +1,13 @@
 package com.example.yuwei.killexam.tools;
 import android.text.format.DateFormat;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 /**
  * Created by yuwei on 15/2/16.
  */
-public class MyDate {
+public class MyDate implements Serializable {
     private Calendar calendar = Calendar.getInstance();
     private int year;
     private int month;

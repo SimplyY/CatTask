@@ -100,9 +100,10 @@ public class TaskListAdapter extends ArrayAdapter<Task>{
     }
 
     private void setTaskNameTextView(){
+        final int THE_MAX_LENGTH = 8;
 
         String taskName = theTask.getTaskName();
-        String taskNameInList = taskName.length()<5 ? taskName:(taskName.substring(0,5) + "...");
+        String taskNameInList = taskName.length()<THE_MAX_LENGTH ? taskName:(taskName.substring(0,THE_MAX_LENGTH) + "...");
         viewHolder.taskNameTextView.setText(taskNameInList);
     }
 

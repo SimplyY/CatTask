@@ -32,6 +32,8 @@ public class CheckTask {
     private Button mCreateTaskButton;
     private TextView mIsHasBelongTextView;
 
+    private Spinner mColorTag;
+
     private MyDate mFinishDate;
     private Task newTask;
 
@@ -50,6 +52,8 @@ public class CheckTask {
         mCreateTaskButton = fragment.mCreateTaskButton;
         mIsHasBelongTextView = fragment.mIsHasBelongTextView;
         mTaskNameEditText = fragment.mTaskNameEditText;
+
+        mColorTag = fragment.mTaskColorTagSpinner;
 
         newTask = fragment.newTask;
 
@@ -95,7 +99,7 @@ public class CheckTask {
 
     //核查所有的输入以及获取合法值
     public boolean checkAll() {
-        return checkAttribute() && checkTaskName() && checkFinishDate() && checkTime() && checkRimendMethod();
+        return checkAttribute() && checkTaskName() && checkFinishDate() && checkTime() && checkRimendMethod() && checkColorTag();
     }
 
     //当需要设置belong的时候return false，
@@ -205,6 +209,16 @@ public class CheckTask {
         remindMethod.setSelectedName(remindMethodName);
 
         return true;
+    }
+
+    private boolean checkColorTag(){
+        String colorTagString = mColorTag.getSelectedItem().toString();
+
+        SpinnerValue colorTag = newTask.getTagColor();
+        colorTag.setSelectedName(colorTagString);
+
+        return true;
+
     }
 
 }

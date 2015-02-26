@@ -9,8 +9,9 @@
     <TextView
         android:id="@+id/taskListSpaceTextView"
         android:layout_gravity="bottom"
-        android:layout_width="20dp"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:textColor="@color/custom_text_color"
+        android:layout_width="wrap_content" />
     <CheckBox
         android:id="@+id/taskListIsTaskFinishedCheckBox"
         android:layout_gravity="center"
@@ -19,12 +20,15 @@
     <TextView
         android:id="@+id/taskListNameTextView"
         android:textSize="22sp"
+        android:textColor="@color/custom_text_color"
         android:gravity="center|left"
         android:layout_gravity="bottom"
         android:layout_width="150dp"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
     <TextView
         android:id="@+id/taskListFinishTimeTextView"
+        android:textSize="18sp"
         android:gravity="center|right"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
