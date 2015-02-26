@@ -12,6 +12,7 @@ import java.util.HashMap;
  */
 
 //使用安卓里读取spinner 里的array，来将两个值（selectedName，position）互相绑定
+//position从0开始
 public class SpinnerValue implements Serializable {
     private String selectedName;
     private String[] names;
@@ -29,6 +30,10 @@ public class SpinnerValue implements Serializable {
         for (int i = 0; i < names.length; i++){
             position.put(names[i], i);
         }
+    }
+
+    public int getAttribute(){
+        return position.get(selectedName)+1;
     }
 
     public int getPosition(){

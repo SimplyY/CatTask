@@ -30,7 +30,7 @@
         />
     <TextView
         android:id="@+id/taskListFinishTimeTextView"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:textColor="@android:color/holo_blue_dark"
         android:gravity="center|right"
         android:layout_width="match_parent"

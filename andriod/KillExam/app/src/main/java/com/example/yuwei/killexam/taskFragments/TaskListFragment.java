@@ -11,11 +11,14 @@ import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.adapter.TaskListAdapter;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.tools.Task;
+import com.example.yuwei.killexam.tools.TaskTree;
 
 import java.util.ArrayList;
 
 
 public class TaskListFragment extends Fragment {
+
+    private TaskTree taskTrees;
 
     public static TaskListFragment newInstance() {
         TaskListFragment fragment = new TaskListFragment();
@@ -44,7 +47,9 @@ public class TaskListFragment extends Fragment {
 
     private void initTaskListView(){
         ArrayList<Task> taskArrayList = MyDatabaseHelper.getTaskArray(getActivity());
+        taskTrees = TaskTree.newInstance(taskArrayList);
 
+        taskTrees.sort();
         if (taskArrayList.isEmpty() == false){
             TaskListAdapter adapter = new TaskListAdapter(getActivity().getApplicationContext(), R.layout.task_item, taskArrayList);
 
