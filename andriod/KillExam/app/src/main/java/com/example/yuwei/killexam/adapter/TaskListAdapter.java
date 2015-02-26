@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 
 import com.example.yuwei.killexam.R;
@@ -57,7 +59,7 @@ public class TaskListAdapter extends ArrayAdapter<Task>{
 
         viewHolder.tagColorImageView = (ImageView)view.findViewById(R.id.taskListColorTagImageView);
 
-        viewHolder.spaceTextView = (TextView)view.findViewById(R.id.taskListSpaceTextView);
+        viewHolder.space = (Space)view.findViewById(R.id.taskListSpace);
 
         viewHolder.isTaskFinishedCheckBox = (CheckBox)view.findViewById(R.id.taskListIsTaskFinishedCheckBox);
 
@@ -69,7 +71,7 @@ public class TaskListAdapter extends ArrayAdapter<Task>{
 
     private void setTaskHolder(ViewHolder viewHolder){
         setColorImageView();
-        setSpaceTextView();
+        setSpaceWidth();
         setIsTaskFinishedCheckBox();
         setTaskNameTextView();
         setTaskFinishTimeTextView();
@@ -81,12 +83,15 @@ public class TaskListAdapter extends ArrayAdapter<Task>{
         viewHolder.tagColorImageView.setImageResource(tagColorResId);
     }
 
-    private void setSpaceTextView(){
-//        TODO:spaceNumber still is zero
-        int spaceNumber = getSpaceNumber(theTask);
+    private void setSpaceWidth(){
+        int spaceAmount = getSpaceNumber(theTask);
 
-        int spaceLength = 20;
-        viewHolder.spaceTextView.setWidth(spaceLength * spaceNumber);
+        int spaceLength = 30;
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)viewHolder.space.getLayoutParams();
+
+        layoutParams.width = spaceLength * spaceAmount;
+
+        viewHolder.space.setLayoutParams(layoutParams);
 
     }
 
@@ -112,7 +117,7 @@ public class TaskListAdapter extends ArrayAdapter<Task>{
     }
 
     private int getSpaceNumber(Task theTask){
-        return theTask.getTaskAttribute().getPosition();
+        return theTask.getTaskAttribute().getPosition() + 1;
     }
 
     private int getTagResId(Task theTask){
@@ -137,7 +142,7 @@ public class TaskListAdapter extends ArrayAdapter<Task>{
 
     class ViewHolder{
         ImageView tagColorImageView;
-        TextView spaceTextView;
+        Space space;
         CheckBox isTaskFinishedCheckBox;
         TextView taskNameTextView;
         TextView taskFinishTimeTextView;

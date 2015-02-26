@@ -3,15 +3,17 @@
     android:layout_width="match_parent" android:layout_height="50dp">
     <ImageView
         android:id="@+id/taskListColorTagImageView"
-        android:layout_gravity="center"
-        android:layout_width="12dp"
+        android:layout_gravity="start"
+        android:layout_width="10dp"
         android:layout_height="45dp" />
-    <TextView
-        android:id="@+id/taskListSpaceTextView"
-        android:layout_gravity="bottom"
-        android:layout_height="match_parent"
-        android:textColor="@color/custom_text_color"
-        android:layout_width="wrap_content" />
+
+    <Space
+        android:id="@+id/taskListSpace"
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+
     <CheckBox
         android:id="@+id/taskListIsTaskFinishedCheckBox"
         android:layout_gravity="center"
@@ -28,7 +30,8 @@
         />
     <TextView
         android:id="@+id/taskListFinishTimeTextView"
-        android:textSize="18sp"
+        android:textSize="15sp"
+        android:textColor="@android:color/holo_blue_dark"
         android:gravity="center|right"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
