@@ -32,6 +32,7 @@ public class SpinnerValue implements Serializable {
         }
     }
 
+
     public int getAttribute(){
         return position.get(selectedName)+1;
     }

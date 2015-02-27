@@ -41,6 +41,25 @@ public class MyDate implements Serializable {
         return year + "年" + month + "月" + day + "日";
     }
 
+
+    public boolean isBefore(MyDate theDate){
+        if (getYear() < theDate.getYear()) {
+            return true;
+        }
+        if (getYear() == theDate.getYear()) {
+            if (getMonth() < theDate.getMonth()) {
+                return  true;
+            }
+            if (getMonth() == theDate.getMonth()) {
+                if (getDay() < theDate.getDay()) {
+                    return  true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public int getYear() {
         return year;
     }

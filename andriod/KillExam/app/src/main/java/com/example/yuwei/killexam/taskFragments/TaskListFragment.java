@@ -49,7 +49,6 @@ public class TaskListFragment extends Fragment {
         ArrayList<Task> taskArrayList = MyDatabaseHelper.getTaskArray(getActivity());
         taskTrees = TaskTree.newInstance(taskArrayList);
 
-        taskTrees.sort();
         if (taskArrayList.isEmpty() == false){
             TaskListAdapter adapter = new TaskListAdapter(getActivity().getApplicationContext(), R.layout.task_item, taskArrayList);
 

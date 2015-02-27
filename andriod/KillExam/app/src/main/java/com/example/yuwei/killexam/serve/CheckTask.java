@@ -159,26 +159,13 @@ public class CheckTask {
         final String TASK_TIME_CANNT_BE_EARLY_THAN_CURRENT = "任务完成时间不能比当前时间早";
 
         MyDate current = new MyDate();
-        boolean checkDateIsRight = true;
 
         if (mFinishDate == null) {
             Toast.makeText(mFragment.getActivity().getApplicationContext(), TIME_MUST_BE_SELECTED, Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        if (mFinishDate.getYear() < current.getYear()) {
-            checkDateIsRight = false;
-        }
-        if (mFinishDate.getYear() == current.getYear()) {
-            if (mFinishDate.getMonth() < current.getMonth()) {
-                checkDateIsRight = false;
-            }
-            if (mFinishDate.getMonth() == current.getMonth()) {
-                if (mFinishDate.getDay() < current.getDay()) {
-                    checkDateIsRight = false;
-                }
-            }
-        }
+        boolean checkDateIsRight = !mFinishDate.isBefore(current);
 
         if (checkDateIsRight == false) {
             Toast.makeText(mFragment.getActivity().getApplicationContext(), TASK_TIME_CANNT_BE_EARLY_THAN_CURRENT, Toast.LENGTH_SHORT).show();
