@@ -224,7 +224,7 @@ public class CreateTaskFragment extends editableTaskFragment{
         FragmentManager fm = getChildFragmentManager();
         MyDate now = new MyDate();
         CalendarDatePickerDialog calendarDatePickerDialog = CalendarDatePickerDialog
-                .newInstance(this,now.getYear(), now.getMonth(),
+                .newInstance(this,now.getYear(), now.getMonth() - 1,
                         now.getDay());
         calendarDatePickerDialog.setTargetFragment(this, 1);
         calendarDatePickerDialog.show(fm, FRAG_TAG_DATE_PICKER);
@@ -233,7 +233,7 @@ public class CreateTaskFragment extends editableTaskFragment{
 //setFinishDate
     @Override
     public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth){
-        mFinishDate =  new MyDate(year, monthOfYear, dayOfMonth);
+        mFinishDate =  new MyDate(year, monthOfYear + 1, dayOfMonth);
         newTask.setFinishedDate(mFinishDate);
         mFinishDateButton.setText(mFinishDate.toString());
         checkTask.setFinishDate();

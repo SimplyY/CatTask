@@ -86,7 +86,7 @@ public class TaskListAdapter extends ArrayAdapter<Task>{
     private void setSpaceWidth(){
         int spaceAmount = getSpaceNumber(theTask);
 
-        int spaceLength = 30;
+        int spaceLength = 60;
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)viewHolder.space.getLayoutParams();
 
         layoutParams.width = spaceLength * spaceAmount;
