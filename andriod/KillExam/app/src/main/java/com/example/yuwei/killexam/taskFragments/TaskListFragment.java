@@ -15,6 +15,8 @@ import com.example.yuwei.killexam.tools.TaskTree;
 
 import java.util.ArrayList;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+
 
 public class TaskListFragment extends Fragment {
 
@@ -54,7 +56,7 @@ public class TaskListFragment extends Fragment {
         if (taskArrayList.isEmpty() == false){
             TaskListAdapter adapter = new TaskListAdapter(getActivity().getApplicationContext(), R.layout.task_item, sortedTaskArrayList);
 
-            ListView taskListView = (ListView)mView.findViewById(R.id.taskListView);
+            StickyListHeadersListView taskListView = (StickyListHeadersListView)mView.findViewById(R.id.taskListView);
 
             taskListView.setAdapter(adapter);
         }

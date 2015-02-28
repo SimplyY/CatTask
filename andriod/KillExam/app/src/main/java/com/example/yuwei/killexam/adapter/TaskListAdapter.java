@@ -14,24 +14,51 @@ import android.widget.TextView;
 
 import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
+import com.example.yuwei.killexam.tools.HeaderTimeMapString;
 import com.example.yuwei.killexam.tools.SpinnerValue;
 import com.example.yuwei.killexam.tools.Task;
 
 import java.util.List;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
+
 /**
  * Created by yuwei on 15/2/25.
  */
-public class TaskListAdapter extends ArrayAdapter<Task>{
+public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHeadersAdapter {
     View view;
     ViewHolder viewHolder;
     int resourceId;
 
     Task theTask;
 
+    private LayoutInflater inflater;
+    List<Task> tasks;
+    String headerTimeString;
+    int headerId;
+
     public TaskListAdapter(Context context, int textViewResourceId, List<Task> objects){
         super(context, textViewResourceId, objects);
+
+        inflater = LayoutInflater.from(context);
+        tasks = objects;
+
         resourceId = textViewResourceId;
+    }
+
+    @Override
+    public int getCount() {
+        return tasks.size();
+    }
+
+    @Override
+    public Task getItem(int position) {
+        return tasks.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
@@ -39,7 +66,7 @@ public class TaskListAdapter extends ArrayAdapter<Task>{
         theTask = getItem(position);
 
         if (convertView == null){
-            view = LayoutInflater.from(getContext()).inflate(resourceId, null);
+            view = inflater.inflate(resourceId, null);
 
             viewHolder = new ViewHolder();
             initViewHolder(viewHolder);
@@ -54,6 +81,43 @@ public class TaskListAdapter extends ArrayAdapter<Task>{
 
         return view;
     }
+
+    @Override
+    public View getHeaderView(int position, View convertView, ViewGroup parent) {
+        HeaderViewHolder headHolder;
+        if (convertView == null) {
+            headHolder = new HeaderViewHolder();
+            convertView = inflater.inflate(R.layout.header, parent, false);
+            headHolder.timeTextView = (TextView) convertView.findViewById(R.id.timeHeader);
+            headHolder.amountTextView = (TextView) convertView.findViewById(R.id.amountHeader);
+            convertView.setTag(headHolder);
+        } else {
+            headHolder = (HeaderViewHolder) convertView.getTag();
+        }
+
+        //TODO:set header text as time
+        if (tasks.get(position).getTaskAttribute().getSelectedName().equals("一级")){
+            HeaderTimeMapString headerTimeMapString = new HeaderTimeMapString();
+            headerTimeString = headerTimeMapString.getValue(tasks.get(position));
+        }
+        int amount = 0;
+
+        headHolder.timeTextView.setText(headerTimeString);
+        headHolder.amountTextView.setText(String.valueOf(amount));
+        return convertView;
+    }
+
+    @Override
+    public long getHeaderId(int position) {
+        if (tasks.get(position).getTaskAttribute().getSelectedName() == "一级"){
+            HeaderTimeMapString headerTimeMapString = new HeaderTimeMapString();
+            headerId = headerTimeMapString.getKey(tasks.get(position));
+        }
+
+        return headerId;
+    }
+
+
 
     private void initViewHolder(ViewHolder viewHolder){
 
@@ -117,7 +181,7 @@ public class TaskListAdapter extends ArrayAdapter<Task>{
     }
 
     private int getSpaceNumber(Task theTask){
-        return theTask.getTaskAttribute().getPosition() + 1;
+        return theTask.getTaskAttribute().getPosition();
     }
 
     private int getTagResId(Task theTask){
@@ -138,6 +202,11 @@ public class TaskListAdapter extends ArrayAdapter<Task>{
                 break;
         }
         return tagResId;
+    }
+
+    class HeaderViewHolder {
+        TextView timeTextView;
+        TextView amountTextView;
     }
 
     class ViewHolder{
