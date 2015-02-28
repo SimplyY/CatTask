@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class TaskListFragment extends Fragment {
 
-    private TaskTree taskTrees;
+    private TaskTree taskTree;
 
     public static TaskListFragment newInstance() {
         TaskListFragment fragment = new TaskListFragment();
@@ -47,10 +47,12 @@ public class TaskListFragment extends Fragment {
 
     private void initTaskListView(){
         ArrayList<Task> taskArrayList = MyDatabaseHelper.getTaskArray(getActivity());
-        taskTrees = TaskTree.newInstance(taskArrayList);
+        taskTree = TaskTree.newInstance(taskArrayList);
+
+        ArrayList<Task> sortedTaskArrayList = TaskTree.getSortedTaskArrayList();
 
         if (taskArrayList.isEmpty() == false){
-            TaskListAdapter adapter = new TaskListAdapter(getActivity().getApplicationContext(), R.layout.task_item, taskArrayList);
+            TaskListAdapter adapter = new TaskListAdapter(getActivity().getApplicationContext(), R.layout.task_item, sortedTaskArrayList);
 
             ListView taskListView = (ListView)mView.findViewById(R.id.taskListView);
 

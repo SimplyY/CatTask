@@ -9,15 +9,22 @@ import java.util.ArrayList;
 //the first root = null
 public class TaskTree {
     private static ArrayList<Task> allTaskArrayList;
-    private static ArrayList<Task> sortedTaskArrayList;
+    private static ArrayList<Task> sortedTaskArrayList = new ArrayList<>();
+
+    private static ArrayList<Task> sortedFinishedTaskArrayList;
+    private static ArrayList<Task> sortedUnfinishedTaskArrayList;
 
     private boolean isFirstRoot = false;
 
     private int attribute;
-    private MyDate treeFinishTime;
+
+//  通过lateFinishTime来判断是否过期
+    private MyDate treeEarlyFinishTime;
+    private MyDate treeLateFinishTime;
     private Task mTask;
 
     private ArrayList<TaskTree> childTaskTreeArrayList;
+
 
     public static TaskTree newInstance(ArrayList<Task> theAllTaskArrayList) {
         allTaskArrayList = theAllTaskArrayList;
@@ -27,14 +34,13 @@ public class TaskTree {
 
         taskTree.setTreeFinishTime();
         sort(taskTree);
+        initSortedTaskArrayList(taskTree);
         classfyByHasFinished();
         return taskTree;
     }
 
-
     public TaskTree() {
     }
-
     public TaskTree(int theAttribute, Task theTask) {
         setAttribute(theAttribute);
         mTask = theTask;
@@ -42,10 +48,20 @@ public class TaskTree {
         initChildTreeTaskArrayList();
     }
 
+    private static void initSortedTaskArrayList(TaskTree taskTree){
+        if (taskTree.isHasChild()){
+            for (TaskTree theTaskTree : taskTree.childTaskTreeArrayList){
+                sortedTaskArrayList.add(theTaskTree.getmTask());
+                initSortedTaskArrayList(theTaskTree);
+            }
+        }
+    }
+
+
+
     //TODO:之后需要在taskList里动态调用
     public static void classfyByHasFinished() {
     }
-
 
     //根据从自己开始的tree里task最早完成的时间sort
     public static void sort(TaskTree taskTree) {
@@ -80,7 +96,7 @@ public class TaskTree {
 
         for (int i = left; i < right; i++) {
             TaskTree theChildTaskTree = childTaskTreeArrayList.get(i);
-            if (theChildTaskTree.getmTask().getFinishedDate().isBefore(pivotTaskTree.getTreeFinishTime())) {
+            if (theChildTaskTree.getmTask().getFinishedDate().isBefore(pivotTaskTree.getTreeEarlyFinishTime())) {
                 swap(childTaskTreeArrayList, i, newPivot);
                 newPivot++;
             }
@@ -107,10 +123,11 @@ public class TaskTree {
             int j;
             for (j = i - 1; j >= 0; j--) {
                 TaskTree theTaskTreeJ = taskTreeArrayList.get(j);
-                if (theTaskTreeI.getTreeFinishTime().isBefore(theTaskTreeJ.getTreeFinishTime())){
+                if (theTaskTreeI.getTreeEarlyFinishTime().isBefore(theTaskTreeJ.getTreeEarlyFinishTime())){
                     taskTreeArrayList.set(j+1, theTaskTreeJ);
                 }
                 else{
+
                     break;
                 }
             }
@@ -124,23 +141,53 @@ public class TaskTree {
         taskTreeArrayList.set(index2, tmp);
     }
 
-    private void setTreeFinishTime() {
-        if (!isHasChild()) {
-            treeFinishTime = mTask.getFinishedDate();
-        } else {
-            treeFinishTime = new MyDate(2200, 0, 0);
-            for (TaskTree theTaskTree : childTaskTreeArrayList) {
-                MyDate theFinishTime = theTaskTree.getTreeFinishTime();
-                if (theFinishTime.isBefore(treeFinishTime)) {
-                    treeFinishTime = theFinishTime;
-                }
-            }
-        }
+    public MyDate getTreeEarlyFinishTime() {
+        return treeEarlyFinishTime;
+    }
+
+    public MyDate getTreeLateFinishTime(){
+        return treeLateFinishTime;
     }
 
     public boolean isHasChild() {
         return !childTaskTreeArrayList.isEmpty();
     }
+
+    public Task getmTask() {
+        return mTask;
+    }
+
+    public boolean isFirstRoot() {
+        return isFirstRoot;
+    }
+
+    public void setFirstRoot(boolean isFirstRoot) {
+        this.isFirstRoot = isFirstRoot;
+    }
+
+//  分别设置taskTree的最早完成时间和最晚完成时间
+    private void setTreeFinishTime() {
+        if (!isHasChild()) {
+            treeEarlyFinishTime = mTask.getFinishedDate();
+            treeLateFinishTime = mTask.getFinishedDate();
+        } else {
+            treeEarlyFinishTime = new MyDate(2200, 0, 0);
+            treeLateFinishTime = new MyDate(2000, 0 ,0);
+
+            for (TaskTree theTaskTree : childTaskTreeArrayList) {
+                theTaskTree.setTreeFinishTime();
+                MyDate theEarlyFinishTime = theTaskTree.getTreeEarlyFinishTime();
+                if (theEarlyFinishTime.isBefore(treeEarlyFinishTime)) {
+                    treeEarlyFinishTime = theEarlyFinishTime;
+                }
+                MyDate theLateFinishTime = theTaskTree.getTreeLateFinishTime();
+                if (treeLateFinishTime.isBefore(theLateFinishTime)){
+                    treeLateFinishTime = theLateFinishTime;
+                }
+            }
+        }
+    }
+
 
     private void initChildTreeTaskArrayList() {
         childTaskTreeArrayList = new ArrayList<>();
@@ -155,21 +202,8 @@ public class TaskTree {
         }
     }
 
-    public Task getmTask() {
-        return mTask;
-    }
-
-    public MyDate getTreeFinishTime() {
-        setTreeFinishTime();
-        return treeFinishTime;
-    }
-
-    public boolean isFirstRoot() {
-        return isFirstRoot;
-    }
-
-    public void setFirstRoot(boolean isFirstRoot) {
-        this.isFirstRoot = isFirstRoot;
+    public static ArrayList<Task> getSortedTaskArrayList() {
+        return sortedTaskArrayList;
     }
 
     private int getChildAttribute() {
