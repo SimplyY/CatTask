@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.tools.MyDate;
-import com.example.yuwei.killexam.tools.SpinnerValue;
+import com.example.yuwei.killexam.map.SpinnerValue;
 import com.example.yuwei.killexam.tools.Task;
 
 import java.util.ArrayList;

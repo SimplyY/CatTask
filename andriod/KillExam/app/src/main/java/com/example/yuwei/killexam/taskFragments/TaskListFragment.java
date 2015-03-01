@@ -5,8 +5,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
+import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.adapter.TaskListAdapter;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
@@ -20,16 +20,21 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class TaskListFragment extends Fragment {
 
-    private TaskTree taskTree;
+    static private TaskTree taskTree;
 
-    public static TaskListFragment newInstance() {
-        TaskListFragment fragment = new TaskListFragment();
-        return fragment;
-    }
+    static private MainActivity mMainActivity;
+
+    static StickyListHeadersListView taskListView;
+    static TaskListAdapter adapter;
 
     View mView;
 
-    public TaskListFragment() {
+    public TaskListFragment(){
+
+    }
+
+    public TaskListFragment(MainActivity mainActivity) {
+        mMainActivity = mainActivity;
     }
 
     @Override
@@ -41,24 +46,26 @@ public class TaskListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_task_list, container, false);
+        taskListView = (StickyListHeadersListView)mView.findViewById(R.id.taskListView);
 
-        initTaskListView();
+        RenewTaskList();
 
         return mView;
     }
 
-    private void initTaskListView(){
-        ArrayList<Task> taskArrayList = MyDatabaseHelper.getTaskArray(getActivity());
+    public static void RenewTaskList(){
+        ArrayList<Task> taskArrayList = MyDatabaseHelper.getTaskArray(mMainActivity);
+
+        if (taskArrayList.isEmpty() == false){
+            initAdapter(taskArrayList);
+            taskListView.setAdapter(adapter);
+        }
+    }
+
+    private static void initAdapter(ArrayList<Task> taskArrayList){
         taskTree = TaskTree.newInstance(taskArrayList);
 
         ArrayList<Task> sortedTaskArrayList = TaskTree.getSortedTaskArrayList();
-
-        if (taskArrayList.isEmpty() == false){
-            TaskListAdapter adapter = new TaskListAdapter(getActivity().getApplicationContext(), R.layout.task_item, sortedTaskArrayList);
-
-            StickyListHeadersListView taskListView = (StickyListHeadersListView)mView.findViewById(R.id.taskListView);
-
-            taskListView.setAdapter(adapter);
-        }
+        adapter = new TaskListAdapter(mMainActivity, R.layout.task_item, sortedTaskArrayList);
     }
 }

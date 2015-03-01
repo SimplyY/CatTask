@@ -16,7 +16,7 @@ import com.example.yuwei.killexam.ChooseBelongActivity;
 import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.tools.MyDate;
-import com.example.yuwei.killexam.tools.SpinnerValue;
+import com.example.yuwei.killexam.map.SpinnerValue;
 import com.example.yuwei.killexam.tools.Task;
 
 /**

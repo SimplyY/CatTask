@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
 import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
+import com.example.yuwei.killexam.map.TitleMapString;
 import com.example.yuwei.killexam.serve.CheckTask;
 import com.example.yuwei.killexam.tools.MyDate;
 import com.example.yuwei.killexam.R;
@@ -30,12 +31,15 @@ public class CreateTaskFragment extends editableTaskFragment{
     private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
 
     CheckTask checkTask;
-    
+
     public void setNewTask(Task newTask) {
         this.newTask = newTask;
     }
 
-    public CreateTaskFragment() {
+    private MainActivity mMainActivity;
+
+    public CreateTaskFragment(MainActivity mainActivity) {
+        mMainActivity = mainActivity;
     }
 
 
@@ -244,18 +248,15 @@ public class CreateTaskFragment extends editableTaskFragment{
     }
 
     private void quit(){
-        if (newTask.isHasBelong() == false) {
-            quitCreateTaskFragment();
-        }
+        initTaskList();
+        mMainActivity.replaceFragment();
     }
 
-    private void quitCreateTaskFragment(){
-        MainActivity activity = (MainActivity)this.getActivity();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-        MainActivity.PlaceholderFragment placeholderFragment = MainActivity.PlaceholderFragment.newInstance(0);
-        fragmentTransaction.replace(R.id.container, placeholderFragment)
-                .commit();
+    private void initTaskList(){
+        MainActivity.mTitleMap = new TitleMapString();
+        mMainActivity.restoreActionBar();
+
+        TaskListFragment.RenewTaskList();
+
     }
-
-
 }

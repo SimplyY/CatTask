@@ -59,11 +59,6 @@ public class MyDate implements Serializable {
         return false;
     }
 
-    public boolean isBefore(MyDate myDate, int day){
-        MyDate theDate = myDate.addDay(day);
-
-        return isBefore(theDate);
-    }
 
     public MyDate addDay(int increaseDay){
         MyDate myDate = new MyDate(getYear(), getMonth(), getDay());

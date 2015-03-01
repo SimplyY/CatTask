@@ -1,8 +1,6 @@
-package com.example.yuwei.killexam.tools;
+package com.example.yuwei.killexam.map;
 
 import android.content.res.Resources;
-
-import com.example.yuwei.killexam.R;
 
 import java.io.Serializable;
 import java.util.HashMap;

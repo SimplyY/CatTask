@@ -14,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
+import com.example.yuwei.killexam.map.TitleMapString;
 import com.example.yuwei.killexam.taskFragments.CreateTaskFragment;
+import com.example.yuwei.killexam.taskFragments.DevelopmentListFragment;
 import com.example.yuwei.killexam.taskFragments.TaskListFragment;
 import com.example.yuwei.killexam.tools.Task;
 
@@ -22,15 +24,9 @@ import com.example.yuwei.killexam.tools.Task;
 public class MainActivity extends ActionBarActivity
         implements com.example.yuwei.killexam.NavigationDrawerFragment.NavigationDrawerCallbacks{
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
-    private CharSequence mTitle;
+    static public TitleMapString mTitleMap = new TitleMapString();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +35,18 @@ public class MainActivity extends ActionBarActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
+        mTitleMap = new TitleMapString();
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        restoreActionBar();
         getBelongInCreateTask();
     }
 
+//  当从选择belong的activity里面后退时，会进入这个acitivity，这时需要进入createFragment。
     private void getBelongInCreateTask(){
         Intent intent = getIntent();
         String enterFragment = intent.getStringExtra("enterFragment");
@@ -56,24 +54,21 @@ public class MainActivity extends ActionBarActivity
         if (enterFragment != null) {
             switch (enterFragment) {
                 case "CreateTaskFragment":
+                    mTitleMap.setTitle(mTitleMap.CREATE_TASK);
                     enterCreateTask(intent);
                     break;
             }
         }
     }
-
     private void enterCreateTask(Intent intent){
-
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment targetFragment = getTargetFragment(2);
+        Fragment targetFragment = getTargetFragment();
 
         getNewTask((CreateTaskFragment)targetFragment, intent);
         fragmentManager.beginTransaction()
                 .replace(R.id.container, targetFragment)
                 .commit();
-
     }
-
     private void getNewTask(CreateTaskFragment fragment, Intent intent){
         Bundle bundle = intent.getExtras();
 
@@ -86,63 +81,42 @@ public class MainActivity extends ActionBarActivity
 //侧滑栏中的选项被选中时调用
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-
-        replaceFragment(position);
-        onSectionAttached(position);
+        setmTitle(position);
+        replaceFragment();
     }
-
-    private void replaceFragment(int position){
+    public void setmTitle(int position) {
+        mTitleMap.setTitle(mTitleMap.get(position));
+    }
+//  更换fragment
+    public void replaceFragment(){
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment targetFragment = getTargetFragment(position);
+        Fragment targetFragment = getTargetFragment();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, targetFragment)
                 .commit();
     }
+    private Fragment getTargetFragment(){
+        Fragment targetFragment = new TaskListFragment(this);
 
-    private Fragment getTargetFragment(int position){
-        int sectionNumber = position + 1;
-        Fragment targetFragment = PlaceholderFragment.newInstance(sectionNumber);
-        if(sectionNumber == 1){
-            targetFragment = new TaskListFragment();
+        if (mTitleMap.getTitle().equals(mTitleMap.CREATE_TASK)){
+            targetFragment = new CreateTaskFragment(this);
         }
-        else if(sectionNumber == 2){
-            targetFragment = new CreateTaskFragment();
+        else if (mTitleMap.getTitle().equals(mTitleMap.DEVELOP_LIST)){
+            targetFragment = new DevelopmentListFragment(this);
         }
-        else if(sectionNumber == 3){
-            targetFragment = new CreateTaskFragment();
-        }
-
         return targetFragment;
-    }
-
-    public void onSectionAttached(int position) {
-        int sectionNumber = position + 1;
-        switch (sectionNumber) {
-            case 1:
-                mTitle = getString(R.string.title_section1);
-                break;
-            case 2:
-                mTitle = getString(R.string.title_section2);
-                break;
-            case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
-        }
     }
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
-    }
 
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(mTitleMap.getTitle());
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
             getMenuInflater().inflate(R.menu.main, menu);
             restoreActionBar();
             return true;
@@ -152,9 +126,6 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -164,40 +135,4 @@ public class MainActivity extends ActionBarActivity
 
         return super.onOptionsItemSelected(item);
     }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            ((MainActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
-        }
-    }
-
-
-
 }

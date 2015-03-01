@@ -9,7 +9,7 @@ import java.util.ArrayList;
 //the first root = null
 public class TaskTree {
     private static ArrayList<Task> allTaskArrayList;
-    private static ArrayList<Task> sortedTaskArrayList = new ArrayList<>();
+    private static ArrayList<Task> sortedTaskArrayList ;
 
     private static ArrayList<Task> sortedFinishedTaskArrayList;
     private static ArrayList<Task> sortedUnfinishedTaskArrayList;
@@ -35,6 +35,9 @@ public class TaskTree {
         taskTree.setTreeFinishTime();
         sort(taskTree);
         initSortedTaskArrayList(taskTree);
+
+        initSortedTasksHeader();
+
         classfyByHasFinished();
         return taskTree;
     }
@@ -49,10 +52,28 @@ public class TaskTree {
     }
 
     private static void initSortedTaskArrayList(TaskTree taskTree){
+        sortedTaskArrayList = new ArrayList<>();
+        setSortedTaskArrayList(taskTree);
+    }
+
+    private static void setSortedTaskArrayList(TaskTree taskTree){
         if (taskTree.isHasChild()){
             for (TaskTree theTaskTree : taskTree.childTaskTreeArrayList){
                 sortedTaskArrayList.add(theTaskTree.getmTask());
-                initSortedTaskArrayList(theTaskTree);
+                setSortedTaskArrayList(theTaskTree);
+            }
+        }
+    }
+
+    private static void initSortedTasksHeader(){
+        MyDate headerDate = new MyDate();
+        for (Task task : sortedTaskArrayList){
+            if (task.getTaskAttribute().getSelectedName().equals("一级")){
+                headerDate = task.getFinishedDate();
+                task.setHeaderDate(headerDate);
+            }
+            else{
+                task.setHeaderDate(headerDate);
             }
         }
     }
@@ -75,8 +96,7 @@ public class TaskTree {
             }
         }
     }
-
-    //  对第一级任务排序
+//  对第一级任务排序
     private static void qucikSort(TaskTree taskTree, int left, int right) {
         if (left < right) {
             int pivot = left;
@@ -174,6 +194,7 @@ public class TaskTree {
             treeEarlyFinishTime = new MyDate(2200, 0, 0);
             treeLateFinishTime = new MyDate(2000, 0 ,0);
 
+//          取子节点最值
             for (TaskTree theTaskTree : childTaskTreeArrayList) {
                 theTaskTree.setTreeFinishTime();
                 MyDate theEarlyFinishTime = theTaskTree.getTreeEarlyFinishTime();
@@ -184,6 +205,14 @@ public class TaskTree {
                 if (treeLateFinishTime.isBefore(theLateFinishTime)){
                     treeLateFinishTime = theLateFinishTime;
                 }
+            }
+
+//          与根节点比较
+            if (mTask != null && mTask.getFinishedDate().isBefore(treeEarlyFinishTime)){
+                treeEarlyFinishTime = mTask.getFinishedDate();
+            }
+            if (mTask != null && treeLateFinishTime.isBefore(mTask.getFinishedDate())){
+                treeLateFinishTime = mTask.getFinishedDate();
             }
         }
     }

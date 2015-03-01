@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/headerLinearLayout"
     android:layout_width="match_parent"
     android:layout_height="40dp">
 
+    <Space
+        android:layout_width="15dp"
+        android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/timeHeader"
+        android:textSize="20sp"
+        android:textColor="@color/custom_text_color"
+        android:gravity="center|start"
         android:layout_width="0dp"
         android:layout_weight="5"
-        android:textColor="@color/transparent_black"
         android:layout_height="match_parent" />
 
     <TextView
         android:id="@+id/amountHeader"
-        android:textColor="@color/transparent_black"
-        android:gravity="end"
+        android:textSize="20sp"
+        android:textColor="@color/custom_text_color"
+        android:gravity="center|end"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent" />

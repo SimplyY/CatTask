@@ -28,6 +28,8 @@ public class BelongTaskAdapter extends ArrayAdapter<String>{
     public View getView(int position, View convertView, ViewGroup parent){
         String taskName = getItem(position);
 
+
+
         if (convertView == null){
             view = LayoutInflater.from(getContext()).inflate(resourceId, null);
 

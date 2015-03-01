@@ -1,6 +1,8 @@
 package com.example.yuwei.killexam.tools;
 
 
+import com.example.yuwei.killexam.map.SpinnerValue;
+
 import java.io.Serializable;
 
 /**
@@ -20,6 +22,7 @@ public class Task implements Serializable {
 
     private boolean hasBelong = false;
     private String belongName;
+    private MyDate headerDate;
 
     private int hasFinished = 0;
 
@@ -110,5 +113,13 @@ public class Task implements Serializable {
 
     public void setHasFinished(int hasFinished) {
         this.hasFinished = hasFinished;
+    }
+
+    public MyDate getHeaderDate() {
+        return headerDate;
+    }
+
+    public void setHeaderDate(MyDate headerDate) {
+        this.headerDate = headerDate;
     }
 }

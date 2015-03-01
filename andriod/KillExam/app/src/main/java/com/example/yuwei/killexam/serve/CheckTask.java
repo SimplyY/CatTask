@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.taskFragments.editableTaskFragment;
 import com.example.yuwei.killexam.tools.MyDate;
-import com.example.yuwei.killexam.tools.SpinnerValue;
+import com.example.yuwei.killexam.map.SpinnerValue;
 import com.example.yuwei.killexam.tools.Task;
 
 import java.util.regex.Matcher;
