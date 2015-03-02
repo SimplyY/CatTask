@@ -198,13 +198,13 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
 
     private int getTagResId(Task theTask) {
         SpinnerValue tagColorSpinnerValue = theTask.getTagColor();
-        int tagResId = R.drawable.tag_color_green;
+        int tagResId = R.drawable.tag_color_white;
         switch (tagColorSpinnerValue.getSelectedName()) {
             case "白色":
-                tagResId = R.drawable.tag_color_green;
+                tagResId = R.drawable.tag_color_white;
                 break;
             case "紫色":
-                tagResId = R.drawable.tag_color_yellow;
+                tagResId = R.drawable.tag_color_purple;
                 break;
             case "蓝色":
                 tagResId = R.drawable.tag_color_blue;

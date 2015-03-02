@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="50dp">
+
+    <Space
+        android:layout_width="6dp"
+        android:layout_height="match_parent" />
+
     <ImageView
         android:id="@+id/taskListColorTagImageView"
-        android:layout_gravity="start"
-        android:layout_width="8dp"
-        android:layout_height="45dp" />
+        android:layout_gravity="center"
+        android:layout_width="18dp"
+        android:layout_height="18dp" />
 
     <Space
         android:id="@+id/taskListSpace"
