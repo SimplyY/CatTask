@@ -9,8 +9,8 @@
     <ImageView
         android:id="@+id/taskListColorTagImageView"
         android:layout_gravity="center"
-        android:layout_width="18dp"
-        android:layout_height="18dp" />
+        android:layout_width="20dp"
+        android:layout_height="20dp" />
 
     <Space
         android:id="@+id/taskListSpace"

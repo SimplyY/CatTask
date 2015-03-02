@@ -47,26 +47,22 @@ public class TaskListFragment extends Fragment {
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_task_list, container, false);
         taskListView = (StickyListHeadersListView)mView.findViewById(R.id.taskListView);
-
-        renewTaskList();
+        initTaskList();
 
         return mView;
     }
 
 //  通过读取数据库获取最新的taskArray，来初始化taskTree
-    public static void renewTaskList(){
+    public static void initTaskList(){
         ArrayList<Task> taskArrayList = MyDatabaseHelper.getTaskArray(mMainActivity);
-//TODO: 检查taskTree的hasFinished的属性
         if (taskArrayList.isEmpty() == false){
-            initSortedTaskTreeAdapter(taskArrayList);
+            taskTree = TaskTree.newInstance(taskArrayList, mMainActivity);
+
+            ArrayList<Task> sortedTaskArrayList = TaskTree.getSortedTODOTaskArrayList();
+
+            adapter = new TaskListAdapter(mMainActivity, R.layout.task_item, sortedTaskArrayList);
             taskListView.setAdapter(adapter);
+
         }
-    }
-
-    private static void initSortedTaskTreeAdapter(ArrayList<Task> taskArrayList){
-        taskTree = TaskTree.newInstance(taskArrayList);
-
-        ArrayList<Task> sortedTaskArrayList = TaskTree.getSortedTaskArrayList();
-        adapter = new TaskListAdapter(mMainActivity, R.layout.task_item, sortedTaskArrayList);
     }
 }

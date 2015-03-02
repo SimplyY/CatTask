@@ -1,18 +1,32 @@
 package com.example.yuwei.killexam.tools;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.widget.CompoundButton;
+
+import com.example.yuwei.killexam.database.MyDatabaseHelper;
+import com.example.yuwei.killexam.taskFragments.TaskListFragment;
+
 import java.util.ArrayList;
 
 /**
  * Created by yuwei on 15/2/26.
  */
 
+//每次newInstance，先排序出完整地树，再建立出sortedToDoTaskArrayList(被taskList所展示的)
+//其中先检测第一级taskTree是否已完成，将完成的过滤掉（不加入todo中）
+
 //the first root = null
 public class TaskTree {
-    private static ArrayList<Task> allTaskArrayList;
-    private static ArrayList<Task> sortedTaskArrayList;
+    private static Context mContext;
 
-    private boolean isFirstRoot = false;
-    public int hasFinished = 0;
+    private static ArrayList<Task> allTaskArrayList;
+    private static ArrayList<Task> sortedTODOTaskArrayList;
+    private static TaskTree root;
+
+    private boolean isRoot = false;
+    private int firstTaskHasFinished = 0;
     private int attribute;
 
     //  通过lateFinishTime来判断是否过期
@@ -22,22 +36,25 @@ public class TaskTree {
 
     private ArrayList<TaskTree> childTaskTreeArrayList;
 
-//  更新taskTree都是通过给newInstance传不同的taskArray
-    public static TaskTree newInstance(ArrayList<Task> theAllTaskArrayList) {
+    //  更新taskTree都是通过给newInstance传不同的taskArray
+    public static TaskTree newInstance(ArrayList<Task> theAllTaskArrayList, Context context) {
+        mContext = context;
         allTaskArrayList = theAllTaskArrayList;
 
-        TaskTree taskTree = new TaskTree(-1, null);
-        taskTree.setFirstRoot(true);
+        root = new TaskTree(-1, null);
 
-        taskTree.setTreeFinishTime();
 
-        sort(taskTree);
+        root.setRoot(true);
 
-        initSortedTaskArrayList(taskTree);
+        root.setTreeFinishTime();
+
+        sort(root);
+
+        initSortedTaskArrayList(root);
 
         initSortedTasksHeader();
 
-        return taskTree;
+        return root;
     }
 
     public TaskTree(int theAttribute, Task theTask) {
@@ -48,22 +65,29 @@ public class TaskTree {
     }
 
     private static void initSortedTaskArrayList(TaskTree taskTree) {
-        sortedTaskArrayList = new ArrayList<>();
-        setSortedTaskArrayList(taskTree);
+        sortedTODOTaskArrayList = new ArrayList<>();
+        for (TaskTree firstTaskTree : taskTree.childTaskTreeArrayList) {
+            firstTaskTree.setFirstTaskTreeHasFinished();
+//          这里将已完成任务过滤
+            if (firstTaskTree.getFirstTaskHasFinished() == 0) {
+                sortedTODOTaskArrayList.add(firstTaskTree.getmTask());
+                setSortedTODOTaskArrayList(firstTaskTree);
+            }
+        }
     }
 
-    private static void setSortedTaskArrayList(TaskTree taskTree) {
+    private static void setSortedTODOTaskArrayList(TaskTree taskTree) {
         if (taskTree.isHasChild()) {
             for (TaskTree theTaskTree : taskTree.childTaskTreeArrayList) {
-                sortedTaskArrayList.add(theTaskTree.getmTask());
-                setSortedTaskArrayList(theTaskTree);
+                sortedTODOTaskArrayList.add(theTaskTree.getmTask());
+                setSortedTODOTaskArrayList(theTaskTree);
             }
         }
     }
 
     private static void initSortedTasksHeader() {
         MyDate headerDate = new MyDate();
-        for (Task task : sortedTaskArrayList) {
+        for (Task task : sortedTODOTaskArrayList) {
             if (task.getTaskAttribute().getSelectedName().equals("一级")) {
                 headerDate = task.getFinishedDate();
                 task.setHeaderDate(headerDate);
@@ -76,7 +100,7 @@ public class TaskTree {
 
     //根据从自己开始的tree里task最早完成的时间sort
     public static void sort(TaskTree taskTree) {
-        if (taskTree.isFirstRoot()) {
+        if (taskTree.isRoot()) {
             quickSort(taskTree, 0, taskTree.childTaskTreeArrayList.size() - 1);
         }
 
@@ -186,28 +210,83 @@ public class TaskTree {
         throw new Exception("cant find this task");
     }
 
-    private static String getLegalTaskName(String theTaskName, int length){
-         return theTaskName.length()<length ? theTaskName : theTaskName.substring(0, length);
+    private static String getLegalTaskName(String theTaskName, int length) {
+        return theTaskName.length() < length ? theTaskName : theTaskName.substring(0, length);
     }
 
-    public boolean isFinished() {
+    //  this只能为firstTaskTree
+    public boolean setFirstTaskTreeHasFinished() {
         if (mTask.getHasFinished() == 0) {
+            firstTaskHasFinished = 0;
             return false;
-        }
-
-        if (!isHasChild()) {
-            hasFinished = 1;
+        } else if (!this.isHasChild()) {
+            firstTaskHasFinished = 1;
             return true;
         }
 
-        for (TaskTree theTaskTree : childTaskTreeArrayList) {
-            if (!theTaskTree.isFinished()) {
-                return false;
+        firstTaskHasFinished = 1;
+        int theIndex = sortedTODOTaskArrayList.indexOf(mTask) + 1;
+//      向后找直到attribute == 1时停下,途中只要有一个没有完成就停下
+        while (isMoveToTheFirstTask(theIndex)) {
+            if (sortedTODOTaskArrayList.get(theIndex).getHasFinished() == 0) {
+                firstTaskHasFinished = 0;
+                break;
             }
+            theIndex++;
         }
 
-        hasFinished = 1;
-        return true;
+        return firstTaskHasFinished == 1;
+    }
+
+    private static boolean isMoveToTheFirstTask(int theIndex){
+        return theIndex < sortedTODOTaskArrayList.size() &&
+                sortedTODOTaskArrayList.get(theIndex).getTaskAttribute().getSelectedPosition() != 0;
+    }
+
+    public static void renewSortedTaskArray(Task checkedTask, CompoundButton checkBox) {
+        //得到被点击任务的第一级的父任务
+        TaskTree taskTree = TaskListFragment.taskTree.getFirstAttributeTaskTree(checkedTask);
+
+        taskTree.setFirstTaskTreeHasFinished();
+        if (taskTree.getFirstTaskHasFinished() == 1) {
+            deleteDialog(taskTree, checkedTask, checkBox);
+        }
+    }
+
+    private static void deleteDialog(final TaskTree taskTree, final Task checkedTask,final CompoundButton checkBox) {
+        new AlertDialog.Builder(mContext).setTitle("删除任务提示").setMessage("此一级任务已完成,是否删除")
+                .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteFirstTaskTree(taskTree);
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        taskTree.firstTaskHasFinished = 0;
+                        checkBox.setChecked(false);
+//                      TODO：deletTaskTree
+                        MyDatabaseHelper.updateIsTaskFinished(mContext, checkedTask, false);
+                    }
+                }).show();
+    }
+
+    private static void deleteFirstTaskTree(TaskTree taskTree) {
+//      向后找直到attribute == 1时停下,途中只要有一个就停下
+
+        int theIndex = sortedTODOTaskArrayList.indexOf(taskTree.getmTask());
+        sortedTODOTaskArrayList.remove(theIndex);
+        theIndex++;
+        while (isMoveToTheFirstTask(theIndex)) {
+//          移出已经完成的一级taskTree
+            sortedTODOTaskArrayList.remove(theIndex);
+        }
+    }
+
+
+    public int getFirstTaskHasFinished() {
+        return firstTaskHasFinished;
     }
 
     public MyDate getTreeEarlyFinishTime() {
@@ -226,12 +305,12 @@ public class TaskTree {
         return mTask;
     }
 
-    public boolean isFirstRoot() {
-        return isFirstRoot;
+    public boolean isRoot() {
+        return isRoot;
     }
 
-    public void setFirstRoot(boolean isFirstRoot) {
-        this.isFirstRoot = isFirstRoot;
+    public void setRoot(boolean isFirstRoot) {
+        this.isRoot = isFirstRoot;
     }
 
     //  分别设置taskTree的最早完成时间和最晚完成时间
@@ -269,10 +348,7 @@ public class TaskTree {
 
     private void initChildTreeTaskArrayList() {
         childTaskTreeArrayList = new ArrayList<>();
-//      只选取没完成的一级任务树
-        if (getAttribute() == 0 && hasFinished == 1) {
-            return;
-        }
+
         for (Task task : allTaskArrayList) {
 //          选取attribute是此taskTree的child的attribute的task
             if (task.getTaskAttribute().getSelectedPosition() == getChildAttribute()) {
@@ -286,8 +362,8 @@ public class TaskTree {
         }
     }
 
-    public static ArrayList<Task> getSortedTaskArrayList() {
-        return sortedTaskArrayList;
+    public static ArrayList<Task> getSortedTODOTaskArrayList() {
+        return sortedTODOTaskArrayList;
     }
 
     private int getChildAttribute() {

@@ -256,7 +256,7 @@ public class CreateTaskFragment extends editableTaskFragment{
         MainActivity.mTitleMap = new TitleMapString();
         mMainActivity.restoreActionBar();
 
-        TaskListFragment.renewTaskList();
+        TaskListFragment.initTaskList();
 
     }
 }

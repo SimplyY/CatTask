@@ -1,6 +1,7 @@
 package com.example.yuwei.killexam.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,26 +38,26 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     final int THE_MAX_LENGTH = 50;
 
     private LayoutInflater inflater;
-    List<Task> tasks;
+    List<Task> sortedTODOtasks;
 
     public TaskListAdapter(Context context, int textViewResourceId, List<Task> objects) {
         super(context, textViewResourceId, objects);
 
         inflater = LayoutInflater.from(context);
         mContext = context;
-        tasks = objects;
+        sortedTODOtasks = objects;
 
         resourceId = textViewResourceId;
     }
 
     @Override
     public int getCount() {
-        return tasks.size();
+        return sortedTODOtasks.size();
     }
 
     @Override
     public Task getItem(int position) {
-        return tasks.get(position);
+        return sortedTODOtasks.get(position);
     }
 
     @Override
@@ -90,17 +91,17 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
         if (convertView == null) {
             headHolder = new HeaderViewHolder();
             convertView = inflater.inflate(R.layout.header, parent, false);
-            headHolder.timeTextView = (TextView)convertView.findViewById(R.id.timeHeader);
-            headHolder.amountTextView = (TextView)convertView.findViewById(R.id.amountHeader);
-            headHolder.headLayout = (LinearLayout)convertView.findViewById(R.id.headerLinearLayout);
+            headHolder.timeTextView = (TextView) convertView.findViewById(R.id.timeHeader);
+            headHolder.amountTextView = (TextView) convertView.findViewById(R.id.amountHeader);
+            headHolder.headLayout = (LinearLayout) convertView.findViewById(R.id.headerLinearLayout);
             convertView.setTag(headHolder);
         } else {
-            headHolder = (HeaderViewHolder)convertView.getTag();
+            headHolder = (HeaderViewHolder) convertView.getTag();
         }
         String headerTimeString;
         HeaderTimeMapString headerTimeMapString = new HeaderTimeMapString();
-        headerTimeString = headerTimeMapString.getValue(tasks.get(position));
-        int imageId = headerTimeMapString.getImageId(tasks.get(position));
+        headerTimeString = headerTimeMapString.getValue(sortedTODOtasks.get(position));
+        int imageId = headerTimeMapString.getImageId(sortedTODOtasks.get(position));
 
         int amount = 0;
 
@@ -115,7 +116,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
         int headerId;
 
         HeaderTimeMapString headerTimeMapString = new HeaderTimeMapString();
-        headerId = headerTimeMapString.getKey(tasks.get(position));
+        headerId = headerTimeMapString.getKey(sortedTODOtasks.get(position));
 
         return headerId;
     }
@@ -165,18 +166,15 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
                 Task checkedTask = new Task();
                 try {
                     checkedTask = TaskTree.getTask(buttonView.getText().toString(), THE_MAX_LENGTH);
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
+                    Log.e("checkedTask","checkedTask get wrong");
                 }
 
                 MyDatabaseHelper.updateIsTaskFinished(getContext(), checkedTask, isChecked);
 
-
-                TaskTree taskTree = TaskListFragment.taskTree.getFirstAttributeTaskTree(checkedTask);
-                if (taskTree.isFinished()) {
-                    TaskListFragment.renewTaskList();
-                }
+                TaskTree.renewSortedTaskArray(checkedTask, buttonView);
+                notifyDataSetChanged();
             }
         });
     }
@@ -198,10 +196,10 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
 
     private int getTagResId(Task theTask) {
         SpinnerValue tagColorSpinnerValue = theTask.getTagColor();
-        int tagResId = R.drawable.tag_color_white;
+        int tagResId = R.drawable.tag_color_green;
         switch (tagColorSpinnerValue.getSelectedName()) {
             case "白色":
-                tagResId = R.drawable.tag_color_white;
+                tagResId = R.drawable.tag_color_green;
                 break;
             case "紫色":
                 tagResId = R.drawable.tag_color_purple;
