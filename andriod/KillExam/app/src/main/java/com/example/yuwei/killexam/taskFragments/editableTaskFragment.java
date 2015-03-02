@@ -59,7 +59,7 @@ public abstract class editableTaskFragment extends Fragment
             newTask.setTaskAttribute(taskAttribute);
         }
 
-        mTaskAttributeSpinner.setSelection(newTask.getTaskAttribute().getPosition());
+        mTaskAttributeSpinner.setSelection(newTask.getTaskAttribute().getSelectedPosition());
     }
 
     protected void setTagColorValue(){
@@ -68,7 +68,7 @@ public abstract class editableTaskFragment extends Fragment
             newTask.setTagColor(tagColor);
         }
 
-        mTaskColorTagSpinner.setSelection(newTask.getTagColor().getPosition());
+        mTaskColorTagSpinner.setSelection(newTask.getTagColor().getSelectedPosition());
     }
 
     protected void setRemindMethodValue(){
@@ -76,7 +76,7 @@ public abstract class editableTaskFragment extends Fragment
             SpinnerValue remindMethod = SpinnerValue.initSpinnerValue(R.array.task_remind_method_array, getResources());
             newTask.setRemindMethod(remindMethod);
         }
-        mRemindMethodSpinner.setSelection(newTask.getRemindMethod().getPosition());
+        mRemindMethodSpinner.setSelection(newTask.getRemindMethod().getSelectedPosition());
 
     }
 

@@ -74,7 +74,7 @@ public class CheckTask {
         final String NULL_CHINESE = "空";
         final String CHOOSE_CHINESE = "点击选择";
         selectedAttributePositionNow = mTaskAttributeSpinner.getSelectedItemPosition();
-        selectedAttributePositionBefore = newTask.getTaskAttribute().getPosition();
+        selectedAttributePositionBefore = newTask.getTaskAttribute().getSelectedPosition();
         if (selectedAttributePositionNow != 0) {
 //已经设置好belong时
             if (newTask.isHasBelong() && selectedAttributePositionNow == selectedAttributePositionBefore) {
@@ -107,7 +107,7 @@ public class CheckTask {
         SpinnerValue attribute = newTask.getTaskAttribute();
         newTask.getTaskAttribute().setSelectedName(mTaskAttributeSpinner.getSelectedItem().toString());
 
-        if (attribute.getPosition() != 0) {
+        if (attribute.getSelectedPosition() != 0) {
             if (newTask.isHasBelong() == false || selectedAttributePositionNow != selectedAttributePositionBefore) {
                 preserveSomeTaskInfo();
                 mFragment.setTaskBelong();

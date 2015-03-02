@@ -224,7 +224,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 
         String where = NAME + "='" + theTask.getTaskName() + "'";
 
-        int suc = database.update(TASK_TABLE_NAME, contentValues, where, null);
+        database.update(TASK_TABLE_NAME, contentValues, where, null);
 
 
     }

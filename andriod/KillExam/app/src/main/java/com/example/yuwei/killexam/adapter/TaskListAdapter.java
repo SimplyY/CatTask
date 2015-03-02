@@ -1,7 +1,6 @@
 package com.example.yuwei.killexam.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,9 @@ import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.map.HeaderTimeMapString;
 import com.example.yuwei.killexam.map.SpinnerValue;
+import com.example.yuwei.killexam.taskFragments.TaskListFragment;
 import com.example.yuwei.killexam.tools.Task;
+import com.example.yuwei.killexam.tools.TaskTree;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
 
     Task theTask;
     Context mContext;
+    final int THE_MAX_LENGTH = 50;
 
     private LayoutInflater inflater;
     List<Task> tasks;
@@ -127,9 +129,6 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
 
         viewHolder.isTaskFinishedCheckBox = (CheckBox) view.findViewById(R.id.taskListIsTaskFinishedCheckBox);
 
-
-        viewHolder.taskNameTextView = (TextView) view.findViewById(R.id.taskListNameTextView);
-
         viewHolder.taskFinishTimeTextView = (TextView) view.findViewById(R.id.taskListFinishTimeTextView);
     }
 
@@ -163,17 +162,30 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
         viewHolder.isTaskFinishedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                MyDatabaseHelper.updateIsTaskFinished(getContext(), theTask, isChecked);
+                Task checkedTask = new Task();
+                try {
+                    checkedTask = TaskTree.getTask(buttonView.getText().toString(), THE_MAX_LENGTH);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                MyDatabaseHelper.updateIsTaskFinished(getContext(), checkedTask, isChecked);
+
+
+                TaskTree taskTree = TaskListFragment.taskTree.getFirstAttributeTaskTree(checkedTask);
+                if (taskTree.isFinished()) {
+                    TaskListFragment.renewTaskList();
+                }
             }
         });
     }
 
     private void setTaskNameTextView() {
-        final int THE_MAX_LENGTH = 8;
 
         String taskName = theTask.getTaskName();
         String taskNameInList = taskName.length() < THE_MAX_LENGTH ? taskName : (taskName.substring(0, THE_MAX_LENGTH) + "...");
-        viewHolder.taskNameTextView.setText(taskNameInList);
+        viewHolder.isTaskFinishedCheckBox.setText(taskNameInList);
     }
 
     private void setTaskFinishTimeTextView() {
@@ -181,18 +193,18 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     }
 
     private int getSpaceNumber(Task theTask) {
-        return theTask.getTaskAttribute().getPosition();
+        return theTask.getTaskAttribute().getSelectedPosition();
     }
 
     private int getTagResId(Task theTask) {
         SpinnerValue tagColorSpinnerValue = theTask.getTagColor();
-        int tagResId = R.drawable.tag_color_white;
+        int tagResId = R.drawable.tag_color_green;
         switch (tagColorSpinnerValue.getSelectedName()) {
             case "白色":
-                tagResId = R.drawable.tag_color_white;
+                tagResId = R.drawable.tag_color_green;
                 break;
             case "紫色":
-                tagResId = R.drawable.tag_color_purple;
+                tagResId = R.drawable.tag_color_yellow;
                 break;
             case "蓝色":
                 tagResId = R.drawable.tag_color_blue;
@@ -214,7 +226,6 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
         ImageView tagColorImageView;
         Space space;
         CheckBox isTaskFinishedCheckBox;
-        TextView taskNameTextView;
         TextView taskFinishTimeTextView;
     }
 }

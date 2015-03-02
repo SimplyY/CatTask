@@ -20,7 +20,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class TaskListFragment extends Fragment {
 
-    static private TaskTree taskTree;
+    static public TaskTree taskTree;
 
     static private MainActivity mMainActivity;
 
@@ -48,21 +48,22 @@ public class TaskListFragment extends Fragment {
         mView = inflater.inflate(R.layout.fragment_task_list, container, false);
         taskListView = (StickyListHeadersListView)mView.findViewById(R.id.taskListView);
 
-        RenewTaskList();
+        renewTaskList();
 
         return mView;
     }
 
-    public static void RenewTaskList(){
+//  通过读取数据库获取最新的taskArray，来初始化taskTree
+    public static void renewTaskList(){
         ArrayList<Task> taskArrayList = MyDatabaseHelper.getTaskArray(mMainActivity);
-
+//TODO: 检查taskTree的hasFinished的属性
         if (taskArrayList.isEmpty() == false){
-            initAdapter(taskArrayList);
+            initSortedTaskTreeAdapter(taskArrayList);
             taskListView.setAdapter(adapter);
         }
     }
 
-    private static void initAdapter(ArrayList<Task> taskArrayList){
+    private static void initSortedTaskTreeAdapter(ArrayList<Task> taskArrayList){
         taskTree = TaskTree.newInstance(taskArrayList);
 
         ArrayList<Task> sortedTaskArrayList = TaskTree.getSortedTaskArrayList();
