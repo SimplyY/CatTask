@@ -8,6 +8,11 @@ KillExam
 ---
 以日程为核心斩掉所有考试之前的荆棘阻碍。
 
+
+beta 1.0
+----
+![](https://raw.githubusercontent.com/jnSimpler/KillExam/master/2015-03-03%2020_10_00.gif)
+
 目的
 ----
 1. 首先自身需要，没有强制性的有规划一些任务日程安排，发现复习力不从心。
