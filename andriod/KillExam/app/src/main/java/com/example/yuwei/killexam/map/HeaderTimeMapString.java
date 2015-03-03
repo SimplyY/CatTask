@@ -27,10 +27,10 @@ public class HeaderTimeMapString extends HashMap<Integer, String>{
         put(4, FUTURE);
 
         imageId.put(0, R.drawable.header_overdue_red);
-        imageId.put(1, R.drawable.header_today_blue);
-        imageId.put(2, R.drawable.header_withinoneweek_green);
-        imageId.put(3, R.drawable.header_withinthreedays_yellow);
-        imageId.put(4, R.drawable.header_future_white);
+        imageId.put(1, R.drawable.header_withinoneweek_green);
+        imageId.put(2, R.drawable.header_today_blue);
+        imageId.put(3, R.drawable.header_withinthreedays_purple);
+        imageId.put(4, R.drawable.header_future_silver);
     }
 
     public String getValue(Task task){

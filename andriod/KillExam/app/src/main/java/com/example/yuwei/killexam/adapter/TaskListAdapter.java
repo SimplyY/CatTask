@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
 
+import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.map.HeaderTimeMapString;
@@ -31,10 +32,11 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHeadersAdapter {
     View view;
     ViewHolder viewHolder;
+    int viewHolderPosition;
     int resourceId;
 
     Task theTask;
-    Context mContext;
+    MainActivity mMainActivity;
     final int THE_MAX_LENGTH = 50;
 
     private LayoutInflater inflater;
@@ -42,11 +44,13 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
 
     TaskListAdapter taskListAdapter;
 
+    int firstVisiblePosition;
+
     public TaskListAdapter(Context context, int textViewResourceId, List<Task> objects) {
         super(context, textViewResourceId, objects);
 
         inflater = LayoutInflater.from(context);
-        mContext = context;
+        mMainActivity = (MainActivity)context;
         sortedTODOtasks = objects;
 
         resourceId = textViewResourceId;
@@ -72,21 +76,34 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         theTask = getItem(position);
+        viewHolderPosition = position;
 
         if (convertView == null) {
             view = inflater.inflate(resourceId, null);
 
             viewHolder = new ViewHolder();
-            initViewHolder(viewHolder);
+            initViewHolder();
 
             view.setTag(viewHolder);
         } else {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag();
         }
-        setTaskHolder(viewHolder);
+        setTaskHolder();
+
+        setActionBar();
 
         return view;
+    }
+
+    private void setActionBar(){
+        int position = TaskListFragment.taskListView.getFirstVisiblePosition();
+
+        if (firstVisiblePosition != position){
+            firstVisiblePosition = position;
+            int imageId = (new HeaderTimeMapString()).getImageId(sortedTODOtasks.get(firstVisiblePosition));
+            mMainActivity.getSupportActionBar().setBackgroundDrawable(mMainActivity.getResources().getDrawable(imageId));
+        }
     }
 
     @Override
@@ -104,32 +121,40 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
         }
         String headerTimeString;
         HeaderTimeMapString headerTimeMapString = new HeaderTimeMapString();
+
         headerTimeString = headerTimeMapString.getValue(sortedTODOtasks.get(position));
         int imageId = headerTimeMapString.getImageId(sortedTODOtasks.get(position));
-
-        int amount = 0;
-
+        int amount = getHeaderAmount(position);
 
         headHolder.timeTextView.setText(headerTimeString);
-        headHolder.headLayout.setBackground(mContext.getResources().getDrawable(imageId));
+        headHolder.headLayout.setBackground(mMainActivity.getResources().getDrawable(imageId));
         headHolder.amountTextView.setText(String.valueOf(amount));
 
         return convertView;
     }
 
+    private int getHeaderAmount(int position){
+        long theHeadId = getHeaderId(position);
+        int amount = 0;
+        for (int i = 0; i < sortedTODOtasks.size(); i++){
+            if (theHeadId == getHeaderId(i)){
+                amount++;
+            }
+        }
+        return  amount;
+    }
 
     @Override
     public long getHeaderId(int position) {
-        int headerId;
 
         HeaderTimeMapString headerTimeMapString = new HeaderTimeMapString();
-        headerId = headerTimeMapString.getKey(sortedTODOtasks.get(position));
+        int headerId = headerTimeMapString.getKey(sortedTODOtasks.get(position));
 
         return headerId;
     }
 
 
-    private void initViewHolder(ViewHolder viewHolder) {
+    private void initViewHolder() {
 
         viewHolder.tagColorImageView = (ImageView) view.findViewById(R.id.taskListColorTagImageView);
 
@@ -140,7 +165,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
         viewHolder.taskFinishTimeTextView = (TextView) view.findViewById(R.id.taskListFinishTimeTextView);
     }
 
-    private void setTaskHolder(ViewHolder viewHolder) {
+    private void setTaskHolder() {
         setColorImageView();
         setSpaceWidth();
         setIsTaskFinishedCheckBox();
@@ -167,6 +192,17 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     }
 
     private void setIsTaskFinishedCheckBox() {
+
+        Task task = sortedTODOtasks.get(viewHolderPosition);
+        CheckBox checkBox = viewHolder.isTaskFinishedCheckBox;
+
+        if (task.getHasFinished()==1){
+            checkBox.setChecked(true);
+        }
+        else {
+            checkBox.setChecked(false);
+        }
+
         viewHolder.isTaskFinishedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

@@ -10,6 +10,7 @@ import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.adapter.TaskListAdapter;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
+import com.example.yuwei.killexam.map.HeaderTimeMapString;
 import com.example.yuwei.killexam.tools.Task;
 import com.example.yuwei.killexam.tools.TaskTree;
 
@@ -20,12 +21,15 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class TaskListFragment extends Fragment {
 
-    static public TaskTree taskTree;
+    public static TaskTree taskTree;
 
-    static private MainActivity mMainActivity;
+    private static MainActivity mMainActivity;
 
-    static StickyListHeadersListView taskListView;
+    public static StickyListHeadersListView taskListView;
+
     static TaskListAdapter adapter;
+
+    static ArrayList<Task> sortedTODOTaskArrayList;
 
     View mView;
 
@@ -49,6 +53,8 @@ public class TaskListFragment extends Fragment {
         taskListView = (StickyListHeadersListView)mView.findViewById(R.id.taskListView);
         initTaskList();
 
+        initActionBar();
+
         return mView;
     }
 
@@ -58,11 +64,18 @@ public class TaskListFragment extends Fragment {
         if (!taskArrayList.isEmpty()){
             taskTree = TaskTree.newInstance(taskArrayList, mMainActivity);
 
-            ArrayList<Task> sortedTaskArrayList = TaskTree.getSortedTODOTaskArrayList();
+            sortedTODOTaskArrayList = TaskTree.getSortedTODOTaskArrayList();
 
-            adapter = new TaskListAdapter(mMainActivity, R.layout.task_item, sortedTaskArrayList);
+            adapter = new TaskListAdapter(mMainActivity, R.layout.task_item, sortedTODOTaskArrayList);
             taskListView.setAdapter(adapter);
 
         }
     }
+
+    private static void initActionBar(){
+        HeaderTimeMapString headerTimeMapString = new HeaderTimeMapString();
+        int imageId = headerTimeMapString.getImageId(sortedTODOTaskArrayList.get(0));
+        mMainActivity.getSupportActionBar().setBackgroundDrawable(mMainActivity.getResources().getDrawable(imageId));
+    }
+
 }
