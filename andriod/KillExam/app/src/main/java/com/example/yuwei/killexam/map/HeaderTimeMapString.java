@@ -10,11 +10,11 @@ import java.util.HashMap;
  * Created by yuwei on 15/2/28.
  */
 public class HeaderTimeMapString extends HashMap<Integer, String>{
-    private final String OVERDUE = "过期";
-    private final String TODAY = "今天";
-    private final String RECENTLY_THREE_DAY = "最近三天";
-    private final String A_WEEK = "一周内";
-    private final String FUTURE = "将来";
+    private static final String OVERDUE = "过期";
+    private static final String TODAY = "今天";
+    private static final String RECENTLY_THREE_DAY = "三天内";
+    private static final String A_WEEK = "一周内";
+    private static final String FUTURE = "将来";
 
 
     private HashMap<Integer, Integer> imageId = new HashMap<>();
@@ -28,8 +28,8 @@ public class HeaderTimeMapString extends HashMap<Integer, String>{
 
         imageId.put(0, R.drawable.header_overdue_red);
         imageId.put(1, R.drawable.header_today_blue);
-        imageId.put(2, R.drawable.header_withinthreedays_yellow);
-        imageId.put(3, R.drawable.header_withinoneweek_green);
+        imageId.put(2, R.drawable.header_withinoneweek_green);
+        imageId.put(3, R.drawable.header_withinthreedays_yellow);
         imageId.put(4, R.drawable.header_future_white);
     }
 

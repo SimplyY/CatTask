@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.widget.CompoundButton;
 
+import com.example.yuwei.killexam.adapter.TaskListAdapter;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.taskFragments.TaskListFragment;
 
@@ -24,6 +25,8 @@ public class TaskTree {
     private static ArrayList<Task> allTaskArrayList;
     private static ArrayList<Task> sortedTODOTaskArrayList;
     private static TaskTree root;
+
+    private static TaskListAdapter mAdapter;
 
     private boolean isRoot = false;
     private int firstTaskHasFinished = 0;
@@ -86,14 +89,9 @@ public class TaskTree {
     }
 
     private static void initSortedTasksHeader() {
-        MyDate headerDate = new MyDate();
         for (Task task : sortedTODOTaskArrayList) {
-            if (task.getTaskAttribute().getSelectedName().equals("一级")) {
-                headerDate = task.getFinishedDate();
-                task.setHeaderDate(headerDate);
-            } else {
-                task.setHeaderDate(headerDate);
-            }
+            TaskTree firstTaskTree = root.getFirstAttributeTaskTree(task);
+            task.setHeaderDate(firstTaskTree.getTreeEarlyFinishTime());
         }
     }
 
@@ -226,7 +224,7 @@ public class TaskTree {
 
         firstTaskHasFinished = 1;
         int theIndex = sortedTODOTaskArrayList.indexOf(mTask) + 1;
-//      向后找直到attribute == 1时停下,途中只要有一个没有完成就停下
+//      向后找直到attribute == 1时停下,途中只要有一个就停下
         while (isMoveToTheFirstTask(theIndex)) {
             if (sortedTODOTaskArrayList.get(theIndex).getHasFinished() == 0) {
                 firstTaskHasFinished = 0;
@@ -238,12 +236,9 @@ public class TaskTree {
         return firstTaskHasFinished == 1;
     }
 
-    private static boolean isMoveToTheFirstTask(int theIndex){
-        return theIndex < sortedTODOTaskArrayList.size() &&
-                sortedTODOTaskArrayList.get(theIndex).getTaskAttribute().getSelectedPosition() != 0;
-    }
+    public static void renewSortedTaskArray(Task checkedTask, CompoundButton checkBox, TaskListAdapter adapter) {
+        mAdapter = adapter;
 
-    public static void renewSortedTaskArray(Task checkedTask, CompoundButton checkBox) {
         //得到被点击任务的第一级的父任务
         TaskTree taskTree = TaskListFragment.taskTree.getFirstAttributeTaskTree(checkedTask);
 
@@ -254,7 +249,8 @@ public class TaskTree {
     }
 
     private static void deleteDialog(final TaskTree taskTree, final Task checkedTask,final CompoundButton checkBox) {
-        new AlertDialog.Builder(mContext).setTitle("删除任务提示").setMessage("此一级任务已完成,是否删除")
+        new AlertDialog.Builder(mContext).setCancelable(false)
+                .setTitle("删除任务提示").setMessage("此一级任务已完成，是否删除")
                 .setPositiveButton("删除", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -266,25 +262,34 @@ public class TaskTree {
                     public void onClick(DialogInterface dialog, int which) {
                         taskTree.firstTaskHasFinished = 0;
                         checkBox.setChecked(false);
-//                      TODO：deletTaskTree
                         MyDatabaseHelper.updateIsTaskFinished(mContext, checkedTask, false);
                     }
                 }).show();
     }
-
+//  删除一个taskTree
     private static void deleteFirstTaskTree(TaskTree taskTree) {
-//      向后找直到attribute == 1时停下,途中只要有一个就停下
-
         int theIndex = sortedTODOTaskArrayList.indexOf(taskTree.getmTask());
-        sortedTODOTaskArrayList.remove(theIndex);
-        theIndex++;
+
+        deleteTask(theIndex);
+//      注意由于remove会使得后面的task的index前移1,所以theIndex不需要++
         while (isMoveToTheFirstTask(theIndex)) {
-//          移出已经完成的一级taskTree
-            sortedTODOTaskArrayList.remove(theIndex);
+            deleteTask(theIndex);
         }
+
+        TaskListFragment.initTaskList();
+        mAdapter.notifyDataSetChanged();
     }
+//  向后找直到attribute == 1时停下,途中只要有一个没有完成就停下
+    private static boolean isMoveToTheFirstTask(int theIndex){
+        return theIndex < sortedTODOTaskArrayList.size() &&
+                sortedTODOTaskArrayList.get(theIndex).getTaskAttribute().getSelectedPosition() != 0;
+    }
+//  单个任务的删除
+    public static void deleteTask(int theIndex){
+        MyDatabaseHelper.deleteTask(mContext, sortedTODOTaskArrayList.get(theIndex));
 
-
+        sortedTODOTaskArrayList.remove(theIndex);
+    }
     public int getFirstTaskHasFinished() {
         return firstTaskHasFinished;
     }

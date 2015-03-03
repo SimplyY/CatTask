@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="tag_color_array">
-        <item>白色</item>
+        <item>绿色</item>
         <item>紫色</item>
         <item>蓝色</item>
         <item>红色</item>

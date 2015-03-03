@@ -40,6 +40,8 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     private LayoutInflater inflater;
     List<Task> sortedTODOtasks;
 
+    TaskListAdapter taskListAdapter;
+
     public TaskListAdapter(Context context, int textViewResourceId, List<Task> objects) {
         super(context, textViewResourceId, objects);
 
@@ -48,6 +50,8 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
         sortedTODOtasks = objects;
 
         resourceId = textViewResourceId;
+
+        taskListAdapter = this;
     }
 
     @Override
@@ -105,11 +109,14 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
 
         int amount = 0;
 
+
         headHolder.timeTextView.setText(headerTimeString);
         headHolder.headLayout.setBackground(mContext.getResources().getDrawable(imageId));
         headHolder.amountTextView.setText(String.valueOf(amount));
+
         return convertView;
     }
+
 
     @Override
     public long getHeaderId(int position) {
@@ -173,8 +180,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
 
                 MyDatabaseHelper.updateIsTaskFinished(getContext(), checkedTask, isChecked);
 
-                TaskTree.renewSortedTaskArray(checkedTask, buttonView);
-                notifyDataSetChanged();
+                TaskTree.renewSortedTaskArray(checkedTask, buttonView, taskListAdapter);
             }
         });
     }

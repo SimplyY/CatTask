@@ -55,7 +55,7 @@ public class TaskListFragment extends Fragment {
 //  通过读取数据库获取最新的taskArray，来初始化taskTree
     public static void initTaskList(){
         ArrayList<Task> taskArrayList = MyDatabaseHelper.getTaskArray(mMainActivity);
-        if (taskArrayList.isEmpty() == false){
+        if (!taskArrayList.isEmpty()){
             taskTree = TaskTree.newInstance(taskArrayList, mMainActivity);
 
             ArrayList<Task> sortedTaskArrayList = TaskTree.getSortedTODOTaskArrayList();

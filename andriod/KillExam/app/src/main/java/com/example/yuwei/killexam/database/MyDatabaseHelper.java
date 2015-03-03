@@ -225,7 +225,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         String where = NAME + "='" + theTask.getTaskName() + "'";
 
         database.update(TASK_TABLE_NAME, contentValues, where, null);
+    }
 
+    public static void deleteTask(Context context, Task task){
+        SQLiteDatabase database = getDatabase(context);
+
+        String where = NAME + "='" + task.getTaskName() + "'";
+        database.delete(TASK_TABLE_NAME, where, null);
 
     }
 
