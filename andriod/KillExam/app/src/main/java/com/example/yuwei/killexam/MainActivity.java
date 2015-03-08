@@ -24,8 +24,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 
 public class MainActivity extends ActionBarActivity {
 
-    private DrawerFrameLayout drawer;
+    public Fragment targetShowingFragment;
 
+
+    private DrawerFrameLayout drawer;
     ActionBarDrawerToggle drawerToggle;
     Toolbar toolbar;
 
@@ -150,7 +152,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void enterCreateTask(Intent intent) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment targetFragment = getTargetFragment();
+        Fragment targetFragment = getTargetShowingFragment();
 
         getNewTask((CreateTaskFragment) targetFragment, intent);
         fragmentManager.beginTransaction()
@@ -172,16 +174,16 @@ public class MainActivity extends ActionBarActivity {
     public void replaceFragment() {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment targetFragment = getTargetFragment();
+        targetShowingFragment = getTargetShowingFragment();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, targetFragment)
+                .replace(R.id.container, targetShowingFragment)
                 .commit();
         initDrawerArrow();
 
 
     }
 
-    private Fragment getTargetFragment() {
+    private Fragment getTargetShowingFragment() {
         Fragment targetFragment = new TaskListFragment(this);
 
         if (mTitleMap.getTitle().equals(mTitleMap.TASK_LIST)) {

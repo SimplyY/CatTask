@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Space;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
 
     Task theTask;
     MainActivity mMainActivity;
+
     final int THE_MAX_LENGTH = 50;
 
     private LayoutInflater inflater;
@@ -56,6 +58,11 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
         resourceId = textViewResourceId;
 
         taskListAdapter = this;
+    }
+
+    public void renew(){
+        notifyDataSetChanged();
+//      TODO:renew position
     }
 
     @Override

@@ -277,7 +277,10 @@ public class TaskTree {
         }
 
         TaskListFragment.initTaskList();
-        mAdapter.notifyDataSetChanged();
+
+
+        mAdapter.renew();
+
     }
 //  向后找直到attribute == 1时停下,途中只要有一个没有完成就停下
     private static boolean isMoveToTheFirstTask(int theIndex){
