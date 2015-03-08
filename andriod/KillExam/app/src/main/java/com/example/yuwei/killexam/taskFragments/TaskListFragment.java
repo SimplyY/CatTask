@@ -33,10 +33,6 @@ public class TaskListFragment extends Fragment {
 
     View mView;
 
-    public TaskListFragment(){
-
-    }
-
     public TaskListFragment(MainActivity mainActivity) {
         mMainActivity = mainActivity;
     }
@@ -53,7 +49,9 @@ public class TaskListFragment extends Fragment {
         taskListView = (StickyListHeadersListView)mView.findViewById(R.id.taskListView);
         initTaskList();
 
-        initActionBar();
+        if (sortedTODOTaskArrayList != null){
+            initActionBar();
+        }
 
         return mView;
     }

@@ -155,14 +155,14 @@ public class CheckTask {
     }
 
     private boolean checkFinishDate() {
-        final String TIME_MUST_BE_SELECTED = "任务时间必须选择";
         final String TASK_TIME_CANNT_BE_EARLY_THAN_CURRENT = "任务完成时间不能比当前时间早";
 
         MyDate current = new MyDate();
 
+//      默认时间为当前
         if (mFinishDate == null) {
-            Toast.makeText(mFragment.getActivity().getApplicationContext(), TIME_MUST_BE_SELECTED, Toast.LENGTH_SHORT).show();
-            return false;
+            mFinishDate = current;
+            return true;
         }
 
         boolean checkDateIsRight = !mFinishDate.isBefore(current);

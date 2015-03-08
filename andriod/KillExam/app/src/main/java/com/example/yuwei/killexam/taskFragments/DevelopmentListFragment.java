@@ -1,6 +1,5 @@
 package com.example.yuwei.killexam.taskFragments;
 
-import android.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 
 import com.example.yuwei.killexam.MainActivity;

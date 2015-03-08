@@ -125,10 +125,11 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
         headerTimeString = headerTimeMapString.getValue(sortedTODOtasks.get(position));
         int imageId = headerTimeMapString.getImageId(sortedTODOtasks.get(position));
         int amount = getHeaderAmount(position);
+        final String TASK = "个任务";
 
         headHolder.timeTextView.setText(headerTimeString);
         headHolder.headLayout.setBackground(mMainActivity.getResources().getDrawable(imageId));
-        headHolder.amountTextView.setText(String.valueOf(amount));
+        headHolder.amountTextView.setText(amount + TASK);
 
         return convertView;
     }

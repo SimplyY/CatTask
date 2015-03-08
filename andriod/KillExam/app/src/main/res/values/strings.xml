@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">KillExam</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
@@ -9,6 +8,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
+    <string name="app_name">Cat Task</string>
     <string name="create_task_finish_date">完成时间</string>
     <string name="create_task_spend_time">花费时间</string>
     <string name="create_task_task_content">任务内容</string>

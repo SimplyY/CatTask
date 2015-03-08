@@ -2,23 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/headerLinearLayout"
     android:layout_width="match_parent"
-    android:layout_height="40dp">
+    android:layout_height="42dp">
 
     <Space
-        android:layout_width="8dp"
+        android:layout_width="16dp"
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/timeHeader"
         android:textSize="20sp"
-        android:textColor="@color/custom_text_color"
+        android:textColor="#000000"
         android:gravity="center|start"
         android:layout_width="0dp"
-        android:layout_weight="5"
+        android:layout_weight="3"
         android:layout_height="match_parent" />
 
     <TextView
         android:id="@+id/amountHeader"
-        android:textSize="20sp"
+        android:textSize="17sp"
         android:textColor="@color/custom_text_color"
         android:gravity="center|end"
         android:layout_width="0dp"
