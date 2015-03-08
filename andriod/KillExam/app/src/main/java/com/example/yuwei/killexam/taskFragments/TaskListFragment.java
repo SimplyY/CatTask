@@ -56,6 +56,20 @@ public class TaskListFragment extends Fragment {
         return mView;
     }
 
+//  更新taskList的数据（重新初始化，重新设置adapter），
+//  调用方法更新ui线程，
+//  设置之前选中的位置
+    public static void renewListView(){
+        initTaskList();
+
+        int position = taskListView.getFirstVisiblePosition();
+
+        adapter.notifyDataSetChanged();
+
+        taskListView.setSelection(position);
+
+    }
+
 //  通过读取数据库获取最新的taskArray，来初始化taskTree
     public static void initTaskList(){
         ArrayList<Task> taskArrayList = MyDatabaseHelper.getTaskArray(mMainActivity);
@@ -69,6 +83,7 @@ public class TaskListFragment extends Fragment {
 
         }
     }
+
 
     private static void initActionBar(){
         HeaderTimeMapString headerTimeMapString = new HeaderTimeMapString();

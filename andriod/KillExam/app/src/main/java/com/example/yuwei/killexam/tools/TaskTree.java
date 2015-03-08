@@ -276,10 +276,8 @@ public class TaskTree {
             deleteTask(theIndex);
         }
 
-        TaskListFragment.initTaskList();
 
-
-        mAdapter.renew();
+        TaskListFragment.renewListView();
 
     }
 //  向后找直到attribute == 1时停下,途中只要有一个没有完成就停下

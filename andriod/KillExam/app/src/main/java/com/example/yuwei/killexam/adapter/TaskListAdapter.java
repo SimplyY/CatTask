@@ -60,10 +60,6 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
         taskListAdapter = this;
     }
 
-    public void renew(){
-        notifyDataSetChanged();
-//      TODO:renew position
-    }
 
     @Override
     public int getCount() {
