@@ -121,7 +121,7 @@ public class CheckTask {
     }
 
     private boolean checkTaskName() {
-        final String TASK_NAME_HAS_SPACE = "任务名不能为空，或者有空格";
+        final String TASK_NAME_HAS_SPACE = "任务名不能为空";
         final String TASK_NAME_HAS_EXIST = "任务名已存在";
 
         if (checkEditText(mTaskNameEditText) == false) {
@@ -142,7 +142,11 @@ public class CheckTask {
             return false;
         }
         Matcher space = Pattern.compile(" +").matcher(template);
-        if (space.find()) {
+        if (space.matches()) {
+            return false;
+        }
+        Matcher changeLine = Pattern.compile("\n+").matcher(template);
+        if (changeLine.find()){
             return false;
         }
         return true;
@@ -176,7 +180,7 @@ public class CheckTask {
 
 
     private boolean checkTime() {
-        final String TIME_CANNT_BE_ZERO = "时间不能为零";
+        final String TIME_CANNT_BE_ZERO = "花费时间不能为零";
 
         if (mSpendTimePickerMinutes.getValue() == 0 && mSpendTimePickerHours.getValue() == 0) {
             Toast.makeText(mFragment.getActivity().getApplicationContext(), TIME_CANNT_BE_ZERO, Toast.LENGTH_SHORT).show();

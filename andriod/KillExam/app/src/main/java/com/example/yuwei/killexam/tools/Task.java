@@ -15,7 +15,7 @@ public class Task implements Serializable {
     private SpinnerValue tagColor;
     private String taskName;
     private MyDate finishedDate;
-    private int spendHours = 0;
+    private int spendHours = 1;
     private int spendMinutes = 0;
     private SpinnerValue remindMethod;
     private SpinnerValue taskAttribute;

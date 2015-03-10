@@ -35,7 +35,7 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="0.85" />
+                android:layout_weight="0.88" />
         </LinearLayout>
 
         <LinearLayout
@@ -61,7 +61,7 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="0.85" />
+                android:layout_weight="0.88" />
         </LinearLayout>
 
 
@@ -100,7 +100,7 @@
             android:layout_height="0dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_weight="1"
+            android:layout_weight="0.95"
             android:orientation="horizontal">
 
             <TextView
@@ -161,6 +161,8 @@
                 android:gravity="right">
 
                 <NumberPicker
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="12dp"
                     android:id="@+id/spendTimePickerHours"
 
                     android:layout_width="45dp"
@@ -175,6 +177,8 @@
                     android:textSize="@dimen/create_task_textsize"/>
                 <NumberPicker
                     android:id="@+id/spendTimePickerMinutes"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_width="45dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -184,6 +188,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="分"
+                    android:layout_marginRight="5dp"
                     android:textSize="@dimen/create_task_textsize"/>
             </LinearLayout>
 
@@ -212,7 +217,7 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="0.85" />
+                android:layout_weight="0.88" />
         </LinearLayout>
 
 
@@ -241,7 +246,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/create_task_button"
                 android:layout_gravity="center"
-                android:layout_weight="1"
+                android:layout_weight="0.95"
                  />
 
         </LinearLayout>

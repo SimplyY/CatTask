@@ -22,16 +22,16 @@
     <CheckBox
         android:id="@+id/taskListIsTaskFinishedCheckBox"
         android:layout_gravity="center"
-        android:textSize="20sp"
+        android:textSize="19sp"
         android:textColor="@color/custom_text_color"
         android:gravity="center|start"
-        android:layout_width="260dp"
+        android:layout_width="240dp"
 
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/taskListFinishTimeTextView"
-        android:textSize="18sp"
+        android:textSize="17sp"
         android:textColor="@color/custom_text_color"
         android:gravity="center|end"
         android:layout_width="match_parent"

@@ -39,7 +39,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     Task theTask;
     MainActivity mMainActivity;
 
-    final int THE_MAX_LENGTH = 9;
+    final int THE_MAX_LENGTH = 10;
 
     private LayoutInflater inflater;
     List<Task> sortedTODOtasks;
