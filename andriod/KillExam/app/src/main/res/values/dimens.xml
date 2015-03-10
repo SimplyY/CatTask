@@ -7,6 +7,6 @@
          https://developer.android.com/design/patterns/navigation-drawer.html -->
     <dimen name="navigation_drawer_width">240dp</dimen>
 
-    <dimen name="fragment_maginleft">15dp</dimen>
-    <dimen name="create_task_textsize">25sp</dimen>
+    <dimen name="fragment_maginleft">17dp</dimen>
+    <dimen name="create_task_textsize">22sp</dimen>
 </resources>

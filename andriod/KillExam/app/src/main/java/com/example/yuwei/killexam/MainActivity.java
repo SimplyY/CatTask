@@ -1,6 +1,7 @@
 package com.example.yuwei.killexam;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -158,6 +159,8 @@ public class MainActivity extends ActionBarActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.container, targetFragment)
                 .commit();
+
+
     }
 
     private void getNewTask(CreateTaskFragment fragment, Intent intent) {
@@ -180,7 +183,15 @@ public class MainActivity extends ActionBarActivity {
                 .commit();
         initDrawerArrow();
 
-
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                handler.removeCallbacks(this);
+                drawer.closeDrawer();
+            }
+        };
+        handler.postDelayed(runnable, 280);
     }
 
     private Fragment getTargetShowingFragment() {

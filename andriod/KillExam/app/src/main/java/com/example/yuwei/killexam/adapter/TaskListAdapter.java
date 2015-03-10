@@ -39,7 +39,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     Task theTask;
     MainActivity mMainActivity;
 
-    final int THE_MAX_LENGTH = 50;
+    final int THE_MAX_LENGTH = 9;
 
     private LayoutInflater inflater;
     List<Task> sortedTODOtasks;
@@ -228,7 +228,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     private void setTaskNameTextView() {
 
         String taskName = theTask.getTaskName();
-        String taskNameInList = taskName.length() < THE_MAX_LENGTH ? taskName : (taskName.substring(0, THE_MAX_LENGTH) + "...");
+        String taskNameInList = taskName.length() < THE_MAX_LENGTH + 1 ? taskName : (taskName.substring(0, THE_MAX_LENGTH) + "...");
         viewHolder.isTaskFinishedCheckBox.setText(taskNameInList);
     }
 

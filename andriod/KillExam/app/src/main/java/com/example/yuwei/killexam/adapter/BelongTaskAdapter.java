@@ -31,7 +31,7 @@ public class BelongTaskAdapter extends ArrayAdapter<String>{
             view = LayoutInflater.from(getContext()).inflate(resourceId, null);
 
             viewHolder = new ViewHolder();
-            viewHolder.taskFinishCheckBox = (TextView)view.findViewById(R.id.belongTaskTextView);
+            viewHolder.taskNameText = (TextView)view.findViewById(R.id.belongTaskTextView);
 
             view.setTag(viewHolder);
         }
@@ -39,13 +39,13 @@ public class BelongTaskAdapter extends ArrayAdapter<String>{
             view = convertView;
             viewHolder = (ViewHolder)view.getTag();
         }
-        viewHolder.taskFinishCheckBox.setText(taskName);
+        viewHolder.taskNameText.setText(taskName);
 
         return view;
     }
 
 
     class ViewHolder{
-        TextView taskFinishCheckBox;
+        TextView taskNameText;
     }
 }
