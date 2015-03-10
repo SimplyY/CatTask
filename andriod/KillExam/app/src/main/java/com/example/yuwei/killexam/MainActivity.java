@@ -67,8 +67,10 @@ public class MainActivity extends ActionBarActivity {
                 invalidateOptionsMenu();
             }
         };
+
         drawer.setDrawerListener(drawerToggle);
         drawerToggle.syncState();
+
     }
 
     private void initDrawer() {
@@ -176,22 +178,22 @@ public class MainActivity extends ActionBarActivity {
     //  更换fragment
     public void replaceFragment() {
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        targetShowingFragment = getTargetShowingFragment();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, targetShowingFragment)
-                .commit();
-        initDrawerArrow();
+        drawer.closeDrawer();
 
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 handler.removeCallbacks(this);
-                drawer.closeDrawer();
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                targetShowingFragment = getTargetShowingFragment();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, targetShowingFragment)
+                        .commit();
             }
         };
-        handler.postDelayed(runnable, 280);
+        handler.postDelayed(runnable, 320);
     }
 
     private Fragment getTargetShowingFragment() {
