@@ -1,10 +1,13 @@
 package com.example.yuwei.killexam.taskFragments;
 
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
@@ -13,6 +16,8 @@ import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.map.HeaderTimeMapString;
 import com.example.yuwei.killexam.tools.Task;
 import com.example.yuwei.killexam.tools.TaskTree;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.util.ArrayList;
 
@@ -46,7 +51,13 @@ public class TaskListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_task_list, container, false);
+
+        initFloatButton();
+
+
         taskListView = (StickyListHeadersListView)mView.findViewById(R.id.taskListView);
+
+
         initTaskList();
 
         if (sortedTODOTaskArrayList != null){
@@ -93,4 +104,29 @@ public class TaskListFragment extends Fragment {
         mMainActivity.getSupportActionBar().setBackgroundDrawable(mMainActivity.getResources().getDrawable(imageId));
     }
 
+    private void initFloatButton(){
+
+
+
+        final View actionB = mView.findViewById(R.id.action_b);
+
+        FloatingActionButton actionC = new FloatingActionButton(mMainActivity.getBaseContext());
+        actionC.setTitle("Hide/Show Action above");
+        actionC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+        ((FloatingActionsMenu) mView.findViewById(R.id.multiple_actions)).addButton(actionC);
+
+
+        final FloatingActionButton actionA = (FloatingActionButton) mView.findViewById(R.id.action_a);
+        actionA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                actionA.setTitle("Action A clicked");
+            }
+        });
+
+    }
 }

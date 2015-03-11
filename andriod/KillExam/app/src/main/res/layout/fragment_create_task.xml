@@ -71,13 +71,16 @@
 
 
 
+
+
+
+
+
         <LinearLayout
-            android:id="@+id/task_finish_date"
+            android:id="@+id/remindMethod"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_weight="0.95"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <TextView
@@ -85,26 +88,45 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/fragment_maginleft"
+
                 android:layout_weight="1"
-
-                android:text="@string/create_task_finish_date"
+                android:text="@string/create_task_remind_method"
                 android:textSize="@dimen/create_task_textsize" />
-
-            <Button
-                android:id="@+id/finishDatePicker"
-                android:text="@string/create_picker"
-                android:layout_width="20dp"
+            <Spinner
+                android:id="@+id/task_remindMethodSpinner"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1" ></Button>
-
-
-            <!--<DatePicker-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/datePicker" />-->
-
+                android:layout_weight="0.88" />
         </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/taskColorTag"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/fragment_maginleft"
+
+                android:layout_weight="1"
+                android:text="@string/create_task_color_tag"
+                android:textSize="@dimen/create_task_textsize" />
+
+
+            <Spinner
+                android:id="@+id/taskColorTagSpinner"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.88" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/taskSpendTime"
@@ -171,10 +193,8 @@
 
         </LinearLayout>
 
-
-
         <LinearLayout
-            android:id="@+id/remindMethod"
+            android:id="@+id/task_finish_date"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -185,46 +205,26 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/fragment_maginleft"
-
                 android:layout_weight="1"
-                android:text="@string/create_task_remind_method"
-                android:textSize="@dimen/create_task_textsize" />
-            <Spinner
-                android:id="@+id/task_remindMethodSpinner"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.88" />
-        </LinearLayout>
 
-
-        <LinearLayout
-            android:id="@+id/taskColorTag"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/fragment_maginleft"
-
-                android:layout_weight="1"
-                android:text="@string/create_task_color_tag"
+                android:text="@string/create_task_finish_date"
                 android:textSize="@dimen/create_task_textsize" />
 
-
-            <Spinner
-                android:id="@+id/taskColorTagSpinner"
-                android:layout_width="50dp"
+            <Button
+                android:id="@+id/finishDatePicker"
+                android:text="@string/create_picker"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="0.88" />
+                android:layout_weight="0.3" />
+
+
+            <!--<DatePicker-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/datePicker" />-->
+
         </LinearLayout>
-
-
 
         <LinearLayout
             android:id="@+id/spendTime"
@@ -240,17 +240,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/fragment_maginleft"
                 android:layout_gravity="center"
-                android:text="无父任务"
+                android:text="上级任务"
                 android:textSize="@dimen/create_task_textsize"
                 android:layout_weight="1" />
 
             <Button
                 android:id="@+id/createTask"
-                android:layout_width="30dp"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:text="@string/create_task_button"
                 android:layout_gravity="center"
-                android:layout_weight="0.95"
+                android:layout_weight="0.3"
                  />
 
         </LinearLayout>
