@@ -68,6 +68,8 @@ public class TaskListFragment extends Fragment {
 
         taskListView.setSelection(position);
 
+        initActionBar();
+
     }
 
 //  通过读取数据库获取最新的taskArray，来初始化taskTree

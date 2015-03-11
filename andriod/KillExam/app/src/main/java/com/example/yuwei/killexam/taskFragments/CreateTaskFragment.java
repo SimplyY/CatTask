@@ -42,7 +42,6 @@ public class CreateTaskFragment extends editableTaskFragment{
         mMainActivity = mainActivity;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -252,7 +251,7 @@ public class CreateTaskFragment extends editableTaskFragment{
 
     private void quit(){
         initTaskList();
-        mMainActivity.replaceFragment();
+        mMainActivity.replaceFragmentFromDrawer();
     }
 
     private void initTaskList(){

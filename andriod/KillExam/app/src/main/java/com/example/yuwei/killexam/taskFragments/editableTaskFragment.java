@@ -41,7 +41,8 @@ public abstract class editableTaskFragment extends Fragment
     public MyDate mFinishDate;
 
 
-    public Task newTask;
+    public Task
+            newTask;
 
     protected void setAdapterForSpinner(Spinner spinner, int arrayId){
         spinner.setOnItemSelectedListener(this);

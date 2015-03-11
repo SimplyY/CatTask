@@ -137,7 +137,7 @@ public class MyDate implements Serializable {
         this.day = day;
     }
 
-    public String listString(){
+    public String listShowString(){
         return this.toString().substring(5);
     }
 }

@@ -8,30 +8,32 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.yuwei.killexam.R;
+import com.example.yuwei.killexam.tools.Task;
 
 import java.util.List;
 
 /**
  * Created by yuwei on 15/2/19.
  */
-public class BelongTaskAdapter extends ArrayAdapter<String>{
+public class BelongTaskAdapter extends ArrayAdapter<Task>{
     View view;
     ViewHolder viewHolder;
     int resourceId;
 
-    public BelongTaskAdapter(Context context, int textViewResourceId, List<String> objects){
+    public BelongTaskAdapter(Context context, int textViewResourceId, List<Task> objects){
         super(context, textViewResourceId, objects);
         resourceId = textViewResourceId;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-        String taskName = getItem(position);
+        Task task = getItem(position);
         if (convertView == null){
             view = LayoutInflater.from(getContext()).inflate(resourceId, null);
 
             viewHolder = new ViewHolder();
             viewHolder.taskNameText = (TextView)view.findViewById(R.id.belongTaskTextView);
+            viewHolder.finishedTimeText = (TextView)view.findViewById(R.id.belongTaskFinishTimeText);
 
             view.setTag(viewHolder);
         }
@@ -39,7 +41,8 @@ public class BelongTaskAdapter extends ArrayAdapter<String>{
             view = convertView;
             viewHolder = (ViewHolder)view.getTag();
         }
-        viewHolder.taskNameText.setText(taskName);
+        viewHolder.taskNameText.setText(task.getTaskName());
+        viewHolder.finishedTimeText.setText(task.getFinishedDate().listShowString());
 
         return view;
     }
@@ -47,5 +50,6 @@ public class BelongTaskAdapter extends ArrayAdapter<String>{
 
     class ViewHolder{
         TextView taskNameText;
+        TextView finishedTimeText;
     }
 }

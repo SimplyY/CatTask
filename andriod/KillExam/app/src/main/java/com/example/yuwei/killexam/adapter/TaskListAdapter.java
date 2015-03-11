@@ -10,7 +10,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Space;
 import android.widget.TextView;
 
@@ -233,7 +232,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     }
 
     private void setTaskFinishTimeTextView() {
-        viewHolder.taskFinishTimeTextView.setText(theTask.getFinishedDate().listString());
+        viewHolder.taskFinishTimeTextView.setText(theTask.getFinishedDate().listShowString());
     }
 
     private int getSpaceNumber(Task theTask) {

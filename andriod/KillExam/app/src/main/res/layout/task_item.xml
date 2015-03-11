@@ -4,7 +4,7 @@
 
     <Space
         android:layout_width="14dp"
-        android:layout_height="48dp" />
+        android:layout_height="52dp" />
 
     <ImageView
         android:id="@+id/taskListColorTagImageView"

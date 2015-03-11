@@ -25,6 +25,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 
 public class MainActivity extends ActionBarActivity {
 
+    public static final String ENTER_FRAGMENT = "enterFragment";
+    public static final String TASK = "task";
+
     public Fragment targetShowingFragment;
 
 
@@ -45,9 +48,30 @@ public class MainActivity extends ActionBarActivity {
         initDrawer();
         initDrawerArrow();
 
-        replaceFragment();
-        getBelongInCreateTask();
+        enterFragment();
+    }
 
+    private void enterFragment(){
+        if (!hasEnterFragmentByIntent()){
+//          正常情况进入taskList
+            mTitleMap.setTitle(TitleMapString.TASK_LIST);
+            replaceFragmentByTitle();
+        }
+    }
+
+    private boolean hasEnterFragmentByIntent(){
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null){
+//          确认进入createTaskFragment的信息
+//          当从选择belong的activity里面后退时，会进入这个activity，这时需要进入createFragment。
+            if (bundle.getString(ENTER_FRAGMENT) != null && bundle.getSerializable(TASK) !=null){
+                mTitleMap.setTitle(bundle.getString(ENTER_FRAGMENT));
+                enterCreateTask((Task)bundle.getSerializable(TASK));
+                return true;
+            }
+        }
+        return false;
     }
 
     //  arrow animation
@@ -90,37 +114,37 @@ public class MainActivity extends ActionBarActivity {
 
         drawer.addItem(
                 new DrawerItem()
-                        .setTextPrimary(mTitleMap.TASK_LIST)
+                        .setTextPrimary(TitleMapString.TASK_LIST)
 
                         .setOnItemClickListener(new DrawerItem.OnItemClickListener() {
                             @Override
                             public void onClick(DrawerItem drawerItem, int id, int position) {
-                                setmTitle(position);
-                                replaceFragment();
+                                setmTitleByDrawerClickedItem(position);
+                                replaceFragmentFromDrawer();
                             }
                         })
         );
 
         drawer.addItem(
                 new DrawerItem()
-                        .setTextPrimary(mTitleMap.CREATE_TASK)
+                        .setTextPrimary(TitleMapString.CREATE_TASK)
                         .setOnItemClickListener(new DrawerItem.OnItemClickListener() {
                             @Override
                             public void onClick(DrawerItem drawerItem, int id, int position) {
-                                setmTitle(position);
-                                replaceFragment();
+                                setmTitleByDrawerClickedItem(position);
+                                replaceFragmentFromDrawer();
                             }
                         })
         );
 
         drawer.addItem(
                 new DrawerItem()
-                        .setTextPrimary(mTitleMap.FINISHED_LIST)
+                        .setTextPrimary(TitleMapString.FINISHED_LIST)
                         .setOnItemClickListener(new DrawerItem.OnItemClickListener() {
                             @Override
                             public void onClick(DrawerItem drawerItem, int id, int position) {
-                                setmTitle(position);
-                                replaceFragment();
+                                setmTitleByDrawerClickedItem(position);
+                                replaceFragmentFromDrawer();
                             }
                         })
         );
@@ -134,49 +158,27 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    public void setmTitle(int position) {
+    public void setmTitleByDrawerClickedItem(int position) {
         mTitleMap.setTitle(mTitleMap.get(position));
     }
 
-    //  当从选择belong的activity里面后退时，会进入这个activity，这时需要进入createFragment。
-    private void getBelongInCreateTask() {
-        Intent intent = getIntent();
-        String enterFragment = intent.getStringExtra("enterFragment");
-
-        if (enterFragment != null) {
-            switch (enterFragment) {
-                case "CreateTaskFragment":
-                    mTitleMap.setTitle(mTitleMap.CREATE_TASK);
-                    enterCreateTask(intent);
-                    break;
-            }
-        }
-    }
-
-    private void enterCreateTask(Intent intent) {
+    private void enterCreateTask(Task task) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment targetFragment = getTargetShowingFragment();
+        CreateTaskFragment createTaskFragment = (CreateTaskFragment) getTargetShowingFragmentByTitle();
 
-        getNewTask((CreateTaskFragment) targetFragment, intent);
+        createTaskFragment.setNewTask(task);
+
         fragmentManager.beginTransaction()
-                .replace(R.id.container, targetFragment)
+                .replace(R.id.container, createTaskFragment)
                 .commit();
 
-
-    }
-
-    private void getNewTask(CreateTaskFragment fragment, Intent intent) {
-        Bundle bundle = intent.getExtras();
-
-        if (bundle != null) {
-            Task task = (Task) bundle.get("task");
-            fragment.setNewTask(task);
-        }
+        drawer.setDrawerListener(drawerToggle);
+        drawerToggle.syncState();
     }
 
 
     //  更换fragment
-    public void replaceFragment() {
+    public void replaceFragmentFromDrawer() {
 
         drawer.closeDrawer();
 
@@ -185,26 +187,33 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void run() {
                 handler.removeCallbacks(this);
-
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                targetShowingFragment = getTargetShowingFragment();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, targetShowingFragment)
-                        .commit();
+                replaceFragmentByTitle();
             }
         };
         handler.postDelayed(runnable, 320);
     }
 
-    private Fragment getTargetShowingFragment() {
+    private void replaceFragmentByTitle(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        targetShowingFragment = getTargetShowingFragmentByTitle();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, targetShowingFragment)
+                .commit();
+
+        drawer.setDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+    }
+
+    private Fragment getTargetShowingFragmentByTitle() {
         Fragment targetFragment = new TaskListFragment(this);
 
-        if (mTitleMap.getTitle().equals(mTitleMap.TASK_LIST)) {
+        if (mTitleMap.getTitle().equals(TitleMapString.TASK_LIST)) {
             targetFragment = new TaskListFragment(this);
         }
-        if (mTitleMap.getTitle().equals(mTitleMap.CREATE_TASK)) {
+        else if (mTitleMap.getTitle().equals(TitleMapString.CREATE_TASK)) {
             targetFragment = new CreateTaskFragment(this);
-        } else if (mTitleMap.getTitle().equals(mTitleMap.FINISHED_LIST)) {
+        }
+        else if (mTitleMap.getTitle().equals(TitleMapString.FINISHED_LIST)) {
             targetFragment = new DevelopmentListFragment(this);
         }
         return targetFragment;

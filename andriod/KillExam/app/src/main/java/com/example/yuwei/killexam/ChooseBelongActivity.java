@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.adapter.BelongTaskAdapter;
+import com.example.yuwei.killexam.map.TitleMapString;
 import com.example.yuwei.killexam.tools.Task;
 
 import java.util.ArrayList;
@@ -24,7 +25,8 @@ public class ChooseBelongActivity extends ActionBarActivity {
 
     private String belongTasksAttributeName;
 
-    private ArrayList<String> belongTasksNames = new ArrayList<String>();
+    private ArrayList<Task> belongTasks = new ArrayList<>();
+    private Task belongTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ public class ChooseBelongActivity extends ActionBarActivity {
     private void setBelongTasksView(){
         initBelongTasks();
 
-        BelongTaskAdapter adapter = new BelongTaskAdapter(this, R.layout.belong_task_item, belongTasksNames);
+        BelongTaskAdapter adapter = new BelongTaskAdapter(this, R.layout.belong_task_item, belongTasks);
 
         ListView belongTaskListView = (ListView) findViewById(R.id.BelongTasksListView);
         belongTaskListView.setAdapter(adapter);
@@ -74,9 +76,10 @@ public class ChooseBelongActivity extends ActionBarActivity {
         belongTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String belongTaskName = belongTasksNames.get(position);
+                belongTask = belongTasks.get(position);
+
                 newTask.setHasBelong(true);
-                newTask.setBelongName(belongTaskName);
+                newTask.setBelongName(belongTask.getTaskName());
                 quit();
             }
         });
@@ -84,13 +87,13 @@ public class ChooseBelongActivity extends ActionBarActivity {
     }
 
     private void initBelongTasks(){
-         belongTasksNames = MyDatabaseHelper.getBelongTasksNames(this, belongTasksAttributeName);
+         belongTasks = MyDatabaseHelper.getBelongTasks(this, belongTasksAttributeName);
     }
 
     private void quit(){
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("task", newTask);
-        intent.putExtra("enterFragment", "CreateTaskFragment");
+        intent.putExtra(MainActivity.TASK, newTask);
+        intent.putExtra(MainActivity.ENTER_FRAGMENT, TitleMapString.CREATE_TASK);
         startActivity(intent);
     }
 

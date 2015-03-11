@@ -8,9 +8,9 @@ import java.util.HashMap;
  * Created by yuwei on 15/3/1.
  */
 public class TitleMapString extends HashMap<Integer, String>{
-    public final String TASK_LIST = "任务清单";
-    public final String CREATE_TASK = "创建任务";
-    public final String FINISHED_LIST = "完成清单";
+    public static final String TASK_LIST = "任务清单";
+    public static final String CREATE_TASK = "创建任务";
+    public static final String FINISHED_LIST = "完成清单";
 
     private String title;
 

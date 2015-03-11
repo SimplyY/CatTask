@@ -179,22 +179,22 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         return false;
     }
 
-//得到多有上一级任务的名字
-    public static ArrayList<String> getBelongTasksNames(Context context, String belongTasksAttribute){
+//得到多有上一级任务
+    public static ArrayList<Task> getBelongTasks(Context context, String belongTasksAttribute){
         SQLiteDatabase database = getDatabase(context);
-        ArrayList<String> belongTasksNames = new ArrayList<>();
+        ArrayList<Task> belongTasks = new ArrayList<>();
 
         String where = ATTRIBUTE + "='" + belongTasksAttribute + "'";
 
-        Cursor cursor = database.query(TASK_TABLE_NAME, new String[]{NAME}, where, null, null, null, null);
+        Cursor cursor = database.query(TASK_TABLE_NAME, null, where, null, null, null, null);
 
         while (cursor.moveToNext()){
-            String belongTaskName = cursor.getString(cursor.getColumnIndex(NAME));
+            Task belongTask = getCompleteTask(cursor, context);
 
-            belongTasksNames.add(belongTaskName);
+            belongTasks.add(belongTask);
         }
         cursor.close();
-        return belongTasksNames;
+        return belongTasks;
     }
 
 //取出所有的task
@@ -208,7 +208,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             Task theTask = getCompleteTask(cursor, context);
             taskArrayList.add(theTask);
         }
-
+        cursor.close();
         return taskArrayList;
     }
 

@@ -13,59 +13,6 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/taskAttribute"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/fragment_maginleft"
-
-                android:layout_weight="1"
-                android:text="@string/create_task_task_attribute"
-                android:textSize="@dimen/create_task_textsize" />
-
-
-            <Spinner
-                android:id="@+id/taskAttributeSpinner"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.88" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/taskColorTag"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/fragment_maginleft"
-
-                android:layout_weight="1"
-                android:text="@string/create_task_color_tag"
-                android:textSize="@dimen/create_task_textsize" />
-
-
-            <Spinner
-                android:id="@+id/taskColorTagSpinner"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.88" />
-        </LinearLayout>
-
-
-        <LinearLayout
             android:id="@+id/task_name"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -92,6 +39,36 @@
                 android:layout_weight="0.95"
                 android:inputType="textMultiLine" />
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/taskAttribute"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/fragment_maginleft"
+
+                android:layout_weight="1"
+                android:text="@string/create_task_task_attribute"
+                android:textSize="@dimen/create_task_textsize" />
+
+
+            <Spinner
+                android:id="@+id/taskAttributeSpinner"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.88" />
+        </LinearLayout>
+
+
+
+
 
 
         <LinearLayout
@@ -214,6 +191,33 @@
                 android:textSize="@dimen/create_task_textsize" />
             <Spinner
                 android:id="@+id/task_remindMethodSpinner"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.88" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/taskColorTag"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/fragment_maginleft"
+
+                android:layout_weight="1"
+                android:text="@string/create_task_color_tag"
+                android:textSize="@dimen/create_task_textsize" />
+
+
+            <Spinner
+                android:id="@+id/taskColorTagSpinner"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
