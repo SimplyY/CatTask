@@ -213,7 +213,8 @@
             <Button
                 android:id="@+id/finishDatePicker"
                 android:text="@string/create_picker"
-                android:layout_width="20dp"
+                android:textSize="18sp"
+                android:layout_width="15dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.3" />
@@ -246,9 +247,10 @@
 
             <Button
                 android:id="@+id/createTask"
-                android:layout_width="20dp"
+                android:layout_width="15dp"
                 android:layout_height="wrap_content"
                 android:text="@string/create_task_button"
+                android:textSize="18sp"
                 android:layout_gravity="center"
                 android:layout_weight="0.3"
                  />

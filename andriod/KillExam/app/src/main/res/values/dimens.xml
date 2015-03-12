@@ -8,5 +8,5 @@
     <dimen name="navigation_drawer_width">240dp</dimen>
 
     <dimen name="fragment_maginleft">17dp</dimen>
-    <dimen name="create_task_textsize">22sp</dimen>
+    <dimen name="create_task_textsize">21sp</dimen>
 </resources>

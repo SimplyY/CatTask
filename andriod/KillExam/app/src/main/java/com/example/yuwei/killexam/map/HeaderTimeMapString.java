@@ -12,7 +12,6 @@ import java.util.HashMap;
 public class HeaderTimeMapString extends HashMap<Integer, String>{
     private static final String OVERDUE = "过期";
     private static final String TODAY = "今天";
-    private static final String RECENTLY_THREE_DAY = "三天内";
     private static final String A_WEEK = "一周内";
     private static final String FUTURE = "将来";
 
@@ -22,15 +21,13 @@ public class HeaderTimeMapString extends HashMap<Integer, String>{
     public HeaderTimeMapString(){
         put(0, OVERDUE);
         put(1, TODAY);
-        put(2, RECENTLY_THREE_DAY);
-        put(3, A_WEEK);
-        put(4, FUTURE);
+        put(2, A_WEEK);
+        put(3, FUTURE);
 
         imageId.put(0, R.drawable.header_overdue_red);
-        imageId.put(1, R.drawable.header_withinoneweek_green);
-        imageId.put(2, R.drawable.header_today_blue);
-        imageId.put(3, R.drawable.header_withinthreedays_purple);
-        imageId.put(4, R.drawable.header_future_silver);
+        imageId.put(1, R.drawable.header_today_blue);
+        imageId.put(2, R.drawable.header_withinaweek_purple);
+        imageId.put(3, R.drawable.header_future_silver);
     }
 
     public String getValue(Task task){
@@ -49,14 +46,11 @@ public class HeaderTimeMapString extends HashMap<Integer, String>{
         else if (headerDate.equals(current)){
             return 1;
         }
-        else if (current.isBefore(headerDate) && !(current.addDay(3).isBefore(headerDate))){
+        else if (current.addDay(7).isBefore(headerDate)){
             return 2;
         }
-        else if (current.addDay(3).isBefore(headerDate) && !(current.addDay(7).isBefore(headerDate))){
-            return 3;
-        }
         else {
-            return 4;
+            return 3;
         }
     }
 

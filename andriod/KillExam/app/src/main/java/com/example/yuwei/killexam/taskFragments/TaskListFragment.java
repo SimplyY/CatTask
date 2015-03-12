@@ -57,7 +57,6 @@ public class TaskListFragment extends Fragment {
 
         taskListView = (StickyListHeadersListView)mView.findViewById(R.id.taskListView);
 
-
         initTaskList();
 
         if (sortedTODOTaskArrayList != null){
@@ -104,9 +103,17 @@ public class TaskListFragment extends Fragment {
         mMainActivity.getSupportActionBar().setBackgroundDrawable(mMainActivity.getResources().getDrawable(imageId));
     }
 
+
+//  a 在最上面，b其次，c最底下
     private void initFloatButton(){
 
-
+        final FloatingActionButton actionA = (FloatingActionButton) mView.findViewById(R.id.action_a);
+        actionA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                actionA.setTitle("Action A clicked");
+            }
+        });
 
         final View actionB = mView.findViewById(R.id.action_b);
 
@@ -120,13 +127,6 @@ public class TaskListFragment extends Fragment {
         ((FloatingActionsMenu) mView.findViewById(R.id.multiple_actions)).addButton(actionC);
 
 
-        final FloatingActionButton actionA = (FloatingActionButton) mView.findViewById(R.id.action_a);
-        actionA.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                actionA.setTitle("Action A clicked");
-            }
-        });
 
     }
 }
