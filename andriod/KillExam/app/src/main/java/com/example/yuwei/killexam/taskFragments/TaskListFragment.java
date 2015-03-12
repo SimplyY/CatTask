@@ -1,13 +1,10 @@
 package com.example.yuwei.killexam.taskFragments;
 
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
@@ -104,29 +101,39 @@ public class TaskListFragment extends Fragment {
     }
 
 
-//  a 在最上面，b其次，c最底下
+//  a在最上面，b其次，c最底下
     private void initFloatButton(){
+
+        final String EXIT = "退出应用";
+        final String CREATE = "创建任务";
+        final String EDIT_MODE = "编辑模式";
 
         final FloatingActionButton actionA = (FloatingActionButton) mView.findViewById(R.id.action_a);
         actionA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                actionA.setTitle("Action A clicked");
+                actionA.setTitle(EXIT);
             }
         });
 
-        final View actionB = mView.findViewById(R.id.action_b);
+        final FloatingActionButton actionB = (FloatingActionButton) mView.findViewById(R.id.action_b);
+        actionB.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                actionB.setTitle(CREATE);
+            }
+        });
 
-        FloatingActionButton actionC = new FloatingActionButton(mMainActivity.getBaseContext());
-        actionC.setTitle("Hide/Show Action above");
+        final FloatingActionButton actionC = new FloatingActionButton(mMainActivity.getBaseContext());
+        actionC.setSize(FloatingActionButton.SIZE_MINI);
+        actionC.setTitle("");
         actionC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                actionC.setTitle(EDIT_MODE);
             }
         });
         ((FloatingActionsMenu) mView.findViewById(R.id.multiple_actions)).addButton(actionC);
-
-
 
     }
 }
