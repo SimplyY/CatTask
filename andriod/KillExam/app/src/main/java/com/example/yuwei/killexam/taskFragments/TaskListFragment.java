@@ -11,6 +11,7 @@ import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.adapter.TaskListAdapter;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.map.HeaderTimeMapString;
+import com.example.yuwei.killexam.map.TitleMapString;
 import com.example.yuwei.killexam.tools.Task;
 import com.example.yuwei.killexam.tools.TaskTree;
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -101,39 +102,42 @@ public class TaskListFragment extends Fragment {
     }
 
 
-//  a在最上面，b其次，c最底下
     private void initFloatButton(){
 
-        final String EXIT = "退出应用";
-        final String CREATE = "创建任务";
-        final String EDIT_MODE = "编辑模式";
+        final String EXIT = "退出";
 
-        final FloatingActionButton actionA = (FloatingActionButton) mView.findViewById(R.id.action_a);
-        actionA.setOnClickListener(new View.OnClickListener() {
+        final FloatingActionButton exitButton = (FloatingActionButton) mView.findViewById(R.id.exit_button);
+        exitButton.setTitle(EXIT);
+
+        exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                actionA.setTitle(EXIT);
+                mMainActivity.finish();
             }
         });
 
-        final FloatingActionButton actionB = (FloatingActionButton) mView.findViewById(R.id.action_b);
-        actionB.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                actionB.setTitle(CREATE);
-            }
-        });
 
-        final FloatingActionButton actionC = new FloatingActionButton(mMainActivity.getBaseContext());
-        actionC.setSize(FloatingActionButton.SIZE_MINI);
-        actionC.setTitle("");
-        actionC.setOnClickListener(new View.OnClickListener() {
+        final String EDIT_MODE = "编辑";
+        final FloatingActionButton editModeButton = (FloatingActionButton) mView.findViewById(R.id.edit_mode_button);
+        editModeButton.setTitle(EDIT_MODE);
+        editModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                actionC.setTitle(EDIT_MODE);
             }
         });
-        ((FloatingActionsMenu) mView.findViewById(R.id.multiple_actions)).addButton(actionC);
+
+        final String CREATE = "创建";
+
+        final FloatingActionButton createTaskButton = (FloatingActionButton) mView.findViewById(R.id.create_task_button);
+        createTaskButton.setTitle(CREATE);
+
+        createTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.mTitleMap.setTitle(TitleMapString.CREATE_TASK);
+                mMainActivity.replaceFragmentByTitle();
+            }
+        });
 
     }
 }

@@ -46,7 +46,7 @@ public class HeaderTimeMapString extends HashMap<Integer, String>{
         else if (headerDate.equals(current)){
             return 1;
         }
-        else if (current.addDay(7).isBefore(headerDate)){
+        else if (!current.addDay(6).isBefore(headerDate)){
             return 2;
         }
         else {

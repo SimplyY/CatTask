@@ -193,7 +193,7 @@ public class MainActivity extends ActionBarActivity {
         handler.postDelayed(runnable, 320);
     }
 
-    private void replaceFragmentByTitle(){
+    public void replaceFragmentByTitle(){
         FragmentManager fragmentManager = getSupportFragmentManager();
         targetShowingFragment = getTargetShowingFragmentByTitle();
         fragmentManager.beginTransaction()
