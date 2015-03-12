@@ -25,9 +25,9 @@ public class HeaderTimeMapString extends HashMap<Integer, String>{
         put(3, FUTURE);
 
         imageId.put(0, R.drawable.header_overdue_red);
-        imageId.put(1, R.drawable.header_today_blue);
+        imageId.put(1, R.drawable.header_today_silver);
         imageId.put(2, R.drawable.header_withinaweek_purple);
-        imageId.put(3, R.drawable.header_future_silver);
+        imageId.put(3, R.drawable.header_future_blue);
     }
 
     public String getValue(Task task){

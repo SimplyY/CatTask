@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -77,6 +78,8 @@ public class CreateTaskFragment extends editableTaskFragment{
         checkTask = new CheckTask(this);
 
         setButtonTextDepnedBelong();
+
+        mMainActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
 //      让toolbar有高富帅般的白色（默认背景）
         mMainActivity.getSupportActionBar().setBackgroundDrawable(null);

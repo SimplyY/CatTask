@@ -197,9 +197,9 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     private void setIsTaskFinishedCheckBox() {
 
         Task task = sortedTODOtasks.get(viewHolderPosition);
-        CheckBox checkBox = viewHolder.isTaskFinishedCheckBox;
+        final CheckBox checkBox = viewHolder.isTaskFinishedCheckBox;
 
-        if (task.getHasFinished()==1){
+        if (task.getHasFinished() == 1){
             checkBox.setChecked(true);
         }
         else {
@@ -222,6 +222,8 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
                 }
                 else{
                     enterEditTaskFragment(checkedTask);
+                    TaskListFragment.isEditMode = false;
+                    checkBox.setChecked(false);
                 }
 
             }

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
@@ -106,6 +107,8 @@ public class TaskListFragment extends Fragment {
 
     private void initFloatButton(){
 
+        final FloatingActionsMenu floatingActionsMenu = (FloatingActionsMenu) mView.findViewById(R.id.fa_menu);
+
         final String EXIT = "退出";
 
         final FloatingActionButton exitButton = (FloatingActionButton) mView.findViewById(R.id.exit_button);
@@ -126,6 +129,8 @@ public class TaskListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 isEditMode = true;
+                Toast.makeText(mMainActivity, "点击任务将编辑任务",Toast.LENGTH_SHORT).show();
+                floatingActionsMenu.collapse();
             }
         });
 
@@ -138,6 +143,7 @@ public class TaskListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 MainActivity.mTitleMap.setTitle(TitleMapString.CREATE_TASK);
+                floatingActionsMenu.collapse();
                 mMainActivity.replaceFragmentByTitle();
             }
         });
