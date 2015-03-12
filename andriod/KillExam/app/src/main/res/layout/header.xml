@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/timeHeader"
         android:layout_marginLeft="@dimen/fragment_maginleft"
-        android:textSize="17sp"
+        android:textSize="18sp"
         android:textColor="#000000"
         android:gravity="center|start"
         android:layout_width="0dp"
@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/amountHeader"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:textColor="@color/custom_text_color"
         android:gravity="center|end"
         android:layout_width="0dp"

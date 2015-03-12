@@ -30,6 +30,8 @@ public class TaskListFragment extends Fragment {
 
     public static StickyListHeadersListView taskListView;
 
+    public static boolean isEditMode = false;
+
     static TaskListAdapter adapter;
 
     static ArrayList<Task> sortedTODOTaskArrayList;
@@ -123,6 +125,7 @@ public class TaskListFragment extends Fragment {
         editModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isEditMode = true;
             }
         });
 

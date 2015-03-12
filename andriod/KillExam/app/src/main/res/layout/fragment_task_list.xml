@@ -43,6 +43,7 @@
             android:layout_height="wrap_content"
             fab:fab_title="                "
             fab:fab_size="mini"
+
             fab:fab_colorNormal="@color/silver_light"
             fab:fab_colorPressed="@color/silver_deep"/>
 

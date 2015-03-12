@@ -217,11 +217,25 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
                     Log.e("checkedTask","checkedTask get wrong");
                 }
 
-                MyDatabaseHelper.updateIsTaskFinished(getContext(), checkedTask, isChecked);
+                if (!TaskListFragment.isEditMode){
+                    finishTask(checkedTask, buttonView, isChecked);
+                }
+                else{
+                    enterEditTaskFragment(checkedTask);
+                }
 
-                TaskTree.renewSortedTaskArray(checkedTask, buttonView, taskListAdapter);
             }
         });
+    }
+
+    private void finishTask(Task checkedTask, CompoundButton buttonView, boolean isChecked){
+        MyDatabaseHelper.updateIsTaskFinished(getContext(), checkedTask, isChecked);
+
+        TaskTree.renewSortedTaskArray(checkedTask, buttonView, taskListAdapter);
+    }
+
+    private void enterEditTaskFragment(Task task){
+//        TODO:
     }
 
     private void setTaskNameTextView() {
