@@ -1,6 +1,7 @@
 package com.example.yuwei.killexam.adapter;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,7 +94,17 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
         }
         setTaskHolder();
 
-        setActionBar();
+
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                handler.removeCallbacks(this);
+                setActionBar();
+                handler.postDelayed(this, 17);
+            }
+        };
+        handler.postDelayed(runnable, 17);
 
         return view;
     }

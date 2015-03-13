@@ -69,39 +69,6 @@
 
 
 
-
-
-
-
-
-
-
-
-        <LinearLayout
-            android:id="@+id/remindMethod"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/fragment_maginleft"
-
-                android:layout_weight="1"
-                android:text="@string/create_task_remind_method"
-                android:textSize="@dimen/create_task_textsize" />
-            <Spinner
-                android:id="@+id/task_remindMethodSpinner"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.85" />
-        </LinearLayout>
-
-
         <LinearLayout
             android:id="@+id/taskColorTag"
             android:layout_width="match_parent"
@@ -127,7 +94,29 @@
                 android:layout_gravity="center"
                 android:layout_weight="0.85" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/remindMethod"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/fragment_maginleft"
+
+                android:layout_weight="1"
+                android:text="@string/create_task_remind_method"
+                android:textSize="@dimen/create_task_textsize" />
+            <Spinner
+                android:id="@+id/task_remindMethodSpinner"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.85" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/taskSpendTime"

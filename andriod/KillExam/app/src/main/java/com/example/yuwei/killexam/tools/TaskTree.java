@@ -98,6 +98,7 @@ public class TaskTree {
 
     //根据从自己开始的tree里task最早完成的时间sort
     public static void sort(TaskTree taskTree) {
+//      对一级任务用快排
         if (taskTree.isRoot()) {
             quickSort(taskTree, 0, taskTree.childTaskTreeArrayList.size() - 1);
         }
@@ -129,7 +130,7 @@ public class TaskTree {
 
         for (int i = left; i < right; i++) {
             TaskTree theChildTaskTree = childTaskTreeArrayList.get(i);
-            if (theChildTaskTree.getmTask().getFinishedDate().isBefore(pivotTaskTree.getTreeEarlyFinishTime())) {
+            if (theChildTaskTree.getTreeEarlyFinishTime().isBefore(pivotTaskTree.getTreeEarlyFinishTime())) {
                 swap(childTaskTreeArrayList, i, newPivot);
                 newPivot++;
             }
