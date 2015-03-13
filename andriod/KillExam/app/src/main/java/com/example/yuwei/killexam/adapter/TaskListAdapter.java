@@ -58,6 +58,16 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
         resourceId = textViewResourceId;
 
         taskListAdapter = this;
+
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                setActionBar();
+                handler.postDelayed(this, 10);
+            }
+        };
+        handler.postDelayed(runnable, 10);
     }
 
 
@@ -94,26 +104,15 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
         }
         setTaskHolder();
 
-
-        final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                handler.removeCallbacks(this);
-                setActionBar();
-                handler.postDelayed(this, 17);
-            }
-        };
-        handler.postDelayed(runnable, 17);
-
         return view;
     }
 
-    private void setActionBar(){
-        int position = TaskListFragment.taskListView.getFirstVisiblePosition();
 
-        if (firstVisiblePosition != position){
-            firstVisiblePosition = position;
+    private void setActionBar(){
+        int currentPosition = TaskListFragment.taskListView.getFirstVisiblePosition();
+
+        if (firstVisiblePosition != currentPosition && firstVisiblePosition >= currentPosition-2 && firstVisiblePosition <= currentPosition +2){
+            firstVisiblePosition = currentPosition;
             int imageId = (new HeaderTimeMapString()).getImageId(sortedTODOtasks.get(firstVisiblePosition));
             mMainActivity.getSupportActionBar().setBackgroundDrawable(mMainActivity.getResources().getDrawable(imageId));
         }
@@ -143,6 +142,10 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
         headHolder.timeTextView.setText(headerTimeString);
         headHolder.headLayout.setBackground(mMainActivity.getResources().getDrawable(imageId));
         headHolder.amountTextView.setText(amount + TASK);
+
+
+
+
 
         return convertView;
     }

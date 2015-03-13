@@ -115,7 +115,7 @@ public class MainActivity extends ActionBarActivity {
         drawer.addItem(
                 new DrawerItem()
                         .setTextPrimary(TitleMapString.TASK_LIST)
-
+                        .setImage(getResources().getDrawable(R.drawable.task_list_menu))
                         .setOnItemClickListener(new DrawerItem.OnItemClickListener() {
                             @Override
                             public void onClick(DrawerItem drawerItem, int id, int position) {
@@ -128,6 +128,7 @@ public class MainActivity extends ActionBarActivity {
         drawer.addItem(
                 new DrawerItem()
                         .setTextPrimary(TitleMapString.CREATE_TASK)
+                        .setImage(getResources().getDrawable(R.drawable.create_menu))
                         .setOnItemClickListener(new DrawerItem.OnItemClickListener() {
                             @Override
                             public void onClick(DrawerItem drawerItem, int id, int position) {

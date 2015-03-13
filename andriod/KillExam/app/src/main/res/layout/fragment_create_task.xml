@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -200,14 +201,17 @@
                 android:text="@string/create_task_finish_date"
                 android:textSize="@dimen/create_task_textsize" />
 
-            <Button
+            <info.hoang8f.widget.FButton
                 android:id="@+id/finishDatePicker"
                 android:text="@string/create_picker"
                 android:textSize="18sp"
-                android:layout_width="15dp"
-                android:layout_height="wrap_content"
+                android:layout_width="12dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:layout_weight="1" />
+                fbutton:buttonColor="@color/silver_deep"
+                android:layout_weight="0.94"
+                android:layout_marginRight="10dp"
+                />
 
 
             <!--<DatePicker-->
@@ -235,14 +239,16 @@
                 android:textSize="@dimen/create_task_textsize"
                 android:layout_weight="1" />
 
-            <Button
+            <info.hoang8f.widget.FButton
                 android:id="@+id/createTask"
-                android:layout_width="15dp"
-                android:layout_height="wrap_content"
+                fbutton:buttonColor="@color/silver_deep"
+                android:layout_width="12dp"
+                android:layout_height="40dp"
                 android:text="@string/create_task_button"
                 android:textSize="18sp"
                 android:layout_gravity="center"
-                android:layout_weight="1"
+                android:layout_weight="0.94"
+                android:layout_marginRight="10dp"
                  />
 
         </LinearLayout>

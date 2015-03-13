@@ -19,6 +19,8 @@ import com.example.yuwei.killexam.tools.MyDate;
 import com.example.yuwei.killexam.map.SpinnerValue;
 import com.example.yuwei.killexam.tools.Task;
 
+import info.hoang8f.widget.FButton;
+
 /**
  * Created by yuwei on 15/2/23.
  */
@@ -31,11 +33,11 @@ public abstract class editableTaskFragment extends Fragment
     public Spinner mTaskColorTagSpinner;
 
     public EditText mTaskNameEditText;
-    public Button mFinishDateButton;
+    public FButton mFinishDateButton;
     public NumberPicker mSpendTimePickerHours;
     public NumberPicker mSpendTimePickerMinutes;
     public Spinner mRemindMethodSpinner;
-    public Button mCreateTaskButton;
+    public FButton mCreateTaskButton;
     public TextView mIsHasBelongTextView;
 
     public MyDate mFinishDate;

@@ -27,9 +27,10 @@
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp">
 
+
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/create_task_button"
-            fab:fab_icon="@drawable/header_future_blue"
+            fab:fab_icon="@drawable/create_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_title="                "
@@ -41,7 +42,7 @@
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/edit_mode_button"
-            fab:fab_icon="@drawable/header_future_blue"
+            fab:fab_icon="@drawable/edit_icon"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

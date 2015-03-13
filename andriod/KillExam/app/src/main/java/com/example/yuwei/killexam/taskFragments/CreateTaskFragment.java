@@ -23,6 +23,8 @@ import com.example.yuwei.killexam.tools.MyDate;
 import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.tools.Task;
 
+import info.hoang8f.widget.FButton;
+
 /**
  * Created by yuwei on 15/2/16.
  */
@@ -161,7 +163,7 @@ public class CreateTaskFragment extends editableTaskFragment{
     }
 
     private void initFinishDateButton(){
-        mFinishDateButton = (Button)mView.findViewById(R.id.finishDatePicker);
+        mFinishDateButton = (FButton)mView.findViewById(R.id.finishDatePicker);
         mFinishDateButton.setOnClickListener(this);
     }
 
@@ -201,7 +203,7 @@ public class CreateTaskFragment extends editableTaskFragment{
 
 
     private void initCreateButton(){
-        mCreateTaskButton = (Button)mView.findViewById(R.id.createTask);
+        mCreateTaskButton = (FButton)mView.findViewById(R.id.createTask);
         mCreateTaskButton.setOnClickListener(this);
     }
 

@@ -27,6 +27,7 @@ dependencies {
 
 
     compile 'com.getbase:floatingactionbutton:1.8.0'
+    compile 'info.hoang8f:fbutton:1.0.5'
     compile 'com.android.support:recyclerview-v7:21.0.0'
     compile "com.daimajia.swipelayout:library:1.1.8@aar"
     compile 'com.heinrichreimersoftware.materialdrawer:library:1.4.2'
