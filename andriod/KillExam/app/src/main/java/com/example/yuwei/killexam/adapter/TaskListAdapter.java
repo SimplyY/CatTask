@@ -111,7 +111,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     private void setActionBar(){
         int currentPosition = TaskListFragment.taskListView.getFirstVisiblePosition();
 
-        if (firstVisiblePosition != currentPosition && firstVisiblePosition >= currentPosition-2 && firstVisiblePosition <= currentPosition +2){
+        if (firstVisiblePosition != currentPosition && firstVisiblePosition >= currentPosition-1 && firstVisiblePosition <= currentPosition +1){
             firstVisiblePosition = currentPosition;
             int imageId = (new HeaderTimeMapString()).getImageId(sortedTODOtasks.get(firstVisiblePosition));
             mMainActivity.getSupportActionBar().setBackgroundDrawable(mMainActivity.getResources().getDrawable(imageId));
