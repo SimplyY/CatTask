@@ -41,7 +41,7 @@
             android:orientation="horizontal">
 
             <NumberPicker
-                android:id="@+id/beginRimindHours"
+                android:id="@+id/beginRemindHours"
                 style="@style/numberPickerStyle" />
 
             <TextView
@@ -52,7 +52,7 @@
                 android:textSize="@dimen/create_task_textsize" />
 
             <NumberPicker
-                android:id="@+id/beginRimindMinutes"
+                android:id="@+id/beginRemindMinutes"
                 style="@style/numberPickerStyle" />
 
             <TextView
@@ -90,7 +90,7 @@
             android:gravity="start"
             android:orientation="horizontal">
         <NumberPicker
-            android:id="@+id/endRimindHours"
+            android:id="@+id/endRemindHours"
             style="@style/numberPickerStyle" />
 
         <TextView
@@ -101,7 +101,7 @@
             android:textSize="@dimen/create_task_textsize" />
 
         <NumberPicker
-            android:id="@+id/endRimindMinutes"
+            android:id="@+id/endRemindMinutes"
             style="@style/numberPickerStyle" />
 
         <TextView

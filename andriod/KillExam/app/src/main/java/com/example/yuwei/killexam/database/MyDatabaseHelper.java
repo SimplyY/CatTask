@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.tools.MyDate;
 import com.example.yuwei.killexam.map.SpinnerValue;
+import com.example.yuwei.killexam.tools.MyTime;
 import com.example.yuwei.killexam.tools.Task;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     private static final String BELONG_NAME = "belong";
     private static final String HAS_FINISHED = "has_finished";
 
-    private static final String CREATE_TASK_TABLE = "create table task (" +
+    private static final String CREATE_TASK_TABLE = "create table " + TASK_TABLE_NAME + " ( " +
             ID + " integer primary key autoincrement, " +
             NAME + " text, " +
             COLOR_TAG + " text, " +
@@ -51,6 +52,22 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             HAS_FINISHED + " integer);";
 
 
+
+    private static final String RIMIND_TIME_TABLE_NAME = "remind_time";
+
+    private static final String BEGIN_REMIND_HOURS = "begin_remind_hours";
+    private static final String BEGIN_REMIND_MINUTES = "begin_remind_minutes";
+    private static final String END_REMIND_HOURS = "end_remind_hours";
+    private static final String END_REMIND_MINUTES = "end_remind_minutes";
+
+    private static final String CREATE_REMIND_TIME_TABLE = "create table " + RIMIND_TIME_TABLE_NAME +" ( " +
+            ID + " integer, " +
+            BEGIN_REMIND_HOURS + " integer, " +
+            BEGIN_REMIND_MINUTES + " integer, " +
+            END_REMIND_HOURS + " integer, " +
+            END_REMIND_MINUTES + " integer);";
+
+
     public MyDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         DATABASE_NAME = name;
@@ -59,14 +76,19 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TASK_TABLE);
+
+        db.execSQL(CREATE_REMIND_TIME_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion == 1 && newVersion == 2){
+            db.execSQL(CREATE_REMIND_TIME_TABLE);
+        }
     }
 
     private static SQLiteDatabase getDatabase(Context context){
-        SQLiteOpenHelper databaseHelper = new MyDatabaseHelper(context, "task.db", null, 1);
+        SQLiteOpenHelper databaseHelper = new MyDatabaseHelper(context, "task.db", null, 2);
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         return database;
     }
@@ -230,7 +252,40 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 
         String where = NAME + "='" + task.getTaskName() + "'";
         database.delete(TASK_TABLE_NAME, where, null);
+    }
 
+
+    public static void writeRemindTime(Context context, MyTime beginTime, MyTime endTime){
+        SQLiteDatabase database = getDatabase(context);
+
+        String where = ID + "= 1";
+        database.delete(RIMIND_TIME_TABLE_NAME, where, null);
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ID, 1);
+        contentValues.put(BEGIN_REMIND_HOURS, beginTime.hours);
+        contentValues.put(BEGIN_REMIND_MINUTES, beginTime.minutes);
+        contentValues.put(END_REMIND_HOURS, endTime.hours);
+        contentValues.put(END_REMIND_MINUTES, endTime.minutes);
+
+        database.insert(RIMIND_TIME_TABLE_NAME, null, contentValues);
+    }
+
+    public static void getRemindTime(Context context, MyTime beginTime, MyTime endTime){
+        SQLiteDatabase database = getDatabase(context);
+
+        String where = ID + "= 1";
+        Cursor cursor = database.query(RIMIND_TIME_TABLE_NAME, null, where, null, null, null, null);
+
+        if (cursor.moveToNext()){
+
+
+            beginTime.hours = cursor.getInt(cursor.getColumnIndex(BEGIN_REMIND_HOURS));
+            beginTime.minutes = cursor.getInt(cursor.getColumnIndex(BEGIN_REMIND_MINUTES));
+
+            endTime.hours = cursor.getInt(cursor.getColumnIndex(END_REMIND_HOURS));
+            endTime.minutes = cursor.getInt(cursor.getColumnIndex(END_REMIND_MINUTES));
+        }
     }
 
 }

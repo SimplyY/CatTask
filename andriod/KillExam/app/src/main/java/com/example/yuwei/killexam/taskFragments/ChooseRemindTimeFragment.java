@@ -10,12 +10,10 @@ import android.widget.NumberPicker;
 
 import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
-import com.example.yuwei.killexam.tools.MyDate;
+import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.tools.MyTime;
 
-import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
-
-public class ChooseRimindTimeFragment extends Fragment
+public class ChooseRemindTimeFragment extends Fragment
         implements NumberPicker.OnValueChangeListener, NumberPicker.OnScrollListener,NumberPicker.Formatter{
 
     private MainActivity mMainActivity;
@@ -28,11 +26,11 @@ public class ChooseRimindTimeFragment extends Fragment
 
     public Button mButton;
 
-    private MyTime mBeginRimindTime;
-    private MyTime mEndRimindTime;
+    private MyTime mBeginRemindTime;
+    private MyTime mEndRemindTime;
 
 
-    public ChooseRimindTimeFragment(MainActivity mainActivity){
+    public ChooseRemindTimeFragment(MainActivity mainActivity){
         mMainActivity = mainActivity;
     }
 
@@ -51,32 +49,38 @@ public class ChooseRimindTimeFragment extends Fragment
     }
 
     private void initPickers(){
-        mBeginPickerHours = (NumberPicker)mView.findViewById(R.id.beginRimindHours);
+        mBeginRemindTime = new MyTime();
+        mEndRemindTime = new MyTime();
+        mBeginRemindTime.hours = 10;
+        mEndRemindTime.hours = 20;
+        MyDatabaseHelper.getRemindTime(mMainActivity, mBeginRemindTime, mEndRemindTime);
+
+        mBeginPickerHours = (NumberPicker)mView.findViewById(R.id.beginRemindHours);
         mBeginPickerHours.setOnScrollListener(this);
         mBeginPickerHours.setFormatter(this);
         mBeginPickerHours.setMaxValue(23);
         mBeginPickerHours.setMinValue(0);
-        mBeginPickerHours.setValue(12);
+        mBeginPickerHours.setValue(mBeginRemindTime.hours);
 
-        mBeginPickerMinutes = (NumberPicker)mView.findViewById(R.id.beginRimindMinutes);
+        mBeginPickerMinutes = (NumberPicker)mView.findViewById(R.id.beginRemindMinutes);
         mBeginPickerMinutes.setOnScrollListener(this);
         mBeginPickerMinutes.setFormatter(this);
-        mBeginPickerMinutes.setMaxValue(60);
+        mBeginPickerMinutes.setMaxValue(59);
         mBeginPickerMinutes.setMinValue(0);
-        mEndPickerMinutes.setValue(0);
+        mBeginPickerMinutes.setValue(0);
 
 
-        mEndPickerHours = (NumberPicker)mView.findViewById(R.id.endRimindHours);
+        mEndPickerHours = (NumberPicker)mView.findViewById(R.id.endRemindHours);
         mEndPickerHours.setOnScrollListener(this);
         mEndPickerHours.setFormatter(this);
         mEndPickerHours.setMaxValue(23);
         mEndPickerHours.setMinValue(0);
-        mEndPickerHours.setValue(12);
+        mEndPickerHours.setValue(mEndRemindTime.hours);
 
-        mEndPickerMinutes = (NumberPicker)mView.findViewById(R.id.endRimindMinutes);
+        mEndPickerMinutes = (NumberPicker)mView.findViewById(R.id.endRemindMinutes);
         mEndPickerMinutes.setOnScrollListener(this);
         mEndPickerMinutes.setFormatter(this);
-        mEndPickerMinutes.setMaxValue(60);
+        mEndPickerMinutes.setMaxValue(59);
         mEndPickerMinutes.setMinValue(0);
         mEndPickerMinutes.setValue(0);
     }
@@ -86,10 +90,10 @@ public class ChooseRimindTimeFragment extends Fragment
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBeginRimindTime = new MyTime(mBeginPickerHours.getValue(), mBeginPickerMinutes.getValue());
-                mEndRimindTime = new MyTime(mEndPickerHours.getValue(), mEndPickerMinutes.getValue());
+                mBeginRemindTime = new MyTime(mBeginPickerHours.getValue(), mBeginPickerMinutes.getValue());
+                mEndRemindTime = new MyTime(mEndPickerHours.getValue(), mEndPickerMinutes.getValue());
 
-                
+                MyDatabaseHelper.writeRemindTime(mMainActivity, mBeginRemindTime, mEndRemindTime);
             }
         });
     }
