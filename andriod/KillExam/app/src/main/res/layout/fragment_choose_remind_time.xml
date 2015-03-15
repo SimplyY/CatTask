@@ -7,9 +7,16 @@
     style="@style/fragmentLinearLayoutStyle">
 
 
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/cat_background"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:layout_marginTop="10dp"
         android:gravity="start"
         android:orientation="horizontal">
 
@@ -60,6 +67,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:layout_marginTop="10dp"
         android:gravity="start"
         android:orientation="horizontal">
 
@@ -109,6 +117,7 @@
         android:id="@+id/chooseRimendTimeButton"
         android:layout_width="150dp"
         android:layout_height="40dp"
+        android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"

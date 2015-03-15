@@ -11,6 +11,7 @@ import android.widget.NumberPicker;
 import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.tools.MyDate;
+import com.example.yuwei.killexam.tools.MyTime;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
@@ -26,6 +27,9 @@ public class ChooseRimindTimeFragment extends Fragment
     public NumberPicker mEndPickerMinutes;
 
     public Button mButton;
+
+    private MyTime mBeginRimindTime;
+    private MyTime mEndRimindTime;
 
 
     public ChooseRimindTimeFragment(MainActivity mainActivity){
@@ -82,7 +86,10 @@ public class ChooseRimindTimeFragment extends Fragment
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mBeginRimindTime = new MyTime(mBeginPickerHours.getValue(), mBeginPickerMinutes.getValue());
+                mEndRimindTime = new MyTime(mEndPickerHours.getValue(), mEndPickerMinutes.getValue());
 
+                
             }
         });
     }

@@ -107,10 +107,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         task.setFinishedDate(finishDate);
 
         int spendHours = getIntFromCursor(cursor, SPEND_HOURS);
-        task.setSpendHours(spendHours);
-
         int spendMinutes = getIntFromCursor(cursor, SPEND_MINUTES);
-        task.setSpendMinutes(spendMinutes);
+        task.setSpendTime(spendHours, spendMinutes);
 
         String remindMethodString = getStringFromCursor(cursor, REMIND_METHOD);
         SpinnerValue remindMethod = SpinnerValue.initSpinnerValue(R.array.task_remind_method_array, context.getResources());

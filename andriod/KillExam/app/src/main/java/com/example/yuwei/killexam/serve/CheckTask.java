@@ -187,8 +187,7 @@ public class CheckTask {
             return false;
         }
 
-        newTask.setSpendHours(mSpendTimePickerHours.getValue());
-        newTask.setSpendMinutes(mSpendTimePickerMinutes.getValue());
+        newTask.setSpendTime(mSpendTimePickerHours.getValue(), mSpendTimePickerMinutes.getValue());
         return true;
     }
 
