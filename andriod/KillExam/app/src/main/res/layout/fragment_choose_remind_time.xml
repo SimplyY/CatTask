@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    style="@style/fragmentLinearLayoutStyle">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="start"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <TextView
+                style="@style/createTaskTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="起始时间" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.05"
+            android:gravity="start"
+            android:orientation="horizontal">
+
+            <NumberPicker
+                android:id="@+id/beginRimindHours"
+                style="@style/numberPickerStyle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="时"
+                android:textSize="@dimen/create_task_textsize" />
+
+            <NumberPicker
+                android:id="@+id/beginRimindMinutes"
+                style="@style/numberPickerStyle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="分"
+                android:textSize="@dimen/create_task_textsize" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="start"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <TextView
+                style="@style/createTaskTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="起始时间" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.05"
+            android:gravity="start"
+            android:orientation="horizontal">
+        <NumberPicker
+            android:id="@+id/endRimindHours"
+            style="@style/numberPickerStyle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="时"
+            android:textSize="@dimen/create_task_textsize" />
+
+        <NumberPicker
+            android:id="@+id/endRimindMinutes"
+            style="@style/numberPickerStyle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="分"
+            android:textSize="@dimen/create_task_textsize" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <info.hoang8f.widget.FButton
+        android:id="@+id/chooseRimendTimeButton"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:text="确定"
+        android:textSize="18sp"
+        fbutton:buttonColor="@color/silver_deep" />
+
+
+</LinearLayout>

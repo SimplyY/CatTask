@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class TitleMapString extends HashMap<Integer, String>{
     public static final String TASK_LIST = "任务清单";
     public static final String CREATE_TASK = "创建任务";
-    public static final String FINISHED_LIST = "完成清单";
+    public static final String FINISHED_LIST = "提醒时段";
 
     private String title;
 

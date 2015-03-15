@@ -13,7 +13,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.yuwei.killexam.map.TitleMapString;
 import com.example.yuwei.killexam.taskFragments.CreateTaskFragment;
-import com.example.yuwei.killexam.taskFragments.DevelopmentListFragment;
+import com.example.yuwei.killexam.taskFragments.ChooseRimindTimeFragment;
 import com.example.yuwei.killexam.taskFragments.TaskListFragment;
 import com.example.yuwei.killexam.tools.Task;
 import com.heinrichreimersoftware.materialdrawer.DrawerFrameLayout;
@@ -141,7 +141,8 @@ public class MainActivity extends ActionBarActivity {
         drawer.addItem(
                 new DrawerItem()
                         .setTextPrimary(TitleMapString.FINISHED_LIST)
-                        .setOnItemClickListener(new DrawerItem.OnItemClickListener() {
+                        .setOnItemClickListener(
+                                new DrawerItem.OnItemClickListener() {
                             @Override
                             public void onClick(DrawerItem drawerItem, int id, int position) {
                                 setmTitleByDrawerClickedItem(position);
@@ -215,7 +216,7 @@ public class MainActivity extends ActionBarActivity {
             targetFragment = new CreateTaskFragment(this);
         }
         else if (mTitleMap.getTitle().equals(TitleMapString.FINISHED_LIST)) {
-            targetFragment = new DevelopmentListFragment(this);
+            targetFragment = new ChooseRimindTimeFragment(this);
         }
         return targetFragment;
     }
