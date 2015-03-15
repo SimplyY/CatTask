@@ -245,7 +245,10 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     }
 
     private void finishTask(Task checkedTask, CompoundButton buttonView, boolean isChecked){
-        MyDatabaseHelper.updateIsTaskFinished(getContext(), checkedTask, isChecked);
+        int isFinished = isChecked?1:0;
+        checkedTask.setHasFinished(isFinished);
+
+        MyDatabaseHelper.updateTask(getContext(), checkedTask);
 
         TaskTree.renewSortedTaskArray(checkedTask, buttonView, taskListAdapter);
     }

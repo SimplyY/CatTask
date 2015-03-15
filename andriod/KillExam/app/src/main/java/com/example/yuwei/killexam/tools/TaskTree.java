@@ -263,7 +263,7 @@ public class TaskTree {
                     public void onClick(DialogInterface dialog, int which) {
                         taskTree.firstTaskHasFinished = 0;
                         checkBox.setChecked(false);
-                        MyDatabaseHelper.updateIsTaskFinished(mContext, checkedTask, false);
+                        MyDatabaseHelper.updateTask(mContext, checkedTask);
                     }
                 }).show();
     }

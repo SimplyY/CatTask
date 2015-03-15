@@ -22,6 +22,15 @@ public class Task implements Serializable {
     private boolean hasBelong = false;
     private String belongName;
     private MyDate headerDate;
+    private MyDate recentestDayReminded;
+
+    public MyDate getRecentestDayReminded() {
+        return recentestDayReminded;
+    }
+
+    public void setRecentestDayReminded(MyDate recentestDayReminded) {
+        this.recentestDayReminded = recentestDayReminded;
+    }
 
     private int hasFinished = 0;
 

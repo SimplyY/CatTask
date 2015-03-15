@@ -10,8 +10,18 @@
         android:icon="@drawable/cat"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:windowSoftInputMode="adjustPan"
-        >
+        android:windowSoftInputMode="adjustPan">
+        <receiver android:name=".serve.MyReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+        <service android:name=".serve.RemindService">
+            <intent-filter>
+                <action android:name="com.yuwei.REMIND_SERVICE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >

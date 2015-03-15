@@ -26,6 +26,12 @@ public class MyDate implements Serializable {
     }
 
     public MyDate(String date){
+        if (date.equals("")){
+            year = 0;
+            month = 0;
+            day = 0;
+            return;
+        }
         int indexYearChar = date.indexOf("年");
         int indexMonthChar = date.indexOf("月");
         int indexDayChar = date.indexOf("日");
@@ -87,6 +93,11 @@ public class MyDate implements Serializable {
         else{
             myDate.setMonth(getMonth() + increaseMonth);
         }
+        return myDate;
+    }
+
+    public MyDate addYear(int increaseYear){
+        MyDate myDate = new MyDate(getYear()+increaseYear, getMonth(), getDay());
         return myDate;
     }
 

@@ -21,7 +21,9 @@ import java.util.ArrayList;
 public class MyDatabaseHelper extends SQLiteOpenHelper{
 
 
-    private static String DATABASE_NAME;
+    private static int VERSION = 3;
+
+    private static String DATABASE_NAME = "task";
 
     private static final String TASK_TABLE_NAME = "task";
 
@@ -38,6 +40,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     private static final String BELONG_NAME = "belong";
     private static final String HAS_FINISHED = "has_finished";
 
+    private static final String RECENTEST_DAY_REMINDED = "recentest_day_reminded";
+
     private static final String CREATE_TASK_TABLE = "create table " + TASK_TABLE_NAME + " ( " +
             ID + " integer primary key autoincrement, " +
             NAME + " text, " +
@@ -49,23 +53,29 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             ATTRIBUTE + " text, " +
             HAS_BELONG + " integer, " +
             BELONG_NAME + " text, " +
+            RECENTEST_DAY_REMINDED + " integer "+
             HAS_FINISHED + " integer);";
 
 
+    private static final String ADD_RECENTEST_DAY_REMINDED_IN_TASK = "alter table " + TASK_TABLE_NAME
+            + " add column " + " integer;";
 
-    private static final String RIMIND_TIME_TABLE_NAME = "remind_time";
+
+
+    private static final String REMIND_TIME_TABLE_NAME = "remind_time";
 
     private static final String BEGIN_REMIND_HOURS = "begin_remind_hours";
     private static final String BEGIN_REMIND_MINUTES = "begin_remind_minutes";
     private static final String END_REMIND_HOURS = "end_remind_hours";
     private static final String END_REMIND_MINUTES = "end_remind_minutes";
 
-    private static final String CREATE_REMIND_TIME_TABLE = "create table " + RIMIND_TIME_TABLE_NAME +" ( " +
+    private static final String CREATE_REMIND_TIME_TABLE = "create table " + REMIND_TIME_TABLE_NAME +" ( " +
             ID + " integer, " +
             BEGIN_REMIND_HOURS + " integer, " +
             BEGIN_REMIND_MINUTES + " integer, " +
             END_REMIND_HOURS + " integer, " +
             END_REMIND_MINUTES + " integer);";
+
 
 
     public MyDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -83,12 +93,17 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion == 1 && newVersion == 2){
+//          增加提醒时间段表
             db.execSQL(CREATE_REMIND_TIME_TABLE);
+        }
+        if (oldVersion == 2 && newVersion == 3){
+//          扩充task表
+            db.execSQL(ADD_RECENTEST_DAY_REMINDED_IN_TASK);
         }
     }
 
     private static SQLiteDatabase getDatabase(Context context){
-        SQLiteOpenHelper databaseHelper = new MyDatabaseHelper(context, "task.db", null, 2);
+        SQLiteOpenHelper databaseHelper = new MyDatabaseHelper(context, DATABASE_NAME + ".db", null, VERSION);
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         return database;
     }
@@ -128,6 +143,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         MyDate finishDate =  new MyDate(finishDateString);
         task.setFinishedDate(finishDate);
 
+        MyDate recentestDayReminded = new MyDate(getStringFromCursor(cursor, RECENTEST_DAY_REMINDED));
+        task.setRecentestDayReminded(recentestDayReminded);
+
         int spendHours = getIntFromCursor(cursor, SPEND_HOURS);
         int spendMinutes = getIntFromCursor(cursor, SPEND_MINUTES);
         task.setSpendTime(spendHours, spendMinutes);
@@ -138,7 +156,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         task.setRemindMethod(remindMethod);
 
         int hasBelong = getIntFromCursor(cursor, HAS_BELONG);
-        task.setHasBelong(hasBelong == 1);
+        task.setHasBelong(hasBelong==1);
 
         String belongName = getStringFromCursor(cursor, BELONG_NAME);
         task.setBelongName(hasBelong==1 ? belongName:null);
@@ -186,9 +204,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         database.insert(TASK_TABLE_NAME, null, contentValues);
     }
 
-
-
-//核查任务名是否存在
+//  核查任务名是否存在
     public static boolean checkNameHasExist(Context context, String name){
         SQLiteDatabase database = getDatabase(context);
         Cursor cursor = getTaskCursor(database, name);
@@ -199,7 +215,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         return false;
     }
 
-//得到多有上一级任务
+//  得到多有上一级任务
     public static ArrayList<Task> getBelongTasks(Context context, String belongTasksAttribute){
         SQLiteDatabase database = getDatabase(context);
         ArrayList<Task> belongTasks = new ArrayList<>();
@@ -217,7 +233,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         return belongTasks;
     }
 
-//取出所有的task
+//  取出所有的task
     public static ArrayList<Task> getTaskArray(Context context){
         SQLiteDatabase database = getDatabase(context);
         ArrayList<Task> taskArrayList = new ArrayList<>();
@@ -232,12 +248,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         return taskArrayList;
     }
 
-//更新某个任务是否完成
-    public static void updateIsTaskFinished(Context context, Task theTask, boolean isChecked){
-        int isFinished = isChecked?1:0;
-
-        theTask.setHasFinished(isFinished);
-
+//  更新任务
+    public static void updateTask(Context context, Task theTask){
         SQLiteDatabase database = getDatabase(context);
 
         ContentValues contentValues = getTaskContentValues(theTask);
@@ -259,7 +271,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase database = getDatabase(context);
 
         String where = ID + "= 1";
-        database.delete(RIMIND_TIME_TABLE_NAME, where, null);
+        database.delete(REMIND_TIME_TABLE_NAME, where, null);
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(ID, 1);
@@ -268,14 +280,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         contentValues.put(END_REMIND_HOURS, endTime.hours);
         contentValues.put(END_REMIND_MINUTES, endTime.minutes);
 
-        database.insert(RIMIND_TIME_TABLE_NAME, null, contentValues);
+        database.insert(REMIND_TIME_TABLE_NAME, null, contentValues);
     }
 
     public static void getRemindTime(Context context, MyTime beginTime, MyTime endTime){
         SQLiteDatabase database = getDatabase(context);
 
         String where = ID + "= 1";
-        Cursor cursor = database.query(RIMIND_TIME_TABLE_NAME, null, where, null, null, null, null);
+        Cursor cursor = database.query(REMIND_TIME_TABLE_NAME, null, where, null, null, null, null);
 
         if (cursor.moveToNext()){
 
