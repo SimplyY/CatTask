@@ -23,7 +23,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 
     private static int VERSION = 3;
 
-    private static String DATABASE_NAME = "task";
+    private static String DATABASE_NAME = "task.db";
 
     private static final String TASK_TABLE_NAME = "task";
 
@@ -53,12 +53,12 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             ATTRIBUTE + " text, " +
             HAS_BELONG + " integer, " +
             BELONG_NAME + " text, " +
-            RECENTEST_DAY_REMINDED + " integer "+
+            RECENTEST_DAY_REMINDED + " integer, "+
             HAS_FINISHED + " integer);";
 
 
     private static final String ADD_RECENTEST_DAY_REMINDED_IN_TASK = "alter table " + TASK_TABLE_NAME
-            + " add column " + " integer;";
+            + " add " + RECENTEST_DAY_REMINDED + " integer;";
 
 
 
@@ -76,8 +76,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             END_REMIND_HOURS + " integer, " +
             END_REMIND_MINUTES + " integer);";
 
-
-
     public MyDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         DATABASE_NAME = name;
@@ -88,6 +86,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         db.execSQL(CREATE_TASK_TABLE);
 
         db.execSQL(CREATE_REMIND_TIME_TABLE);
+
     }
 
     @Override
@@ -103,7 +102,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     }
 
     private static SQLiteDatabase getDatabase(Context context){
-        SQLiteOpenHelper databaseHelper = new MyDatabaseHelper(context, DATABASE_NAME + ".db", null, VERSION);
+        SQLiteOpenHelper databaseHelper = new MyDatabaseHelper(context, DATABASE_NAME, null, VERSION);
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         return database;
     }
@@ -175,6 +174,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         contentValues.put(NAME, task.getTaskName());
         contentValues.put(COLOR_TAG, task.getTagColor().getSelectedName());
         contentValues.put(FINISH_DATE, task.getFinishedDate().toString());
+        contentValues.put(RECENTEST_DAY_REMINDED,task.getRecentestDayReminded().toString());
         contentValues.put(SPEND_HOURS, task.getSpendHours());
         contentValues.put(SPEND_MINUTES, task.getSpendMinutes());
         contentValues.put(REMIND_METHOD, task.getRemindMethod().getSelectedName());

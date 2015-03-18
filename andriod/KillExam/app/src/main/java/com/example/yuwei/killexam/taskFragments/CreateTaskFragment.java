@@ -181,8 +181,8 @@ public class CreateTaskFragment extends editableTaskFragment{
         mSpendTimePickerMinutes.setMaxValue(59);
         mSpendTimePickerMinutes.setMinValue(0);
 
-        mSpendTimePickerHours.setValue(newTask.getSpendHours());
-        mSpendTimePickerMinutes.setValue(newTask.getSpendMinutes());
+        mSpendTimePickerHours.setValue(1);
+        mSpendTimePickerMinutes.setValue(0);
 
     }
 

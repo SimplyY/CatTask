@@ -43,6 +43,10 @@ public class MyDate implements Serializable {
 
     @Override
     public String toString() {
+        if (year == 0){
+            return "";
+        }
+
         return year + "年" + month + "月" + day + "日";
     }
 
