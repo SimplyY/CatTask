@@ -55,7 +55,8 @@ public class MainActivity extends ActionBarActivity {
         if (!hasEnterFragmentByIntent()){
 //          正常情况进入taskList
             mTitleMap.setTitle(TitleMapString.TASK_LIST);
-            replaceFragmentByTitle();
+            targetShowingFragment = getTargetShowingFragmentByTitle();
+            replaceFragment(targetShowingFragment);
         }
     }
 
@@ -180,7 +181,7 @@ public class MainActivity extends ActionBarActivity {
 
 
     //  更换fragment
-    public void replaceFragmentFromDrawer() {
+    private void replaceFragmentFromDrawer() {
 
         drawer.closeDrawer();
 
@@ -189,15 +190,16 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void run() {
                 handler.removeCallbacks(this);
-                replaceFragmentByTitle();
+                targetShowingFragment = getTargetShowingFragmentByTitle();
+                replaceFragment(targetShowingFragment);
             }
         };
         handler.postDelayed(runnable, 320);
     }
 
-    public void replaceFragmentByTitle(){
+
+    public void replaceFragment(Fragment targetShowingFragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
-        targetShowingFragment = getTargetShowingFragmentByTitle();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, targetShowingFragment)
                 .commit();
@@ -206,7 +208,8 @@ public class MainActivity extends ActionBarActivity {
         drawerToggle.syncState();
     }
 
-    private Fragment getTargetShowingFragmentByTitle() {
+
+    public Fragment getTargetShowingFragmentByTitle() {
         Fragment targetFragment = new TaskListFragment(this);
 
         if (mTitleMap.getTitle().equals(TitleMapString.TASK_LIST)) {
