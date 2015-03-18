@@ -84,7 +84,7 @@
                 android:text="@string/create_task_remind_method" />
 
             <Spinner
-                android:id="@+id/task_remindMethodSpinner"
+                android:id="@+id/remindMethodSpinner"
                 style="@style/spinnerStyle" />
         </LinearLayout>
 
@@ -122,7 +122,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="时"
-                    android:textSize="@dimen/create_task_textsize" />
+                    android:textSize="@dimen/create_task_text_size" />
 
                 <NumberPicker
                     android:id="@+id/spendTimePickerMinutes"
@@ -133,13 +133,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="分"
-                    android:textSize="@dimen/create_task_textsize" />
+                    android:textSize="@dimen/create_task_text_size" />
             </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/task_finish_date"
+            android:id="@+id/taskFinishDate"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"

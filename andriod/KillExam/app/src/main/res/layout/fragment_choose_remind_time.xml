@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="时"
-                android:textSize="@dimen/create_task_textsize" />
+                android:textSize="@dimen/create_task_text_size" />
 
             <NumberPicker
                 android:id="@+id/beginRemindMinutes"
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="分"
-                android:textSize="@dimen/create_task_textsize" />
+                android:textSize="@dimen/create_task_text_size" />
         </LinearLayout>
     </LinearLayout>
 
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="时"
-            android:textSize="@dimen/create_task_textsize" />
+            android:textSize="@dimen/create_task_text_size" />
 
         <NumberPicker
             android:id="@+id/endRemindMinutes"
@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="分"
-            android:textSize="@dimen/create_task_textsize" />
+            android:textSize="@dimen/create_task_text_size" />
         </LinearLayout>
     </LinearLayout>
 

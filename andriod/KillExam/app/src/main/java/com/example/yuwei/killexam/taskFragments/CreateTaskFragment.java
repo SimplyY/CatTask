@@ -2,13 +2,13 @@ package com.example.yuwei.killexam.taskFragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
@@ -124,7 +124,7 @@ public class CreateTaskFragment extends editableTaskFragment{
     }
 
     private void initRemindMethodSpinner(){
-        mRemindMethodSpinner = (Spinner)mView.findViewById(R.id.task_remindMethodSpinner);
+        mRemindMethodSpinner = (Spinner)mView.findViewById(R.id.remindMethodSpinner);
         setAdapterForSpinner(mRemindMethodSpinner, R.array.task_remind_method_array);
 
         setRemindMethodValue();
@@ -186,7 +186,7 @@ public class CreateTaskFragment extends editableTaskFragment{
 
     }
 
-///numberpicker record spendTime
+//  numberPicker record spendTime
     @Override
     public void onValueChange(NumberPicker picker, int oldVal, int newVal){
 
@@ -195,7 +195,7 @@ public class CreateTaskFragment extends editableTaskFragment{
     public void onScrollStateChange(NumberPicker view, int scrollState){
 
     }
-///numberpicker formatter
+//  numberPicker formatter
     @Override
     public String format(int value){
         return value<10 ? "0"+value:""+value;
@@ -212,19 +212,19 @@ public class CreateTaskFragment extends editableTaskFragment{
     }
 
 
-//Buttons onclick
+//  Buttons onclick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-//finishDatePicker on pick
+//  finishDatePicker on pick
             case R.id.finishDatePicker:
                 finishDataPick();
                 break;
-//mCreateTaskButton onclick
+//  mCreateTaskButton onclick
             case R.id.createTask:
                 if(checkTask.checkAll()){
                     writeTaskInDataBase();
-                    quit();
+                    enterTaskListFragment();
                 }
 
                 break;
@@ -235,13 +235,12 @@ public class CreateTaskFragment extends editableTaskFragment{
         FragmentManager fm = getChildFragmentManager();
         MyDate now = new MyDate();
         CalendarDatePickerDialog calendarDatePickerDialog = CalendarDatePickerDialog
-                .newInstance(this,now.getYear(), now.getMonth() - 1,
-                        now.getDay());
+                .newInstance(this,now.getYear(), now.getMonth() - 1, now.getDay());
         calendarDatePickerDialog.setTargetFragment(this, 1);
         calendarDatePickerDialog.show(fm, FRAG_TAG_DATE_PICKER);
     }
 
-//setFinishDate
+//  setFinishDate
     @Override
     public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth){
         mFinishDate =  new MyDate(year, monthOfYear + 1, dayOfMonth);
@@ -254,16 +253,12 @@ public class CreateTaskFragment extends editableTaskFragment{
         MyDatabaseHelper.writeNewTask(this.getActivity().getApplicationContext(), newTask);
     }
 
-    private void quit(){
-        initTaskList();
-        mMainActivity.replaceFragmentFromDrawer();
+    private void enterTaskListFragment(){
+
+        MainActivity.mTitleMap.setTitle(TitleMapString.TASK_LIST);
+        Fragment targetFragment = mMainActivity.getTargetShowingFragmentByTitle();
+
+        mMainActivity.replaceFragment(targetFragment);
     }
 
-    private void initTaskList(){
-        MainActivity.mTitleMap = new TitleMapString();
-        mMainActivity.initToolBar();
-
-        TaskListFragment.initTaskList();
-
-    }
 }

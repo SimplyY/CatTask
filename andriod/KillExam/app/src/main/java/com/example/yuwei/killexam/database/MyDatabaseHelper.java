@@ -57,11 +57,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             HAS_FINISHED + " integer);";
 
 
-    private static final String ADD_RECENTEST_DAY_REMINDED_IN_TASK = "alter table " + TASK_TABLE_NAME
-            + " add " + RECENTEST_DAY_REMINDED + " integer;";
-
-
-
     private static final String REMIND_TIME_TABLE_NAME = "remind_time";
 
     private static final String BEGIN_REMIND_HOURS = "begin_remind_hours";
@@ -91,14 +86,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion == 1 && newVersion == 2){
-//          增加提醒时间段表
-            db.execSQL(CREATE_REMIND_TIME_TABLE);
-        }
-        if (oldVersion == 2 && newVersion == 3){
-//          扩充task表
-            db.execSQL(ADD_RECENTEST_DAY_REMINDED_IN_TASK);
-        }
+
     }
 
     private static SQLiteDatabase getDatabase(Context context){
@@ -255,6 +243,17 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         ContentValues contentValues = getTaskContentValues(theTask);
 
         String where = NAME + "='" + theTask.getTaskName() + "'";
+
+        database.update(TASK_TABLE_NAME, contentValues, where, null);
+    }
+
+    //  更新任务
+    public static void updateTask(Context context, Task theTask, String oldTaskName){
+        SQLiteDatabase database = getDatabase(context);
+
+        ContentValues contentValues = getTaskContentValues(theTask);
+
+        String where = NAME + "='" + oldTaskName + "'";
 
         database.update(TASK_TABLE_NAME, contentValues, where, null);
     }

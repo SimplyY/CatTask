@@ -9,5 +9,5 @@
 
     <dimen name="fragment_maginleft">17dp</dimen>
     <dimen name="fragment_maginright">12dp</dimen>
-    <dimen name="create_task_textsize">21sp</dimen>
+    <dimen name="create_task_text_size">21sp</dimen>
 </resources>

@@ -70,6 +70,7 @@ public abstract class editableTaskFragment extends Fragment
             newTask.setTagColor(tagColor);
         }
 
+
         mTaskColorTagSpinner.setSelection(newTask.getTagColor().getSelectedPosition());
     }
 

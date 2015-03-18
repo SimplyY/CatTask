@@ -2,6 +2,7 @@ package com.example.yuwei.killexam.adapter;
 
 import android.content.Context;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.map.HeaderTimeMapString;
 import com.example.yuwei.killexam.map.SpinnerValue;
+import com.example.yuwei.killexam.taskFragments.EditTaskFragment;
 import com.example.yuwei.killexam.taskFragments.TaskListFragment;
 import com.example.yuwei.killexam.tools.Task;
 import com.example.yuwei.killexam.tools.TaskTree;
@@ -254,7 +256,8 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     }
 
     private void enterEditTaskFragment(Task task){
-//        TODO:
+        Fragment fragment = EditTaskFragment.newInstance(mMainActivity, task);
+        mMainActivity.replaceFragment(fragment);
     }
 
     private void setTaskNameTextView() {

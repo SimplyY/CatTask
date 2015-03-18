@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
+import com.example.yuwei.killexam.taskFragments.EditTaskFragment;
 import com.example.yuwei.killexam.taskFragments.editableTaskFragment;
 import com.example.yuwei.killexam.tools.MyDate;
 import com.example.yuwei.killexam.map.SpinnerValue;
@@ -20,6 +21,8 @@ import java.util.regex.Pattern;
  * Created by yuwei on 15/2/21.
  */
 public class CheckTask {
+//  编辑模式时
+    public static boolean isEditMode;
 
     private editableTaskFragment mFragment;
 
@@ -75,20 +78,20 @@ public class CheckTask {
         selectedAttributePositionNow = mTaskAttributeSpinner.getSelectedItemPosition();
         selectedAttributePositionBefore = newTask.getTaskAttribute().getSelectedPosition();
         if (selectedAttributePositionNow != 0) {
-//已经设置好belong时
+//  已经设置好belong时
             if (newTask.isHasBelong() && selectedAttributePositionNow == selectedAttributePositionBefore) {
                 String taskName = newTask.getBelongName();
                 String name = taskName.length() < THE_MAX_NAME_LENGTH_TEXT ? taskName:taskName.substring(0, THE_MAX_NAME_LENGTH_TEXT);
                 mIsHasBelongTextView.setText(BELONG_TASK_CHINESE + name);
                 mCreateTaskButton.setText(CREATE_TASK_CHINESE);
             }
-//还没设置好belong，或者更改了attribute，需重新设置belong
+//  还没设置好belong，或者更改了attribute，需重新设置belong
             else {
                 mIsHasBelongTextView.setText(BELONG_TASK_CHINESE + NULL_CHINESE);
                 mCreateTaskButton.setText(CHOOSE_CHINESE);
             }
         } else {
-//attribute为1级
+//  attribute为1级
 
             mIsHasBelongTextView.setText(BELONG_TASK_CHINESE + NULL_CHINESE);
             mCreateTaskButton.setText(CREATE_TASK_CHINESE);
@@ -98,7 +101,7 @@ public class CheckTask {
 
     //核查所有的输入以及获取合法值
     public boolean checkAll() {
-        return checkAttribute() && checkTaskName() && checkFinishDate() && checkTime() && checkRimendMethod() && checkColorTag();
+        return checkAttribute() && checkTaskName() && checkFinishDate() && checkTime() && checkRemindMethod() && checkColorTag();
     }
 
     //当需要设置belong的时候return false，
@@ -154,6 +157,9 @@ public class CheckTask {
 
     private boolean isNameHasExist(EditText text) {
         String name = text.getText().toString();
+        if (isEditMode && name.equals(EditTaskFragment.oldTaskName)){
+            return false;
+        }
         return MyDatabaseHelper.checkNameHasExist(mFragment.getActivity().getApplicationContext(), name);
     }
 
@@ -191,7 +197,7 @@ public class CheckTask {
         return true;
     }
 
-    private boolean checkRimendMethod() {
+    private boolean checkRemindMethod() {
 
         String remindMethodName = mRemindMethodSpinner.getSelectedItem().toString();
 
@@ -210,5 +216,4 @@ public class CheckTask {
         return true;
 
     }
-
 }

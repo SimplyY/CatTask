@@ -143,8 +143,9 @@ public class TaskListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 MainActivity.mTitleMap.setTitle(TitleMapString.CREATE_TASK);
+                Fragment targetShowingFragment = mMainActivity.getTargetShowingFragmentByTitle();
                 floatingActionsMenu.collapse();
-                mMainActivity.replaceFragmentByTitle();
+                mMainActivity.replaceFragment(targetShowingFragment);
             }
         });
 
