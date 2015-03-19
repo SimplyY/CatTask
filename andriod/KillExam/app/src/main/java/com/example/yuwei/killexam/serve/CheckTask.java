@@ -120,7 +120,7 @@ public class CheckTask {
     }
 
     private void preserveSomeTaskInfo() {
-        newTask.setTaskName(mTaskNameEditText.getText().toString());
+        mFragment.setViewsValues();
     }
 
     private boolean checkTaskName() {
@@ -167,6 +167,8 @@ public class CheckTask {
         final String TASK_TIME_CANNT_BE_EARLY_THAN_CURRENT = "任务完成时间不能比当前时间早";
 
         MyDate current = new MyDate();
+
+
 
 //      默认时间为当前
         if (mFinishDate == null) {

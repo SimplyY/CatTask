@@ -41,9 +41,9 @@ public abstract class editableTaskFragment extends Fragment
     public TextView mIsHasBelongTextView;
 
     public MyDate mFinishDate;
-
-
     public Task newTask;
+
+
 
     protected void setAdapterForSpinner(Spinner spinner, int arrayId){
         spinner.setOnItemSelectedListener(this);
@@ -55,6 +55,31 @@ public abstract class editableTaskFragment extends Fragment
 
     }
 
+    //numberpicker formatter
+    @Override
+    public String format(int value) {
+        return value < 10 ? "0" + value : "" + value;
+    }
+
+    //  numberPicker record spendTime
+    @Override
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+
+    }
+    @Override
+    public void onScrollStateChange(NumberPicker view, int scrollState){
+
+    }
+
+    public void setViewsValues(){
+        setAttributeValue();
+        setTagColorValue();
+        setRemindMethodValue();
+        setNameText();
+        setRemindMethodValue();
+        setFinishButtonText();
+        setTimePickerValue();
+    }
     protected void setAttributeValue(){
         if (newTask.getTaskAttribute() == null){
             SpinnerValue taskAttribute = SpinnerValue.initSpinnerValue(R.array.task_attribute_array, getResources());
@@ -63,17 +88,20 @@ public abstract class editableTaskFragment extends Fragment
 
         mTaskAttributeSpinner.setSelection(newTask.getTaskAttribute().getSelectedPosition());
     }
-
     protected void setTagColorValue(){
         if (newTask.getTagColor() == null){
             SpinnerValue tagColor = SpinnerValue.initSpinnerValue(R.array.tag_color_array, getResources());
             newTask.setTagColor(tagColor);
         }
 
-
         mTaskColorTagSpinner.setSelection(newTask.getTagColor().getSelectedPosition());
     }
-
+    private void setNameText(){
+        String taskName = newTask.getTaskName();
+        if (taskName != null){
+            mTaskNameEditText.setText(taskName);
+        }
+    }
     protected void setRemindMethodValue(){
         if (newTask.getRemindMethod() == null){
             SpinnerValue remindMethod = SpinnerValue.initSpinnerValue(R.array.task_remind_method_array, getResources());
@@ -81,6 +109,35 @@ public abstract class editableTaskFragment extends Fragment
         }
         mRemindMethodSpinner.setSelection(newTask.getRemindMethod().getSelectedPosition());
 
+    }
+
+    public void setFinishButtonText(){
+        if (newTask.getFinishedDate() != null){
+            mFinishDateButton.setText(newTask.getFinishedDate().toString());
+            mFinishDate = newTask.getFinishedDate();
+        }
+    }
+    public void setTimePickerValue(){
+        mSpendTimePickerHours.setOnScrollListener(this);
+        mSpendTimePickerHours.setFormatter(this);
+        mSpendTimePickerHours.setMaxValue(99);
+        mSpendTimePickerHours.setMinValue(0);
+
+        mSpendTimePickerMinutes.setOnScrollListener(this);
+        mSpendTimePickerMinutes.setFormatter(this);
+        mSpendTimePickerMinutes.setMaxValue(59);
+        mSpendTimePickerMinutes.setMinValue(0);
+
+        if (newTask.getSpendHours() != 0){
+            mSpendTimePickerHours.setValue(newTask.getSpendHours());
+        }
+        else{
+            mSpendTimePickerHours.setValue(1);
+        }
+
+        if (newTask.getSpendMinutes() != 0){
+            mSpendTimePickerMinutes.setValue(newTask.getSpendMinutes());
+        }
     }
 
     public void setTaskBelong(){

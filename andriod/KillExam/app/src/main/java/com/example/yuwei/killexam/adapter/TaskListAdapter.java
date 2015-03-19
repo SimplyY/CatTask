@@ -26,6 +26,8 @@ import com.example.yuwei.killexam.tools.Task;
 import com.example.yuwei.killexam.tools.TaskTree;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
@@ -263,7 +265,18 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     private void setTaskNameTextView() {
 
         String taskName = theTask.getTaskName();
-        String taskNameInList = taskName.length() < THE_MAX_LENGTH + 1 ? taskName : (taskName.substring(0, THE_MAX_LENGTH) + "...");
+        int unChineseCharNumber = 0;
+
+        for (int i = 0; i < taskName.length(); i++){
+            char theChar = taskName.charAt(i);
+            if (theChar<='z'&&theChar>='a' || theChar<='Z'&&theChar>='A' || theChar<='9'&&theChar>='0'){
+                unChineseCharNumber++;
+            }
+        }
+
+        int increaseCharLength = unChineseCharNumber<19 ? unChineseCharNumber/2 : 9;
+
+        String taskNameInList = taskName.length() < THE_MAX_LENGTH + 1 + increaseCharLength ? taskName : (taskName.substring(0, THE_MAX_LENGTH + increaseCharLength ) + "...");
         viewHolder.isTaskFinishedCheckBox.setText(taskNameInList);
     }
 

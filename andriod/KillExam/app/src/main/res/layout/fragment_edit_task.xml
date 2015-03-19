@@ -190,7 +190,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="0.94"
-                android:text="@string/create_task_button"
+                android:text="确认"
                 android:textSize="18sp"
                 fbutton:buttonColor="@color/silver_deep" />
 

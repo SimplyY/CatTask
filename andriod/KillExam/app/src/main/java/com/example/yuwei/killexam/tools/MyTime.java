@@ -1,9 +1,11 @@
 package com.example.yuwei.killexam.tools;
 
+import java.io.Serializable;
+
 /**
  * Created by yuwei on 15/3/15.
  */
-public class MyTime {
+public class MyTime implements Serializable {
     public int minutes;
     public int hours;
 

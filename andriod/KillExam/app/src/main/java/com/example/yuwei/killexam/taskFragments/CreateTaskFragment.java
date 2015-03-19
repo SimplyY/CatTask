@@ -65,9 +65,9 @@ public class CreateTaskFragment extends editableTaskFragment{
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInsrtanceState){
-        super.onSaveInstanceState(savedInsrtanceState);
-        savedInsrtanceState.putSerializable("task", newTask);
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable("task", newTask);
     }
 
     @Override
@@ -75,11 +75,13 @@ public class CreateTaskFragment extends editableTaskFragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_create_task, container, false);
+
         initViews();
+        setViewsValues();
 
         checkTask = new CheckTask(this);
 
-        setButtonTextDepnedBelong();
+        checkTask.setTextIsHasBelongCheckAttribute();
 
         mMainActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
@@ -107,28 +109,43 @@ public class CreateTaskFragment extends editableTaskFragment{
 
         initIsHasBelongTextView();
     }
-
-
     private void initAttributeSpinner(){
         mTaskAttributeSpinner = (Spinner)mView.findViewById(R.id.taskAttributeSpinner);
 
         setAdapterForSpinner(mTaskAttributeSpinner, R.array.task_attribute_array);
-        setAttributeValue();
-    }
 
+    }
     private void initColorTagSpinner(){
         mTaskColorTagSpinner = (Spinner)mView.findViewById(R.id.taskColorTagSpinner);
         setAdapterForSpinner(mTaskColorTagSpinner, R.array.tag_color_array);
 
-        setTagColorValue();
     }
-
     private void initRemindMethodSpinner(){
         mRemindMethodSpinner = (Spinner)mView.findViewById(R.id.remindMethodSpinner);
         setAdapterForSpinner(mRemindMethodSpinner, R.array.task_remind_method_array);
-
-        setRemindMethodValue();
     }
+    private void initTaskNameText(){
+        mTaskNameEditText = (EditText) mView.findViewById(R.id.taskNameText);
+    }
+    private void initFinishDateButton(){
+        mFinishDateButton = (FButton)mView.findViewById(R.id.finishDatePicker);
+        setFinishButtonText();
+        mFinishDateButton.setOnClickListener(this);
+    }
+    private void initSpendTimePicker(){
+        mSpendTimePickerHours = (NumberPicker)mView.findViewById(R.id.spendTimePickerHours);
+        mSpendTimePickerMinutes = (NumberPicker)mView.findViewById(R.id.spendTimePickerMinutes);
+        setTimePickerValue();
+    }
+    private void initCreateButton(){
+        mCreateTaskButton = (FButton)mView.findViewById(R.id.createTask);
+        mCreateTaskButton.setOnClickListener(this);
+    }
+    private void initIsHasBelongTextView(){
+        mIsHasBelongTextView = (TextView) mView.findViewById(R.id.isHasBelongTextView);
+    }
+
+
 
     //any spinner selected
     @Override
@@ -136,7 +153,8 @@ public class CreateTaskFragment extends editableTaskFragment{
                                int pos, long id) {
         ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
         ((TextView) parent.getChildAt(0)).setTextSize(20);
-        setButtonTextDepnedBelong();
+        checkTask.setTextIsHasBelongCheckAttribute();
+
     }
 
     @Override
@@ -144,73 +162,14 @@ public class CreateTaskFragment extends editableTaskFragment{
         // Another interface callback
     }
 
-    private void setButtonTextDepnedBelong(){
-
-        checkTask.setTextIsHasBelongCheckAttribute();
-
-    }
-
-    private void initTaskNameText(){
-        mTaskNameEditText = (EditText) mView.findViewById(R.id.taskNameText);
-        setNameText();
-    }
-
-    private void setNameText(){
-        String taskName = newTask.getTaskName();
-        if (taskName != null){
-            mTaskNameEditText.setText(taskName);
-        }
-    }
-
-    private void initFinishDateButton(){
-        mFinishDateButton = (FButton)mView.findViewById(R.id.finishDatePicker);
-        mFinishDateButton.setOnClickListener(this);
-    }
-
-
-    private void initSpendTimePicker(){
-        mSpendTimePickerHours = (NumberPicker)mView.findViewById(R.id.spendTimePickerHours);
-        mSpendTimePickerHours.setOnScrollListener(this);
-        mSpendTimePickerHours.setFormatter(this);
-        mSpendTimePickerHours.setMaxValue(99);
-        mSpendTimePickerHours.setMinValue(0);
-
-        mSpendTimePickerMinutes = (NumberPicker)mView.findViewById(R.id.spendTimePickerMinutes);
-        mSpendTimePickerMinutes.setOnScrollListener(this);
-        mSpendTimePickerMinutes.setFormatter(this);
-        mSpendTimePickerMinutes.setMaxValue(59);
-        mSpendTimePickerMinutes.setMinValue(0);
-
-        mSpendTimePickerHours.setValue(1);
-        mSpendTimePickerMinutes.setValue(0);
-
-    }
-
-//  numberPicker record spendTime
+    //  setFinishDate
     @Override
-    public void onValueChange(NumberPicker picker, int oldVal, int newVal){
-
+    public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth){
+        mFinishDate =  new MyDate(year, monthOfYear + 1, dayOfMonth);
+        newTask.setFinishedDate(mFinishDate);
+        mFinishDateButton.setText(mFinishDate.toString());
+        checkTask.setFinishDate();
     }
-    @Override
-    public void onScrollStateChange(NumberPicker view, int scrollState){
-
-    }
-//  numberPicker formatter
-    @Override
-    public String format(int value){
-        return value<10 ? "0"+value:""+value;
-    }
-
-
-    private void initCreateButton(){
-        mCreateTaskButton = (FButton)mView.findViewById(R.id.createTask);
-        mCreateTaskButton.setOnClickListener(this);
-    }
-
-    private void initIsHasBelongTextView(){
-        mIsHasBelongTextView = (TextView) mView.findViewById(R.id.isHasBelongTextView);
-    }
-
 
 //  Buttons onclick
     @Override
@@ -240,14 +199,7 @@ public class CreateTaskFragment extends editableTaskFragment{
         calendarDatePickerDialog.show(fm, FRAG_TAG_DATE_PICKER);
     }
 
-//  setFinishDate
-    @Override
-    public void onDateSet(CalendarDatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth){
-        mFinishDate =  new MyDate(year, monthOfYear + 1, dayOfMonth);
-        newTask.setFinishedDate(mFinishDate);
-        mFinishDateButton.setText(mFinishDate.toString());
-        checkTask.setFinishDate();
-    }
+
 
     private void writeTaskInDataBase(){
         MyDatabaseHelper.writeNewTask(this.getActivity().getApplicationContext(), newTask);
