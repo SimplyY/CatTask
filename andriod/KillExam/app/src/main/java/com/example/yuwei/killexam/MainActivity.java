@@ -30,7 +30,6 @@ public class MainActivity extends ActionBarActivity {
 
     public Fragment targetShowingFragment;
 
-
     private DrawerFrameLayout drawer;
     ActionBarDrawerToggle drawerToggle;
     Toolbar toolbar;

@@ -51,7 +51,8 @@
 
             <Spinner
                 android:id="@+id/editTaskAttributeSpinner"
-                style="@style/spinnerStyle" />
+                style="@style/spinnerStyle"
+                android:clickable="false" />
         </LinearLayout>
 
 
@@ -169,32 +170,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/editSpendTime"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.8"
-            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/editIsHasBelongTextView"
-                style="@style/createTaskTextView"
-
-                android:text="上级任务" />
-
-            <info.hoang8f.widget.FButton
-                android:id="@+id/editCreateTask"
-                android:layout_width="12dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="0.94"
-                android:text="确认"
-                android:textSize="18sp"
-                fbutton:buttonColor="@color/silver_deep" />
-
-        </LinearLayout>
 
     </LinearLayout>
 

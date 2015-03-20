@@ -37,7 +37,7 @@ public class EditTaskFragment extends editableTaskFragment {
 
 
     CheckTask checkTask;
-    private static EditTaskFragment editTaskFragment;
+    public static EditTaskFragment editTaskFragment;
 
     public void setNewTask(Task newTask) {
         this.newTask = newTask;
@@ -117,9 +117,6 @@ public class EditTaskFragment extends editableTaskFragment {
 
         initFinishDateButton();
 
-        initCreateButton();
-
-        initIsHasBelongTextView();
     }
     private void initAttributeSpinner() {
         mTaskAttributeSpinner = (Spinner) mView.findViewById(R.id.editTaskAttributeSpinner);
@@ -149,14 +146,6 @@ public class EditTaskFragment extends editableTaskFragment {
         mSpendTimePickerMinutes = (NumberPicker) mView.findViewById(R.id.editSpendTimePickerMinutes);
 
     }
-    private void initCreateButton() {
-        mCreateTaskButton = (FButton) mView.findViewById(R.id.editCreateTask);
-        mCreateTaskButton.setOnClickListener(this);
-    }
-    private void initIsHasBelongTextView() {
-        mIsHasBelongTextView = (TextView) mView.findViewById(R.id.editIsHasBelongTextView);
-    }
-
 
 
     //any spinner selected
@@ -192,14 +181,6 @@ public class EditTaskFragment extends editableTaskFragment {
 //  finishDatePicker on pick
             case R.id.editFinishDatePicker:
                 finishDataPick();
-                break;
-//  mCreateTaskButton onclick
-            case R.id.editCreateTask:
-                if (checkTask.checkAll()) {
-                    writeTaskInDataBase();
-                    enterTaskListFragment();
-                }
-
                 break;
         }
     }
