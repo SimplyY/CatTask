@@ -69,6 +69,9 @@ public class CheckTask {
     //  动态设置底部对父任务描述和最后一个button
     public void setTextIsHasBelongCheckAttribute() {
 
+        if (isEditMode){
+            return;
+        }
         final int THE_MAX_NAME_LENGTH_TEXT = 3;
 
         final String CREATE_TASK_CHINESE = "创建任务";
@@ -77,7 +80,7 @@ public class CheckTask {
         final String CHOOSE_CHINESE = "点击选择";
         selectedAttributePositionNow = mTaskAttributeSpinner.getSelectedItemPosition();
         selectedAttributePositionBefore = newTask.getTaskAttribute().getSelectedPosition();
-        if (selectedAttributePositionNow != 0) {
+        if (selectedAttributePositionNow != 0  ) {
 //  已经设置好belong时
             if (newTask.isHasBelong() && selectedAttributePositionNow == selectedAttributePositionBefore) {
                 String taskName = newTask.getBelongName();
@@ -101,7 +104,10 @@ public class CheckTask {
 
     //核查所有的输入以及获取合法值
     public boolean checkAll() {
-        return checkAttribute() && checkTaskName() && checkFinishDate() && checkTime() && checkRemindMethod() && checkColorTag();
+        setRemindMethod();
+        setColorTag();
+
+        return checkAttribute() && checkTaskName() && checkFinishDate() && checkTime() ;
     }
 
     //当需要设置belong的时候return false，
@@ -120,8 +126,16 @@ public class CheckTask {
     }
 
     private void preserveSomeTaskInfo() {
-        mFragment.setViewsValues();
+        newTask.setTaskName(mTaskNameEditText.getText().toString());
+        newTask.setSpendTime(mSpendTimePickerHours.getValue(), mSpendTimePickerMinutes.getValue());
+        newTask.setFinishedDate(mFinishDate);
+
+        setColorTag();
+        setRemindMethod();
     }
+
+
+
 
     private boolean checkTaskName() {
         final String TASK_NAME_HAS_SPACE = "任务名不能为空";
@@ -168,14 +182,18 @@ public class CheckTask {
 
         MyDate current = new MyDate();
 
-
-
 //      默认时间为当前
         if (mFinishDate == null) {
-            mFinishDate = current;
-            newTask.setFinishedDate(mFinishDate);
-            return true;
+            if (newTask.getFinishedDate() != null){
+                mFinishDate = newTask.getFinishedDate();
+            }
+            else{
+                mFinishDate = current;
+                newTask.setFinishedDate(mFinishDate);
+                return true;
+            }
         }
+
 
         boolean checkDateIsRight = !mFinishDate.isBefore(current);
 
@@ -199,23 +217,19 @@ public class CheckTask {
         return true;
     }
 
-    private boolean checkRemindMethod() {
-
+    private void setRemindMethod() {
         String remindMethodName = mRemindMethodSpinner.getSelectedItem().toString();
 
         SpinnerValue remindMethod = newTask.getRemindMethod();
         remindMethod.setSelectedName(remindMethodName);
 
-        return true;
     }
 
-    private boolean checkColorTag(){
+    private void setColorTag(){
         String colorTagString = mColorTag.getSelectedItem().toString();
 
         SpinnerValue colorTag = newTask.getTagColor();
         colorTag.setSelectedName(colorTagString);
-
-        return true;
 
     }
 }

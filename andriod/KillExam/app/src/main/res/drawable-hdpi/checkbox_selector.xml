@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_checked="true"
-        android:drawable="@drawable/checkbox_checked"/><!--选中时效果-->
+        android:drawable="@drawable/checkbox_clicked"/><!--选中时效果-->
     <item android:state_checked="false"
         android:drawable="@drawable/checkbox_unclicked"
          /><!--未选中时效果-->

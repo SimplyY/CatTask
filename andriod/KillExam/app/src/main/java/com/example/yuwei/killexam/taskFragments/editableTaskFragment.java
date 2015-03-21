@@ -116,6 +116,9 @@ public abstract class editableTaskFragment extends Fragment
             mFinishDateButton.setText(newTask.getFinishedDate().toString());
             mFinishDate = newTask.getFinishedDate();
         }
+        else {
+            mFinishDateButton.setText(new MyDate().toString());
+        }
     }
     public void setTimePickerValue(){
         mSpendTimePickerHours.setOnScrollListener(this);
