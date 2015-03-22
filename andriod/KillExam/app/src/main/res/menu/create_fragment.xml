@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/menu_action_create"
+        android:title=""
+        android:icon="@drawable/menu_actionbar_create"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom|withText" />
+</menu>

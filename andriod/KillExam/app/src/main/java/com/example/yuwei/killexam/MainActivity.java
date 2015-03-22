@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import com.example.yuwei.killexam.map.TitleMapString;
 import com.example.yuwei.killexam.taskFragments.CreateTaskFragment;
 import com.example.yuwei.killexam.taskFragments.ChooseRemindTimeFragment;
+import com.example.yuwei.killexam.taskFragments.EditTaskFragment;
 import com.example.yuwei.killexam.taskFragments.TaskListFragment;
 import com.example.yuwei.killexam.tools.Task;
 import com.heinrichreimersoftware.materialdrawer.DrawerFrameLayout;
@@ -27,6 +29,9 @@ public class MainActivity extends ActionBarActivity {
 
     public static final String ENTER_FRAGMENT = "enterFragment";
     public static final String TASK = "task";
+
+    public Menu mMenu;
+    public Fragment currentFragment;
 
     public Fragment targetShowingFragment;
 
@@ -50,8 +55,8 @@ public class MainActivity extends ActionBarActivity {
         enterFragment();
     }
 
-    private void enterFragment(){
-        if (!hasEnterFragmentByIntent()){
+    private void enterFragment() {
+        if (!hasEnterFragmentByIntent()) {
 //          正常情况进入taskList
             mTitleMap.setTitle(TitleMapString.TASK_LIST);
             targetShowingFragment = getTargetShowingFragmentByTitle();
@@ -59,15 +64,15 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    private boolean hasEnterFragmentByIntent(){
+    private boolean hasEnterFragmentByIntent() {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        if (bundle != null){
+        if (bundle != null) {
 //          确认进入createTaskFragment的信息
 //          当从选择belong的activity里面后退时，会进入这个activity，这时需要进入createFragment。
-            if (bundle.getString(ENTER_FRAGMENT) != null && bundle.getSerializable(TASK) !=null){
+            if (bundle.getString(ENTER_FRAGMENT) != null && bundle.getSerializable(TASK) != null) {
                 mTitleMap.setTitle(bundle.getString(ENTER_FRAGMENT));
-                enterCreateTask((Task)bundle.getSerializable(TASK));
+                enterCreateTask((Task) bundle.getSerializable(TASK));
                 return true;
             }
         }
@@ -141,15 +146,16 @@ public class MainActivity extends ActionBarActivity {
 
         drawer.addItem(
                 new DrawerItem()
-                        .setTextPrimary(TitleMapString.FINISHED_LIST)
+                        .setTextPrimary(TitleMapString.RIMIND_TIME)
+                        .setImage(getResources().getDrawable(R.drawable.icon_remind))
                         .setOnItemClickListener(
                                 new DrawerItem.OnItemClickListener() {
-                            @Override
-                            public void onClick(DrawerItem drawerItem, int id, int position) {
-                                setmTitleByDrawerClickedItem(position);
-                                replaceFragmentFromDrawer();
-                            }
-                        })
+                                    @Override
+                                    public void onClick(DrawerItem drawerItem, int id, int position) {
+                                        setmTitleByDrawerClickedItem(position);
+                                        replaceFragmentFromDrawer();
+                                    }
+                                })
         );
 
     }
@@ -175,8 +181,6 @@ public class MainActivity extends ActionBarActivity {
                 .replace(R.id.container, createTaskFragment)
                 .commit();
 
-        drawer.setDrawerListener(drawerToggle);
-        drawerToggle.syncState();
     }
 
 
@@ -198,7 +202,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    public void replaceFragment(Fragment targetShowingFragment){
+    public void replaceFragment(Fragment targetShowingFragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, targetShowingFragment)
@@ -214,11 +218,9 @@ public class MainActivity extends ActionBarActivity {
 
         if (mTitleMap.getTitle().equals(TitleMapString.TASK_LIST)) {
             targetFragment = new TaskListFragment(this);
-        }
-        else if (mTitleMap.getTitle().equals(TitleMapString.CREATE_TASK)) {
+        } else if (mTitleMap.getTitle().equals(TitleMapString.CREATE_TASK)) {
             targetFragment = new CreateTaskFragment(this);
-        }
-        else if (mTitleMap.getTitle().equals(TitleMapString.FINISHED_LIST)) {
+        } else if (mTitleMap.getTitle().equals(TitleMapString.RIMIND_TIME)) {
             targetFragment = new ChooseRemindTimeFragment(this);
         }
         return targetFragment;
@@ -227,8 +229,28 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        if (currentFragment != null) {
+            //给右上角的menu设置创建功能
+            if (currentFragment.getClass() == CreateTaskFragment.class) {
+                initNewMenu(R.menu.create_fragment, menu);
+                return true;
+            }
+            else if (currentFragment.getClass() == EditTaskFragment.class){
+                initNewMenu(R.menu.edit_fragment, menu);
+                return true;
+            }
+        }
+
+
         getMenuInflater().inflate(R.menu.main, menu);
+        mMenu = menu;
         return true;
+    }
+
+    private void initNewMenu(int menuId, Menu menu){
+        menu.clear();
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(menuId, menu);
     }
 
     @Override
@@ -239,7 +261,7 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.menu_action_quit) {
+        if (id == R.id.menu_action_delete) {
             finish();
             return true;
         }

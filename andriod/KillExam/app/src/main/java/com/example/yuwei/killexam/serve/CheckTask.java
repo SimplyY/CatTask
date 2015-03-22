@@ -39,7 +39,6 @@ public class CheckTask {
     private MyDate mFinishDate;
     private Task newTask;
 
-
     int selectedAttributePositionNow;
     int selectedAttributePositionBefore;
 
@@ -134,14 +133,11 @@ public class CheckTask {
         setRemindMethod();
     }
 
-
-
-
     private boolean checkTaskName() {
         final String TASK_NAME_HAS_SPACE = "任务名不能为空";
         final String TASK_NAME_HAS_EXIST = "任务名已存在";
 
-        if (checkEditText(mTaskNameEditText) == false) {
+        if (!checkEditText(mTaskNameEditText)) {
             Toast.makeText(mFragment.getActivity().getApplicationContext(), TASK_NAME_HAS_SPACE, Toast.LENGTH_SHORT).show();
             return false;
         } else if (isNameHasExist(mTaskNameEditText)) {

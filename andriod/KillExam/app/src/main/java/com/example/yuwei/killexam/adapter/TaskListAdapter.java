@@ -147,10 +147,6 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
         headHolder.headLayout.setBackground(mMainActivity.getResources().getDrawable(imageId));
         headHolder.amountTextView.setText(amount + TASK);
 
-
-
-
-
         return convertView;
     }
 

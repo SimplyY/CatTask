@@ -41,6 +41,7 @@ public class TaskListFragment extends Fragment {
 
     public TaskListFragment(MainActivity mainActivity) {
         mMainActivity = mainActivity;
+        mMainActivity.currentFragment = this;
     }
 
     @Override

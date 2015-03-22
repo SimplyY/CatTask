@@ -43,7 +43,7 @@
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/edit_mode_button"
-            fab:fab_icon="@drawable/edit_icon"
+            fab:fab_icon="@drawable/icon_edit"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/exit_button"
-            fab:fab_icon="@drawable/header_future_blue"
+            fab:fab_icon="@drawable/quit"
 
             fab:fab_size="mini"
             fab:fab_title="                "

@@ -1,7 +1,5 @@
 package com.example.yuwei.killexam.map;
 
-import com.google.android.gms.gcm.Task;
-
 import java.util.HashMap;
 
 /**
@@ -10,14 +8,14 @@ import java.util.HashMap;
 public class TitleMapString extends HashMap<Integer, String>{
     public static final String TASK_LIST = "任务清单";
     public static final String CREATE_TASK = "创建任务";
-    public static final String FINISHED_LIST = "提醒时段";
+    public static final String RIMIND_TIME = "提醒时段";
 
     private String title;
 
     public TitleMapString(){
         put(0, TASK_LIST);
         put(1, CREATE_TASK);
-        put(2, FINISHED_LIST);
+        put(2, RIMIND_TIME);
         title = TASK_LIST;
     }
 

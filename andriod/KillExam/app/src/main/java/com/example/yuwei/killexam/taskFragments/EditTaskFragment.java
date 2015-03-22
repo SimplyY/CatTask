@@ -47,6 +47,7 @@ public class EditTaskFragment extends editableTaskFragment {
 
     public static EditTaskFragment newInstance(MainActivity mainActivity, Task task){
         editTaskFragment = new EditTaskFragment(mainActivity);
+
         editTaskFragment.setNewTask(task);
         oldTaskName = task.getTaskName();
 
@@ -87,6 +88,8 @@ public class EditTaskFragment extends editableTaskFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_edit_task, container, false);
+        mMainActivity.currentFragment = editTaskFragment;
+
         initViews();
         setViewsValues();
 
@@ -97,7 +100,6 @@ public class EditTaskFragment extends editableTaskFragment {
 
         mMainActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-//      让toolbar有高富帅般的白色（默认背景）
         mMainActivity.getSupportActionBar().setBackgroundDrawable(null);
 
         return mView;
@@ -105,6 +107,11 @@ public class EditTaskFragment extends editableTaskFragment {
 
 
     private void initViews() {
+
+        mMainActivity.onCreateOptionsMenu(mMainActivity.mMenu);
+
+        initMenu();
+
         initAttributeSpinner();
 
         initColorTagSpinner();
@@ -117,6 +124,9 @@ public class EditTaskFragment extends editableTaskFragment {
 
         initFinishDateButton();
 
+    }
+
+    private void initMenu(){
     }
     private void initAttributeSpinner() {
         mTaskAttributeSpinner = (Spinner) mView.findViewById(R.id.editTaskAttributeSpinner);

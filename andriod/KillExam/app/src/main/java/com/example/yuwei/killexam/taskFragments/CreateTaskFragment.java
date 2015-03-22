@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -62,6 +63,8 @@ public class CreateTaskFragment extends editableTaskFragment{
         if (newTask == null){
             newTask = new Task();
         }
+
+
     }
 
     @Override
@@ -75,6 +78,9 @@ public class CreateTaskFragment extends editableTaskFragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_create_task, container, false);
+        mMainActivity.currentFragment = this;
+
+        mMainActivity.onCreateOptionsMenu(mMainActivity.mMenu);
 
         initViews();
         setViewsValues();
