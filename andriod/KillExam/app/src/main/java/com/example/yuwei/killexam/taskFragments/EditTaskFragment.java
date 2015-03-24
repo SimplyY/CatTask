@@ -28,22 +28,19 @@ import info.hoang8f.widget.FButton;
 /**
  * Created by yuwei on 15/3/18.
  */
-public class EditTaskFragment extends editableTaskFragment {
+public class EditTaskFragment extends EditableTaskFragment {
 
     public static String oldTaskName;
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
 
-
-    CheckTask checkTask;
     public static EditTaskFragment editTaskFragment;
 
     public void setNewTask(Task newTask) {
         this.newTask = newTask;
     }
 
-    private MainActivity mMainActivity;
 
     public static EditTaskFragment newInstance(MainActivity mainActivity, Task task){
         editTaskFragment = new EditTaskFragment(mainActivity);
@@ -89,7 +86,6 @@ public class EditTaskFragment extends editableTaskFragment {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_edit_task, container, false);
         mMainActivity.currentFragment = editTaskFragment;
-
         initViews();
         setViewsValues();
 
@@ -195,6 +191,18 @@ public class EditTaskFragment extends editableTaskFragment {
         }
     }
 
+    @Override
+    protected void writeTaskInDataBase(){
+        MyDatabaseHelper.updateTask(this.getActivity().getApplicationContext(), newTask, oldTaskName);
+    }
+
+
+
+    public void deleteTask(){
+        MyDatabaseHelper.deleteTask(this.getActivity().getApplicationContext(), newTask);
+        enterTaskListFragment();
+    }
+
     public void finishDataPick() {
         FragmentManager fm = getChildFragmentManager();
         MyDate now = new MyDate();
@@ -205,16 +213,6 @@ public class EditTaskFragment extends editableTaskFragment {
         calendarDatePickerDialog.show(fm, FRAG_TAG_DATE_PICKER);
     }
 
-    private void writeTaskInDataBase() {
-        MyDatabaseHelper.updateTask(this.getActivity().getApplicationContext(), newTask, oldTaskName);
-    }
 
-    private void enterTaskListFragment() {
-
-        MainActivity.mTitleMap.setTitle(TitleMapString.TASK_LIST);
-        Fragment targetFragment = mMainActivity.getTargetShowingFragmentByTitle();
-
-        mMainActivity.replaceFragment(targetFragment);
-    }
 
 }

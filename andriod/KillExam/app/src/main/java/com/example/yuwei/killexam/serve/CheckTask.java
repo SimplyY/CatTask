@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.taskFragments.EditTaskFragment;
-import com.example.yuwei.killexam.taskFragments.editableTaskFragment;
+import com.example.yuwei.killexam.taskFragments.EditableTaskFragment;
 import com.example.yuwei.killexam.tools.MyDate;
 import com.example.yuwei.killexam.map.SpinnerValue;
 import com.example.yuwei.killexam.tools.Task;
@@ -24,17 +24,15 @@ public class CheckTask {
 //  编辑模式时
     public static boolean isEditMode;
 
-    private editableTaskFragment mFragment;
+    private EditableTaskFragment mFragment;
 
     private EditText mTaskNameEditText;
     private NumberPicker mSpendTimePickerHours;
     private NumberPicker mSpendTimePickerMinutes;
-    private Spinner mRemindMethodSpinner;
     private Spinner mTaskAttributeSpinner;
     private Button mCreateTaskButton;
     private TextView mIsHasBelongTextView;
 
-    private Spinner mColorTag;
 
     private MyDate mFinishDate;
     private Task newTask;
@@ -42,19 +40,16 @@ public class CheckTask {
     int selectedAttributePositionNow;
     int selectedAttributePositionBefore;
 
-    public CheckTask(editableTaskFragment fragment) {
+    public CheckTask(EditableTaskFragment fragment) {
         mFragment = fragment;
 
         mTaskAttributeSpinner = fragment.mTaskAttributeSpinner;
         mSpendTimePickerHours = fragment.mSpendTimePickerHours;
         mSpendTimePickerMinutes = fragment.mSpendTimePickerMinutes;
-        mRemindMethodSpinner = fragment.mRemindMethodSpinner;
         mTaskAttributeSpinner = fragment.mTaskAttributeSpinner;
         mCreateTaskButton = fragment.mCreateTaskButton;
         mIsHasBelongTextView = fragment.mIsHasBelongTextView;
         mTaskNameEditText = fragment.mTaskNameEditText;
-
-        mColorTag = fragment.mTaskColorTagSpinner;
 
         newTask = fragment.newTask;
 
@@ -73,7 +68,6 @@ public class CheckTask {
         }
         final int THE_MAX_NAME_LENGTH_TEXT = 3;
 
-        final String CREATE_TASK_CHINESE = "创建任务";
         final String BELONG_TASK_CHINESE = "父任务为  ";
         final String NULL_CHINESE = "空";
         final String CHOOSE_CHINESE = "点击选择";
@@ -85,7 +79,6 @@ public class CheckTask {
                 String taskName = newTask.getBelongName();
                 String name = taskName.length() < THE_MAX_NAME_LENGTH_TEXT ? taskName:taskName.substring(0, THE_MAX_NAME_LENGTH_TEXT);
                 mIsHasBelongTextView.setText(BELONG_TASK_CHINESE + name);
-                mCreateTaskButton.setText(CREATE_TASK_CHINESE);
             }
 //  还没设置好belong，或者更改了attribute，需重新设置belong
             else {
@@ -96,26 +89,24 @@ public class CheckTask {
 //  attribute为1级
 
             mIsHasBelongTextView.setText(BELONG_TASK_CHINESE + NULL_CHINESE);
-            mCreateTaskButton.setText(CREATE_TASK_CHINESE);
-
         }
     }
 
     //核查所有的输入以及获取合法值
     public boolean checkAll() {
-        setRemindMethod();
-        setColorTag();
+        mFragment.setRemindMethod();
+        mFragment.setColorTag();
 
         return checkAttribute() && checkTaskName() && checkFinishDate() && checkTime() ;
     }
 
     //当需要设置belong的时候return false，
-    private boolean checkAttribute() {
+    public boolean checkAttribute() {
         SpinnerValue attribute = newTask.getTaskAttribute();
         newTask.getTaskAttribute().setSelectedName(mTaskAttributeSpinner.getSelectedItem().toString());
 
         if (attribute.getSelectedPosition() != 0) {
-            if (newTask.isHasBelong() == false || selectedAttributePositionNow != selectedAttributePositionBefore) {
+            if (!newTask.isHasBelong() || selectedAttributePositionNow != selectedAttributePositionBefore) {
                 preserveSomeTaskInfo();
                 mFragment.setTaskBelong();
                 return false;
@@ -129,8 +120,8 @@ public class CheckTask {
         newTask.setSpendTime(mSpendTimePickerHours.getValue(), mSpendTimePickerMinutes.getValue());
         newTask.setFinishedDate(mFinishDate);
 
-        setColorTag();
-        setRemindMethod();
+        mFragment.setColorTag();
+        mFragment.setRemindMethod();
     }
 
     private boolean checkTaskName() {
@@ -213,19 +204,5 @@ public class CheckTask {
         return true;
     }
 
-    private void setRemindMethod() {
-        String remindMethodName = mRemindMethodSpinner.getSelectedItem().toString();
 
-        SpinnerValue remindMethod = newTask.getRemindMethod();
-        remindMethod.setSelectedName(remindMethodName);
-
-    }
-
-    private void setColorTag(){
-        String colorTagString = mColorTag.getSelectedItem().toString();
-
-        SpinnerValue colorTag = newTask.getTagColor();
-        colorTag.setSelectedName(colorTagString);
-
-    }
 }

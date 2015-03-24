@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import com.example.yuwei.killexam.map.TitleMapString;
 import com.example.yuwei.killexam.taskFragments.CreateTaskFragment;
 import com.example.yuwei.killexam.taskFragments.ChooseRemindTimeFragment;
 import com.example.yuwei.killexam.taskFragments.EditTaskFragment;
+import com.example.yuwei.killexam.taskFragments.EditableTaskFragment;
 import com.example.yuwei.killexam.taskFragments.TaskListFragment;
 import com.example.yuwei.killexam.tools.Task;
 import com.heinrichreimersoftware.materialdrawer.DrawerFrameLayout;
@@ -241,8 +243,7 @@ public class MainActivity extends ActionBarActivity {
             }
         }
 
-
-        getMenuInflater().inflate(R.menu.main, menu);
+        initNewMenu(R.menu.main, menu);
         mMenu = menu;
         return true;
     }
@@ -261,9 +262,15 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.menu_action_delete) {
+        if (id == R.id.menu_action_quit) {
             finish();
             return true;
+        }
+        if (id == R.id.menu_action_create){
+            ((EditableTaskFragment)currentFragment).createTask();
+        }
+        if (id == R.id.menu_action_delete){
+            ((EditTaskFragment)currentFragment).deleteTask();
         }
 
         return super.onOptionsItemSelected(item);

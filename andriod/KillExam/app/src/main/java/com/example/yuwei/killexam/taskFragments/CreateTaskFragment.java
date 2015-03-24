@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -30,17 +29,13 @@ import info.hoang8f.widget.FButton;
  * Created by yuwei on 15/2/16.
  */
 
-public class CreateTaskFragment extends editableTaskFragment{
+public class CreateTaskFragment extends EditableTaskFragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
-
-    CheckTask checkTask;
 
     public void setNewTask(Task newTask) {
         this.newTask = newTask;
     }
-
-    private MainActivity mMainActivity;
 
     public CreateTaskFragment(MainActivity mainActivity) {
         mMainActivity = mainActivity;
@@ -144,7 +139,7 @@ public class CreateTaskFragment extends editableTaskFragment{
         setTimePickerValue();
     }
     private void initCreateButton(){
-        mCreateTaskButton = (FButton)mView.findViewById(R.id.createTask);
+        mCreateTaskButton = (FButton)mView.findViewById(R.id.chooseBelongTask);
         mCreateTaskButton.setOnClickListener(this);
     }
     private void initIsHasBelongTextView(){
@@ -185,9 +180,9 @@ public class CreateTaskFragment extends editableTaskFragment{
             case R.id.finishDatePicker:
                 finishDataPick();
                 break;
-//  mCreateTaskButton onclick
-            case R.id.createTask:
-                if(checkTask.checkAll()){
+//  chooseBelongButton onclick
+            case R.id.chooseBelongTask:
+                if(checkTask.checkAttribute()){
                     writeTaskInDataBase();
                     enterTaskListFragment();
                 }
@@ -206,17 +201,10 @@ public class CreateTaskFragment extends editableTaskFragment{
     }
 
 
-
-    private void writeTaskInDataBase(){
+    @Override
+    protected void writeTaskInDataBase(){
         MyDatabaseHelper.writeNewTask(this.getActivity().getApplicationContext(), newTask);
     }
 
-    private void enterTaskListFragment(){
-
-        MainActivity.mTitleMap.setTitle(TitleMapString.TASK_LIST);
-        Fragment targetFragment = mMainActivity.getTargetShowingFragmentByTitle();
-
-        mMainActivity.replaceFragment(targetFragment);
-    }
 
 }

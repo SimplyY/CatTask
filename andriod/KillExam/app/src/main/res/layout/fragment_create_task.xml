@@ -183,14 +183,14 @@
                 android:text="上级任务" />
 
             <info.hoang8f.widget.FButton
-                android:id="@+id/createTask"
+                android:id="@+id/chooseBelongTask"
                 android:layout_width="12dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="0.94"
-                android:text="@string/create_task_button"
+                android:text="选择任务"
                 android:textSize="18sp"
                 fbutton:buttonColor="@color/silver_deep" />
 

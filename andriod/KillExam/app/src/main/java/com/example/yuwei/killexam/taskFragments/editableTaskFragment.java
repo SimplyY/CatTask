@@ -15,6 +15,9 @@ import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDi
 import com.example.yuwei.killexam.ChooseBelongActivity;
 import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
+import com.example.yuwei.killexam.database.MyDatabaseHelper;
+import com.example.yuwei.killexam.map.TitleMapString;
+import com.example.yuwei.killexam.serve.CheckTask;
 import com.example.yuwei.killexam.tools.MyDate;
 import com.example.yuwei.killexam.map.SpinnerValue;
 import com.example.yuwei.killexam.tools.Task;
@@ -24,7 +27,7 @@ import info.hoang8f.widget.FButton;
 /**
  * Created by yuwei on 15/2/23.
  */
-public abstract class editableTaskFragment extends Fragment
+public abstract class EditableTaskFragment extends Fragment
         implements View.OnClickListener , NumberPicker.OnValueChangeListener, NumberPicker.OnScrollListener,NumberPicker.Formatter,CalendarDatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener{
 
     protected View mView;
@@ -43,7 +46,18 @@ public abstract class editableTaskFragment extends Fragment
     public MyDate mFinishDate;
     public Task newTask;
 
+    public CheckTask checkTask;
 
+    protected MainActivity mMainActivity;
+    public void createTask(){
+
+        if (checkTask.checkAll()){
+            writeTaskInDataBase();
+            enterTaskListFragment();
+        }
+    }
+
+    protected abstract void writeTaskInDataBase();
 
     protected void setAdapterForSpinner(Spinner spinner, int arrayId){
         spinner.setOnItemSelectedListener(this);
@@ -153,5 +167,31 @@ public abstract class editableTaskFragment extends Fragment
         intent.putExtra("task", newTask);
         startActivity(intent);
 
+    }
+
+    public void setRemindMethod() {
+        String remindMethodName = mRemindMethodSpinner.getSelectedItem().toString();
+
+        SpinnerValue remindMethod = newTask.getRemindMethod();
+        remindMethod.setSelectedName(remindMethodName);
+
+    }
+
+    public void setColorTag(){
+        String colorTagString = mTaskColorTagSpinner.getSelectedItem().toString();
+
+        SpinnerValue colorTag = newTask.getTagColor();
+        colorTag.setSelectedName(colorTagString);
+
+    }
+
+
+
+    protected void enterTaskListFragment() {
+
+        MainActivity.mTitleMap.setTitle(TitleMapString.TASK_LIST);
+        Fragment targetFragment = mMainActivity.getTargetShowingFragmentByTitle();
+
+        mMainActivity.replaceFragment(targetFragment);
     }
 }
