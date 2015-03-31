@@ -49,8 +49,8 @@ public abstract class EditableTaskFragment extends Fragment
     public CheckTask checkTask;
 
     protected MainActivity mMainActivity;
-    public void createTask(){
 
+    public void createTask(){
         if (checkTask.checkAll()){
             writeTaskInDataBase();
             enterTaskListFragment();

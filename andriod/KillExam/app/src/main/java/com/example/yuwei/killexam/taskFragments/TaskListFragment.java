@@ -58,7 +58,7 @@ public class TaskListFragment extends Fragment {
             mMainActivity.onCreateOptionsMenu(mMainActivity.mMenu);
         }
         initFloatButton();
-
+        mMainActivity.initNewMenu(R.menu.main);
 
         taskListView = (StickyListHeadersListView)mView.findViewById(R.id.taskListView);
 

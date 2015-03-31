@@ -208,7 +208,9 @@ public class MainActivity extends ActionBarActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, targetShowingFragment)
+                .addToBackStack(null)
                 .commit();
+
 
         drawer.setDrawerListener(drawerToggle);
         drawerToggle.syncState();
@@ -231,27 +233,30 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        mMenu = menu;
         if (currentFragment != null) {
             //给右上角的menu设置创建功能
             if (currentFragment.getClass() == CreateTaskFragment.class) {
-                initNewMenu(R.menu.create_fragment, menu);
+                initNewMenu(R.menu.create_fragment);
                 return true;
-            }
-            else if (currentFragment.getClass() == EditTaskFragment.class){
-                initNewMenu(R.menu.edit_fragment, menu);
+            } else if (currentFragment.getClass() == EditTaskFragment.class) {
+                initNewMenu(R.menu.edit_fragment);
                 return true;
             }
         }
 
-        initNewMenu(R.menu.main, menu);
-        mMenu = menu;
+        initNewMenu(R.menu.main);
         return true;
     }
 
-    private void initNewMenu(int menuId, Menu menu){
-        menu.clear();
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(menuId, menu);
+    public void initNewMenu(int menuId) {
+        if (mMenu != null) {
+
+            mMenu.clear();
+            MenuInflater menuInflater = getMenuInflater();
+            menuInflater.inflate(menuId, mMenu);
+        }
+
     }
 
     @Override
@@ -266,11 +271,11 @@ public class MainActivity extends ActionBarActivity {
             finish();
             return true;
         }
-        if (id == R.id.menu_action_create){
-            ((EditableTaskFragment)currentFragment).createTask();
+        if (id == R.id.menu_action_create) {
+            ((EditableTaskFragment) currentFragment).createTask();
         }
-        if (id == R.id.menu_action_delete){
-            ((EditTaskFragment)currentFragment).deleteTask();
+        if (id == R.id.menu_action_delete) {
+            ((EditTaskFragment) currentFragment).deleteTask();
         }
 
         return super.onOptionsItemSelected(item);
