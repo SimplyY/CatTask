@@ -26,8 +26,6 @@ import com.example.yuwei.killexam.tools.Task;
 import com.example.yuwei.killexam.tools.TaskTree;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
@@ -199,12 +197,15 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     private void setSpaceWidth() {
         int spaceAmount = getSpaceNumber(theTask);
 
-        int spaceLength = 60;
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewHolder.space.getLayoutParams();
+        int spaceLength = 65;
+        LinearLayout.LayoutParams spaceParams = (LinearLayout.LayoutParams) viewHolder.space.getLayoutParams();
+        spaceParams.width = spaceLength * spaceAmount;
+        viewHolder.space.setLayoutParams(spaceParams);
 
-        layoutParams.width = spaceLength * spaceAmount;
+        LinearLayout.LayoutParams checkboxParams = (LinearLayout.LayoutParams) viewHolder.isTaskFinishedCheckBox.getLayoutParams();
+        checkboxParams.width -= spaceParams.width/2;
+        viewHolder.isTaskFinishedCheckBox.setLayoutParams(checkboxParams);
 
-        viewHolder.space.setLayoutParams(layoutParams);
 
     }
 
@@ -261,7 +262,15 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     private void setTaskNameTextView() {
 
         String taskName = theTask.getTaskName();
+        int taskNameLength = getTaskNameShowingLength();
+
+        String taskNameInList = taskName.length()<taskNameLength ? taskName : (taskName.substring(0, taskNameLength - 1) + "...");
+        viewHolder.isTaskFinishedCheckBox.setText(taskNameInList);
+    }
+
+    private int getTaskNameShowingLength(){
         int unChineseCharNumber = 0;
+        String taskName = theTask.getTaskName();
 
         for (int i = 0; i < taskName.length(); i++){
             char theChar = taskName.charAt(i);
@@ -269,11 +278,10 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
                 unChineseCharNumber++;
             }
         }
-
         int increaseCharLength = unChineseCharNumber<19 ? unChineseCharNumber/2 : 9;
+        int reduceBySpace = theTask.getTaskAttribute().getSelectedPosition();
 
-        String taskNameInList = taskName.length() < THE_MAX_LENGTH + 1 + increaseCharLength ? taskName : (taskName.substring(0, THE_MAX_LENGTH + increaseCharLength ) + "...");
-        viewHolder.isTaskFinishedCheckBox.setText(taskNameInList);
+        return THE_MAX_LENGTH + increaseCharLength - reduceBySpace;
     }
 
     private void setTaskFinishTimeTextView() {

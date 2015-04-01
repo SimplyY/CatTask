@@ -17,7 +17,7 @@
         android:id="@+id/taskListSpace"
 
         android:layout_width="wrap_content"
-        android:layout_height="35dp" />
+        android:layout_height="50dp" />
 
 
     <CheckBox

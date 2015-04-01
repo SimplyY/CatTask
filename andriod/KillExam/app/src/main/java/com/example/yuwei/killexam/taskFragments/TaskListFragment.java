@@ -54,9 +54,7 @@ public class TaskListFragment extends Fragment {
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_task_list, container, false);
 
-        if (mMainActivity.mMenu != null) {
-            mMainActivity.onCreateOptionsMenu(mMainActivity.mMenu);
-        }
+
         initFloatButton();
         mMainActivity.initNewMenu(R.menu.main);
 
