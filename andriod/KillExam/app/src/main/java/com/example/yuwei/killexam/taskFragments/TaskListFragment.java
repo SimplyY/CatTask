@@ -1,10 +1,14 @@
 package com.example.yuwei.killexam.taskFragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.example.yuwei.killexam.MainActivity;
@@ -69,6 +73,14 @@ public class TaskListFragment extends Fragment {
         return mView;
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        Log.i("taskListFragment", "onStart");
+        InputMethodManager inputMethodManager = (InputMethodManager)mMainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(taskListView.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+
+    }
 //  更新taskList的数据（重新初始化，重新设置adapter），
 //  调用方法更新ui线程，
 //  设置之前选中的位置

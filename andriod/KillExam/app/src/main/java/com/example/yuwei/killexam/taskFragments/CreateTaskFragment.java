@@ -86,7 +86,7 @@ public class CreateTaskFragment extends EditableTaskFragment {
 
         mMainActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-//      让toolbar有高富帅般的白色（默认背景）
+//      让toolbar为白色（默认背景）
         mMainActivity.getSupportActionBar().setBackgroundDrawable(null);
 
         return mView;

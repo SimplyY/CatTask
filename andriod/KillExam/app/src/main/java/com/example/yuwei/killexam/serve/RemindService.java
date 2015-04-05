@@ -14,6 +14,7 @@ import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.tools.MyDate;
+import com.example.yuwei.killexam.tools.MyTime;
 import com.example.yuwei.killexam.tools.Task;
 
 import java.util.ArrayList;
@@ -32,7 +33,6 @@ public class RemindService extends Service{
 
         checkRemindTask();
 
-        stopSelf();
     }
 
     @Override
@@ -57,8 +57,6 @@ public class RemindService extends Service{
         }
     }
 
-
-
     private void remind(Task task){
         final String REMIND_TITLE = "任务提醒";
 
@@ -67,6 +65,7 @@ public class RemindService extends Service{
         Notification.Builder builder = new Notification.Builder(this);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
+        String time = task.getFinishedDate().listShowString() + ":";
         Resources res = this.getResources();
         builder.setContentIntent(pendingIntent)
                 .setSmallIcon(task.getTagRes())
@@ -74,8 +73,8 @@ public class RemindService extends Service{
                 .setWhen(System.currentTimeMillis())
                 .setTicker(REMIND_TITLE)
                 .setAutoCancel(true)
-                .setContentTitle(REMIND_TITLE)
-                .setContentText(task.getTaskName());
+                .setContentTitle(task.getTaskName())
+                .setContentText(time );
 
         Notification notification = builder.build();
         notificationManager.notify(notiId, notification);
