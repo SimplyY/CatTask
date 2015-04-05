@@ -211,7 +211,7 @@ public class MainActivity extends ActionBarActivity {
                 .addToBackStack(null)
                 .commit();
 
-
+        TaskListFragment.isEditMode = false;
         drawer.setDrawerListener(drawerToggle);
         drawerToggle.syncState();
     }

@@ -189,7 +189,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     }
 
     private void setColorImageView() {
-        int tagColorResId = getTagResId(theTask);
+        int tagColorResId = theTask.getTagRes();
 
         viewHolder.tagColorImageView.setImageResource(tagColorResId);
     }
@@ -237,7 +237,6 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
                 }
                 else{
                     enterEditTaskFragment(checkedTask);
-                    TaskListFragment.isEditMode = false;
                     checkBox.setChecked(false);
                 }
 
@@ -290,26 +289,6 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
 
     private int getSpaceNumber(Task theTask) {
         return theTask.getTaskAttribute().getSelectedPosition();
-    }
-
-    private int getTagResId(Task theTask) {
-        SpinnerValue tagColorSpinnerValue = theTask.getTagColor();
-        int tagResId = R.drawable.tag_color_green;
-        switch (tagColorSpinnerValue.getSelectedName()) {
-            case "白色":
-                tagResId = R.drawable.tag_color_green;
-                break;
-            case "紫色":
-                tagResId = R.drawable.tag_color_purple;
-                break;
-            case "蓝色":
-                tagResId = R.drawable.tag_color_blue;
-                break;
-            case "红色":
-                tagResId = R.drawable.tag_color_red;
-                break;
-        }
-        return tagResId;
     }
 
     class HeaderViewHolder {

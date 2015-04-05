@@ -62,7 +62,7 @@ public class TaskListFragment extends Fragment {
 
         initTaskList();
 
-        if (sortedTODOTaskArrayList != null){
+        if (sortedTODOTaskArrayList != null && sortedTODOTaskArrayList.size() != 0){
             initActionBar();
         }
 

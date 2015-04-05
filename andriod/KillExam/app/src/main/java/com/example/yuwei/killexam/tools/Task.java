@@ -1,6 +1,7 @@
 package com.example.yuwei.killexam.tools;
 
 
+import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.map.SpinnerValue;
 
 import java.io.Serializable;
@@ -35,6 +36,27 @@ public class Task implements Serializable {
     private int hasFinished = 0;
 
     public Task() {
+    }
+
+    public int getTagRes(){
+        String color = getTagColor().getSelectedName();
+
+        int tagResId = R.drawable.tag_color_green;
+        switch (color) {
+            case "白色":
+                tagResId = R.drawable.tag_color_green;
+                break;
+            case "紫色":
+                tagResId = R.drawable.tag_color_purple;
+                break;
+            case "蓝色":
+                tagResId = R.drawable.tag_color_blue;
+                break;
+            case "红色":
+                tagResId = R.drawable.tag_color_red;
+                break;
+        }
+        return tagResId;
     }
 
     public String toString(){

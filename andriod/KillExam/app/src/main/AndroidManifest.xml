@@ -3,6 +3,7 @@
     package="com.example.yuwei.killexam" >
 
     <!-- To access Google+ APIs: -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <application
@@ -14,6 +15,7 @@
         <receiver android:name=".serve.MyReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <category android:name="android.intent.category.HOME"/>
             </intent-filter>
         </receiver>
         <service android:name=".serve.RemindService">

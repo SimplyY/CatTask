@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
@@ -27,6 +28,7 @@ public class RemindService extends Service{
     @Override
     public void onCreate(){
         super.onCreate();
+        Log.i("service", "RemindService onCreate");
 
         checkRemindTask();
 
@@ -50,11 +52,40 @@ public class RemindService extends Service{
         for (Task task : tasks){
             if(isNeedRemind(task)){
                 remind(task);
+                Log.i("remind", "remind work");
             }
         }
     }
 
-//  这里针对
+
+
+    private void remind(Task task){
+        final String REMIND_TITLE = "任务提醒";
+
+        Intent intent = new Intent(this,MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        Notification.Builder builder = new Notification.Builder(this);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        Resources res = this.getResources();
+        builder.setContentIntent(pendingIntent)
+                .setSmallIcon(task.getTagRes())
+                .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.cat))
+                .setWhen(System.currentTimeMillis())
+                .setTicker(REMIND_TITLE)
+                .setAutoCancel(true)
+                .setContentTitle(REMIND_TITLE)
+                .setContentText(task.getTaskName());
+
+        Notification notification = builder.build();
+        notificationManager.notify(notiId, notification);
+
+        task.setRecentestDayReminded(new MyDate());
+        MyDatabaseHelper.updateTask(this, task);
+    }
+
+
+    //  这里针对
     private boolean isNeedRemind(Task task){
         MyDate recentestDayReminded = task.getRecentestDayReminded();
         MyDate finishDay = task.getFinishedDate();
@@ -105,30 +136,6 @@ public class RemindService extends Service{
 
         return false;
 
-    }
-
-    private void remind(Task task){
-        final String REMIND_TITLE = "任务提醒";
-
-        Intent intent = new Intent(this,MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-        Notification.Builder builder = new Notification.Builder(this);
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-        Resources res = this.getResources();
-        builder.setContentIntent(pendingIntent).setSmallIcon(R.drawable.cat)
-                .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.cat))
-                .setWhen(System.currentTimeMillis())
-                .setTicker(REMIND_TITLE)
-                .setAutoCancel(true)
-                .setContentTitle(REMIND_TITLE)
-                .setContentText(task.getTaskName());
-
-        Notification notification = builder.build();
-        notificationManager.notify(notiId, notification);
-
-        task.setRecentestDayReminded(new MyDate());
-        MyDatabaseHelper.updateTask(this, task);
     }
 
     private boolean judgeByWise(Task task, MyDate recentestDayReminded, MyDate current){

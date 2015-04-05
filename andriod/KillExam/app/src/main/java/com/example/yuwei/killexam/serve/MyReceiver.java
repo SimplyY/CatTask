@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
+import android.util.Log;
 
 /**
  * Created by yuwei on 15/3/15.
@@ -29,10 +30,11 @@ public class MyReceiver extends BroadcastReceiver{
 
             //触发服务的起始时间,elapsedRealtime()得到上一次触发距离现在的时间
             long triggerAtTime = SystemClock.elapsedRealtime();
+            Log.i("pendingIntent time", "" + triggerAtTime);
 
-            //使用AlarmManger的setRepeating方法设置定期执行的时间间隔（seconds秒）和需要执行的Service
+            //使用AlarmManger的setRepeating方法设置定期执行的时间间隔（毫秒）和需要执行的Service
             manager.setRepeating(AlarmManager.ELAPSED_REALTIME, triggerAtTime,
-                    1 * 600, pendingIntent);
+                    60 * 1000, pendingIntent);
         }
     }
 }
