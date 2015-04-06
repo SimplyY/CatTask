@@ -78,6 +78,7 @@ public class TaskListFragment extends Fragment {
         super.onStart();
         Log.i("taskListFragment", "onStart");
         InputMethodManager inputMethodManager = (InputMethodManager)mMainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+
         inputMethodManager.hideSoftInputFromWindow(taskListView.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
 
     }

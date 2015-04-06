@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by yuwei on 15/2/18.
  */
-//TODO: 将业务逻辑和数据库剥离
+
 public class MyDatabaseHelper extends SQLiteOpenHelper{
 
 

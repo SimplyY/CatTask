@@ -7,6 +7,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -32,7 +33,6 @@ public class RemindService extends Service{
         Log.i("service", "RemindService onCreate");
 
         checkRemindTask();
-
     }
 
     @Override
@@ -65,7 +65,7 @@ public class RemindService extends Service{
         Notification.Builder builder = new Notification.Builder(this);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        String time = task.getFinishedDate().listShowString() + ":";
+        String time = task.getFinishedDate().listShowString();
         Resources res = this.getResources();
         builder.setContentIntent(pendingIntent)
                 .setSmallIcon(task.getTagRes())
@@ -74,7 +74,7 @@ public class RemindService extends Service{
                 .setTicker(REMIND_TITLE)
                 .setAutoCancel(true)
                 .setContentTitle(task.getTaskName())
-                .setContentText(time );
+                .setContentText(time);
 
         Notification notification = builder.build();
         notificationManager.notify(notiId, notification);

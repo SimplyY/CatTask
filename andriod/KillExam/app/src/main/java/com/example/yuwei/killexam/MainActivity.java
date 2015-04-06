@@ -1,12 +1,14 @@
 package com.example.yuwei.killexam;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.text.Editable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.support.v7.widget.Toolbar;
 
 import com.example.yuwei.killexam.map.TitleMapString;
+import com.example.yuwei.killexam.serve.MyReceiver;
 import com.example.yuwei.killexam.taskFragments.CreateTaskFragment;
 import com.example.yuwei.killexam.taskFragments.ChooseRemindTimeFragment;
 import com.example.yuwei.killexam.taskFragments.EditTaskFragment;
@@ -25,6 +28,8 @@ import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
 
 import android.support.v7.app.ActionBarDrawerToggle;
+
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -46,6 +51,11 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!isServiceRunning(this, "RemindService")){
+            MyReceiver.startRemindService(this);
+            Log.i("MainActivity", "start remindService from MainActivity");
+        }
+
         setContentView(R.layout.activity_main);
         setContentView(R.layout.activity_main);
 
@@ -279,5 +289,25 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    public static boolean isServiceRunning(Context mContext,String className) {
+
+        boolean isRunning = false;
+        ActivityManager activityManager = (ActivityManager)
+                mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> serviceList
+                = activityManager.getRunningServices(30);
+
+        if (!(serviceList.size()>0)) {
+            return false;
+        }
+
+        for (int i=0; i<serviceList.size(); i++) {
+            if (serviceList.get(i).service.getClassName().equals(className) == true) {
+                isRunning = true;
+                break;
+            }
+        }
+        return isRunning;
     }
 }
