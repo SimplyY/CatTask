@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -24,6 +25,7 @@ import java.util.ArrayList;
  */
 public class RemindService extends Service{
 
+    static int notifyId = 1;
     static ArrayList<Notification> notifications = new ArrayList<>();
     NotificationManager notificationManager;
 
@@ -38,6 +40,17 @@ public class RemindService extends Service{
         super.onCreate();
         Log.i("service", "RemindService onCreate");
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                checkRemindTask();
+                handler.postDelayed(this, 600 * 1000);
+            }
+        };
+        handler.postDelayed(runnable, 600 * 1000);
+
         checkRemindTask();
 
     }
@@ -62,9 +75,12 @@ public class RemindService extends Service{
                 remind(task);
                 Log.i("remind", "remind work");
                 for (int i = 0; i < notifications.size(); i++) {
-                    notificationManager.notify(i + 1, notifications.get(i));
+                    notificationManager.notify(notifyId, notifications.get(i));
                     Log.i("remind", i + " remind work");
+                    notifyId++;
+
                 }
+                notifications.clear();
             }
         }
     }
