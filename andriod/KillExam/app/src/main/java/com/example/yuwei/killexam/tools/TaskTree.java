@@ -3,6 +3,7 @@ package com.example.yuwei.killexam.tools;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.widget.CompoundButton;
 
 import com.example.yuwei.killexam.adapter.TaskListAdapter;
@@ -206,6 +207,7 @@ public class TaskTree {
                 return theTask;
             }
         }
+        Log.d("taskTree getTask", "cant find this task");
         throw new Exception("cant find this task");
     }
 

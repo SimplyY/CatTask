@@ -25,6 +25,8 @@ import java.util.ArrayList;
 public class RemindService extends Service{
 
     static ArrayList<Notification> notifications = new ArrayList<>();
+    NotificationManager notificationManager;
+
 
     public static void startRemindService(Context context){
         Intent myIntent = new Intent(context, RemindService.class);
@@ -35,6 +37,7 @@ public class RemindService extends Service{
     public void onCreate(){
         super.onCreate();
         Log.i("service", "RemindService onCreate");
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         checkRemindTask();
 
     }
@@ -58,7 +61,10 @@ public class RemindService extends Service{
             if(isNeedRemind(task)){
                 remind(task);
                 Log.i("remind", "remind work");
-                break;
+                for (int i = 0; i < notifications.size(); i++) {
+                    notificationManager.notify(i + 1, notifications.get(i));
+                    Log.i("remind", i + " remind work");
+                }
             }
         }
     }
@@ -69,7 +75,6 @@ public class RemindService extends Service{
         Intent intent = new Intent(this,MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
         Notification.Builder builder = new Notification.Builder(this);
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         String time = task.getFinishedDate().listShowString();
         Resources res = this.getResources();
@@ -86,9 +91,7 @@ public class RemindService extends Service{
         Notification notification = builder.build();
         notifications.add(notification);
 
-        for (int i = 1; i <= notifications.size(); i++) {
-            notificationManager.notify(i, notification);
-        }
+
 
         task.setRecentestDayReminded(new MyDate());
         MyDatabaseHelper.updateTask(this, task);
