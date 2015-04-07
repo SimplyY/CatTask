@@ -114,9 +114,12 @@ public class TaskListFragment extends Fragment {
 
 
     private static void initActionBar(){
-        HeaderTimeMapString headerTimeMapString = new HeaderTimeMapString();
-        int imageId = headerTimeMapString.getImageId(sortedTODOTaskArrayList.get(0));
-        mMainActivity.getSupportActionBar().setBackgroundDrawable(mMainActivity.getResources().getDrawable(imageId));
+        if(!sortedTODOTaskArrayList.isEmpty()){
+            HeaderTimeMapString headerTimeMapString = new HeaderTimeMapString();
+            int imageId = headerTimeMapString.getImageId(sortedTODOTaskArrayList.get(0));
+            mMainActivity.getSupportActionBar().setBackgroundDrawable(mMainActivity.getResources().getDrawable(imageId));
+
+        }
     }
 
 

@@ -19,7 +19,6 @@ import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.map.HeaderTimeMapString;
-import com.example.yuwei.killexam.map.SpinnerValue;
 import com.example.yuwei.killexam.taskFragments.EditTaskFragment;
 import com.example.yuwei.killexam.taskFragments.TaskListFragment;
 import com.example.yuwei.killexam.tools.Task;
@@ -41,7 +40,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     Task theTask;
     MainActivity mMainActivity;
 
-    final int THE_MAX_LENGTH = 10;
+    final int THE_MAX_CHINESE_WEIGHT = 36;
 
     private LayoutInflater inflater;
     List<Task> sortedTODOtasks;
@@ -226,7 +225,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Task checkedTask = new Task();
                 try {
-                    checkedTask = TaskTree.getTask(buttonView.getText().toString(), THE_MAX_LENGTH);
+                    checkedTask = TaskTree.getTask(buttonView.getText().toString(), THE_MAX_CHINESE_WEIGHT);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("checkedTask","checkedTask get wrong");
@@ -261,26 +260,48 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     private void setTaskNameTextView() {
 
         String taskName = theTask.getTaskName();
-        int taskNameLength = getTaskNameShowingLength();
 
-        String taskNameInList = taskName.length()<taskNameLength ? taskName : (taskName.substring(0, taskNameLength - 1) + "...");
+        String taskNameInList = getTaskNameShowing(taskName);
         viewHolder.isTaskFinishedCheckBox.setText(taskNameInList);
     }
 
-    private int getTaskNameShowingLength(){
-        int unChineseCharNumber = 0;
-        String taskName = theTask.getTaskName();
+    private String getTaskNameShowing(String taskName){
 
+        int wholeWeight = 0;
+        wholeWeight += getSpaceNumber(theTask) * 5;
         for (int i = 0; i < taskName.length(); i++){
             char theChar = taskName.charAt(i);
-            if (theChar<='z'&&theChar>='a' || theChar<='Z'&&theChar>='A' || theChar<='9'&&theChar>='0'){
-                unChineseCharNumber++;
+            int theWeight = 0;
+
+            if (theChar == 'm' || theChar == 'w'){
+                theWeight += 3;
+            }
+            else if (theChar == 'i' || theChar == '1' || theChar == 'l' || theChar == 't'|| theChar == 'j'){
+                theWeight += 1;
+            }
+            else if (theChar<='z'&&theChar>='a' || theChar<='Z'&&theChar>='A' || theChar<='9'&&theChar>='0'){
+                theWeight += 2;
+            }
+            else if (theChar == ' '){
+                theWeight += 1;
+            }
+            else {
+                theWeight += 4;
+            }
+            wholeWeight += theWeight;
+
+            if (wholeWeight >= THE_MAX_CHINESE_WEIGHT){
+                if (theWeight == 4 || theWeight == 3) {
+                    return (taskName.substring(0, i - 1) + "...");
+                }
+                else{
+                    return (taskName.substring(0, i) + "...");
+                }
             }
         }
-        int increaseCharLength = unChineseCharNumber<19 ? unChineseCharNumber/2 : 9;
-        int reduceBySpace = theTask.getTaskAttribute().getSelectedPosition();
 
-        return THE_MAX_LENGTH + increaseCharLength - reduceBySpace;
+        return taskName;
+
     }
 
     private void setTaskFinishTimeTextView() {

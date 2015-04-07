@@ -4,10 +4,10 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -15,7 +15,6 @@ import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.tools.MyDate;
-import com.example.yuwei.killexam.tools.MyTime;
 import com.example.yuwei.killexam.tools.Task;
 
 import java.util.ArrayList;
@@ -25,19 +24,25 @@ import java.util.ArrayList;
  */
 public class RemindService extends Service{
 
-    int notiId = 1;
+    static ArrayList<Notification> notifications = new ArrayList<>();
+
+    public static void startRemindService(Context context){
+        Intent myIntent = new Intent(context, RemindService.class);
+        context.startService(myIntent);
+    }
 
     @Override
     public void onCreate(){
         super.onCreate();
         Log.i("service", "RemindService onCreate");
-
         checkRemindTask();
+
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
+        Log.i(RemindService.class.toString(), "onDestroy");
     }
 
 
@@ -53,6 +58,7 @@ public class RemindService extends Service{
             if(isNeedRemind(task)){
                 remind(task);
                 Log.i("remind", "remind work");
+                break;
             }
         }
     }
@@ -71,13 +77,18 @@ public class RemindService extends Service{
                 .setSmallIcon(task.getTagRes())
                 .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.cat))
                 .setWhen(System.currentTimeMillis())
-                .setTicker(REMIND_TITLE)
                 .setAutoCancel(true)
+                .setTicker(REMIND_TITLE)
                 .setContentTitle(task.getTaskName())
                 .setContentText(time);
 
+
         Notification notification = builder.build();
-        notificationManager.notify(notiId, notification);
+        notifications.add(notification);
+
+        for (int i = 1; i <= notifications.size(); i++) {
+            notificationManager.notify(i, notification);
+        }
 
         task.setRecentestDayReminded(new MyDate());
         MyDatabaseHelper.updateTask(this, task);

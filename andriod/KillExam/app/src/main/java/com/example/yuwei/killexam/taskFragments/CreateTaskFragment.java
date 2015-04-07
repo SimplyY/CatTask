@@ -2,7 +2,6 @@ package com.example.yuwei.killexam.taskFragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
 import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
-import com.example.yuwei.killexam.map.TitleMapString;
 import com.example.yuwei.killexam.serve.CheckTask;
 import com.example.yuwei.killexam.tools.MyDate;
 import com.example.yuwei.killexam.R;
@@ -152,9 +150,11 @@ public class CreateTaskFragment extends EditableTaskFragment {
     @Override
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
-        ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
-        ((TextView) parent.getChildAt(0)).setTextSize(20);
-        checkTask.setTextIsHasBelongCheckAttribute();
+        if (parent != null && parent.getChildAt(0) != null) {
+            ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
+            ((TextView) parent.getChildAt(0)).setTextSize(20);
+            checkTask.setTextIsHasBelongCheckAttribute();
+        }
 
     }
 

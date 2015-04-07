@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.yuwei.killexam.map.TitleMapString;
 import com.example.yuwei.killexam.serve.MyReceiver;
+import com.example.yuwei.killexam.serve.RemindService;
 import com.example.yuwei.killexam.taskFragments.CreateTaskFragment;
 import com.example.yuwei.killexam.taskFragments.ChooseRemindTimeFragment;
 import com.example.yuwei.killexam.taskFragments.EditTaskFragment;
@@ -51,10 +52,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!isServiceRunning(this, "RemindService")){
-            MyReceiver.startRemindService(this);
-            Log.i("MainActivity", "start remindService from MainActivity");
-        }
+
 
         setContentView(R.layout.activity_main);
         setContentView(R.layout.activity_main);
@@ -65,6 +63,15 @@ public class MainActivity extends ActionBarActivity {
         initDrawerArrow();
 
         enterFragment();
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        if (!isServiceRunning(this, "RemindService")){
+            RemindService.startRemindService(this.getApplicationContext());
+            Log.i("MainActivity", "start remindService from MainActivity");
+        }
     }
 
     private void enterFragment() {
