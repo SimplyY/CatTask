@@ -16,6 +16,7 @@ import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.tools.MyDate;
+import com.example.yuwei.killexam.tools.MyTime;
 import com.example.yuwei.killexam.tools.Task;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
  */
 public class RemindService extends Service{
 
+    static Context MyContext;
     static int notifyId = 1;
     static ArrayList<Notification> notifications = new ArrayList<>();
     NotificationManager notificationManager;
@@ -32,6 +34,7 @@ public class RemindService extends Service{
 
     public static void startRemindService(Context context){
         Intent myIntent = new Intent(context, RemindService.class);
+        MyContext = context;
         context.startService(myIntent);
     }
 
@@ -118,9 +121,19 @@ public class RemindService extends Service{
     private boolean isNeedRemind(Task task){
         MyDate recentestDayReminded = task.getRecentestDayReminded();
         MyDate finishDay = task.getFinishedDate();
-        MyDate current = new MyDate();
+        MyDate currentDate = new MyDate();
 
-        if (current.equals(recentestDayReminded)){
+        MyTime currentTime = MyTime.getCurrentTime();
+        MyTime beginRemindTime = new MyTime();
+        MyTime endRemindTime = new MyTime();
+
+        MyDatabaseHelper.getRemindTime(MyContext, beginRemindTime, endRemindTime);
+
+        if (beginRemindTime.isLaterThan(currentTime) || currentTime.isLaterThan(endRemindTime)){
+            return false;
+        }
+
+        if (currentDate.equals(recentestDayReminded)){
             return false;
         }
 
@@ -133,7 +146,7 @@ public class RemindService extends Service{
                 return false;
 
             case "智能":
-                return judgeByWise(task, recentestDayReminded, current);
+                return judgeByWise(task, recentestDayReminded, currentDate);
 
             case "每天":
                 if (recentestDayReminded.isBefore(finishDay)){

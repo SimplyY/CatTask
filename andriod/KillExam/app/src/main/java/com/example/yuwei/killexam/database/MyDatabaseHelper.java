@@ -167,6 +167,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         contentValues.put(SPEND_MINUTES, task.getSpendMinutes());
         contentValues.put(REMIND_METHOD, task.getRemindMethod().getSelectedName());
 
+
         if (task.isHasBelong()){
             contentValues.put(HAS_BELONG, 1);
             contentValues.put(BELONG_NAME, task.getBelongName());
