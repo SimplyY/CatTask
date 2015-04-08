@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
@@ -15,7 +14,6 @@ import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDi
 import com.example.yuwei.killexam.ChooseBelongActivity;
 import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
-import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.map.TitleMapString;
 import com.example.yuwei.killexam.serve.CheckTask;
 import com.example.yuwei.killexam.tools.MyDate;
@@ -86,15 +84,14 @@ public abstract class EditableTaskFragment extends Fragment
     }
 
     public void setViewsValues(){
-        setAttributeValue();
-        setTagColorValue();
-        setRemindMethodValue();
-        setNameText();
-        setRemindMethodValue();
-        setFinishButtonText();
-        setTimePickerValue();
+        initAttributeValue();
+        initTagColorValue();
+        initRemindMethodValue();
+        initNameText();
+        initFinishButtonText();
+        initTimePickerValue();
     }
-    protected void setAttributeValue(){
+    protected void initAttributeValue(){
         if (newTask.getTaskAttribute() == null){
             SpinnerValue taskAttribute = SpinnerValue.initSpinnerValue(R.array.task_attribute_array, getResources());
             newTask.setTaskAttribute(taskAttribute);
@@ -102,7 +99,7 @@ public abstract class EditableTaskFragment extends Fragment
 
         mTaskAttributeSpinner.setSelection(newTask.getTaskAttribute().getSelectedPosition());
     }
-    protected void setTagColorValue(){
+    protected void initTagColorValue(){
         if (newTask.getTagColor() == null){
             SpinnerValue tagColor = SpinnerValue.initSpinnerValue(R.array.tag_color_array, getResources());
             newTask.setTagColor(tagColor);
@@ -110,13 +107,14 @@ public abstract class EditableTaskFragment extends Fragment
 
         mTaskColorTagSpinner.setSelection(newTask.getTagColor().getSelectedPosition());
     }
-    private void setNameText(){
+    private void initNameText(){
         String taskName = newTask.getTaskName();
         if (taskName != null){
             mTaskNameEditText.setText(taskName);
         }
     }
-    protected void setRemindMethodValue(){
+
+    protected void initRemindMethodValue(){
         if (newTask.getRemindMethod() == null){
             SpinnerValue remindMethod = SpinnerValue.initSpinnerValue(R.array.task_remind_method_array, getResources());
             newTask.setRemindMethod(remindMethod);
@@ -125,7 +123,12 @@ public abstract class EditableTaskFragment extends Fragment
 
     }
 
-    public void setFinishButtonText(){
+    public void setAttribute(){
+        newTask.getTaskAttribute().setSelectedName(mTaskAttributeSpinner.getSelectedItem().toString());
+
+    }
+
+    public void initFinishButtonText(){
         if (newTask.getFinishedDate() != null){
             mFinishDateButton.setText(newTask.getFinishedDate().toString());
             mFinishDate = newTask.getFinishedDate();
@@ -134,7 +137,7 @@ public abstract class EditableTaskFragment extends Fragment
             mFinishDateButton.setText(new MyDate().toString());
         }
     }
-    public void setTimePickerValue(){
+    public void initTimePickerValue(){
         mSpendTimePickerHours.setOnScrollListener(this);
         mSpendTimePickerHours.setFormatter(this);
         mSpendTimePickerHours.setMaxValue(99);
@@ -168,6 +171,7 @@ public abstract class EditableTaskFragment extends Fragment
         startActivity(intent);
 
     }
+
 
     public void setRemindMethod() {
         String remindMethodName = mRemindMethodSpinner.getSelectedItem().toString();

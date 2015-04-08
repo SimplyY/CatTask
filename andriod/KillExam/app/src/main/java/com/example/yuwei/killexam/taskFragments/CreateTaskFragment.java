@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
 import com.example.yuwei.killexam.MainActivity;
@@ -128,13 +129,13 @@ public class CreateTaskFragment extends EditableTaskFragment {
     }
     private void initFinishDateButton(){
         mFinishDateButton = (FButton)mView.findViewById(R.id.finishDatePicker);
-        setFinishButtonText();
+        initFinishButtonText();
         mFinishDateButton.setOnClickListener(this);
     }
     private void initSpendTimePicker(){
         mSpendTimePickerHours = (NumberPicker)mView.findViewById(R.id.spendTimePickerHours);
         mSpendTimePickerMinutes = (NumberPicker)mView.findViewById(R.id.spendTimePickerMinutes);
-        setTimePickerValue();
+        initTimePickerValue();
     }
     private void initCreateButton(){
         mCreateTaskButton = (FButton)mView.findViewById(R.id.chooseBelongTask);
@@ -182,11 +183,17 @@ public class CreateTaskFragment extends EditableTaskFragment {
                 break;
 //  chooseBelongButton onclick
             case R.id.chooseBelongTask:
-                if(checkTask.checkAttribute()){
-                    writeTaskInDataBase();
-                    enterTaskListFragment();
+                if (!checkTask.checkTaskName()){
+                    break;
                 }
 
+                if(mTaskAttributeSpinner.getSelectedItemPosition() != 0){
+                    checkTask.preserveSomeTaskInfo();
+                    setTaskBelong();
+                }
+                else{
+                    Toast.makeText(getActivity().getApplication(), "不需要设置父任务", Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }

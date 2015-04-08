@@ -33,7 +33,6 @@ public class CheckTask {
     private Button mCreateTaskButton;
     private TextView mIsHasBelongTextView;
 
-
     private MyDate mFinishDate;
     private Task newTask;
 
@@ -102,29 +101,38 @@ public class CheckTask {
 
     //当需要设置belong的时候return false，
     public boolean checkAttribute() {
-        SpinnerValue attribute = newTask.getTaskAttribute();
-        newTask.getTaskAttribute().setSelectedName(mTaskAttributeSpinner.getSelectedItem().toString());
+        final String NEED_SET_BELONG = "需要选择父任务";
 
-        if (attribute.getSelectedPosition() != 0) {
+        boolean flag = !isNeedSetBelong();
+        if (isNeedSetBelong()) {
+            Toast.makeText(mFragment.getActivity().getApplication(), NEED_SET_BELONG,Toast.LENGTH_SHORT).show();
+        }
+
+        return flag;
+    }
+    public boolean isNeedSetBelong(){
+        mFragment.setAttribute();
+
+        if (newTask.getTaskAttribute().getSelectedPosition() != 0) {
             if (!newTask.isHasBelong() || selectedAttributePositionNow != selectedAttributePositionBefore) {
-                preserveSomeTaskInfo();
-                mFragment.setTaskBelong();
-                return false;
+
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
-    private void preserveSomeTaskInfo() {
+    public void preserveSomeTaskInfo() {
         newTask.setTaskName(mTaskNameEditText.getText().toString());
         newTask.setSpendTime(mSpendTimePickerHours.getValue(), mSpendTimePickerMinutes.getValue());
         newTask.setFinishedDate(mFinishDate);
 
         mFragment.setColorTag();
         mFragment.setRemindMethod();
+        mFragment.setAttribute();
     }
 
-    private boolean checkTaskName() {
+    public boolean checkTaskName() {
         final String TASK_NAME_HAS_SPACE = "任务名不能为空";
         final String TASK_NAME_HAS_EXIST = "任务名已存在";
 

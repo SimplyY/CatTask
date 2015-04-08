@@ -156,6 +156,9 @@ public class EditTaskFragment extends EditableTaskFragment {
     @Override
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
+        if (parent == null || parent.getChildAt(0) == null){
+            return;
+        }
         ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
         ((TextView) parent.getChildAt(0)).setTextSize(20);
         checkTask.setTextIsHasBelongCheckAttribute();
