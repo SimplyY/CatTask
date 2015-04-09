@@ -125,7 +125,6 @@ public class MainActivity extends ActionBarActivity {
         drawer = (DrawerFrameLayout) findViewById(R.id.drawer);
         drawer.setProfile(
                 new DrawerProfile()
-                        .setAvatar(getResources().getDrawable(R.drawable.cat_head_picture))
                         .setBackground(getResources().getDrawable(R.drawable.cat_background))
                         .setName("a cat")
                         .setDescription("look for task~")

@@ -41,19 +41,19 @@ public class Task implements Serializable {
     public int getTagRes(){
         String color = getTagColor().getSelectedName();
 
-        int tagResId = R.drawable.tag_color_green;
+        int tagResId = R.drawable.tag_color_silver;
         switch (color) {
             case "白色":
-                tagResId = R.drawable.tag_color_green;
+                tagResId = R.drawable.tag_color_silver;
                 break;
             case "紫色":
-                tagResId = R.drawable.tag_color_purple;
+                tagResId = R.drawable.tag_color_green;
                 break;
             case "蓝色":
                 tagResId = R.drawable.tag_color_blue;
                 break;
             case "红色":
-                tagResId = R.drawable.tag_color_red;
+                tagResId = R.drawable.tag_color_purple;
                 break;
         }
         return tagResId;

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import com.example.yuwei.killexam.MainActivity;
 import com.example.yuwei.killexam.R;
@@ -52,7 +53,7 @@ public class ChooseRemindTimeFragment extends Fragment
         mBeginRemindTime = new MyTime();
         mEndRemindTime = new MyTime();
         mBeginRemindTime.hours = 10;
-        mEndRemindTime.hours = 20;
+        mEndRemindTime.hours = 10;
         MyDatabaseHelper.getRemindTime(mMainActivity, mBeginRemindTime, mEndRemindTime);
 
         mBeginPickerHours = (NumberPicker)mView.findViewById(R.id.beginRemindHours);
@@ -94,6 +95,8 @@ public class ChooseRemindTimeFragment extends Fragment
                 mEndRemindTime = new MyTime(mEndPickerHours.getValue(), mEndPickerMinutes.getValue());
 
                 MyDatabaseHelper.writeRemindTime(mMainActivity, mBeginRemindTime, mEndRemindTime);
+
+                Toast.makeText(mMainActivity, "提醒时间已设置", Toast.LENGTH_SHORT).show();
             }
         });
     }
