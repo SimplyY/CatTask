@@ -13,13 +13,6 @@
         android:layout_height="20dp" />
 
 
-    <Space
-        android:id="@+id/taskListSpace"
-
-        android:layout_width="wrap_content"
-        android:layout_height="50dp" />
-
-
     <CheckBox
         android:id="@+id/taskListIsTaskFinishedCheckBox"
         android:layout_gravity="center"
@@ -27,9 +20,11 @@
         android:textSize="18sp"
         android:textColor="@color/custom_text_color"
         android:gravity="center|start"
-        android:layout_width="240dp"
+        android:layout_width="265dp"
 
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/taskListFinishTimeTextView"
@@ -38,6 +33,6 @@
         android:gravity="center|end"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginRight="@dimen/fragment_maginright"
+        android:singleLine="true"
         />
 </LinearLayout>

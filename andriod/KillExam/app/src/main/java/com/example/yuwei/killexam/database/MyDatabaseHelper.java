@@ -191,6 +191,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         ContentValues contentValues = getTaskContentValues(task);
 
         database.insert(TASK_TABLE_NAME, null, contentValues);
+        database.close();
     }
 
 //  核查任务名是否存在
@@ -201,6 +202,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             return true;
         }
         cursor.close();
+        database.close();
         return false;
     }
 
@@ -219,6 +221,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             belongTasks.add(belongTask);
         }
         cursor.close();
+        database.close();
         return belongTasks;
     }
 
@@ -234,6 +237,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             taskArrayList.add(theTask);
         }
         cursor.close();
+        database.close();
         return taskArrayList;
     }
 
@@ -246,6 +250,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         String where = NAME + "='" + theTask.getTaskName() + "'";
 
         database.update(TASK_TABLE_NAME, contentValues, where, null);
+        database.close();
     }
 
     //  更新任务
@@ -257,6 +262,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         String where = NAME + "='" + oldTaskName + "'";
 
         database.update(TASK_TABLE_NAME, contentValues, where, null);
+        database.close();
     }
 
     public static void deleteTask(Context context, Task task){
@@ -264,6 +270,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 
         String where = NAME + "='" + task.getTaskName() + "'";
         database.delete(TASK_TABLE_NAME, where, null);
+        database.close();
     }
 
 
@@ -281,6 +288,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         contentValues.put(END_REMIND_MINUTES, endTime.minutes);
 
         database.insert(REMIND_TIME_TABLE_NAME, null, contentValues);
+        database.close();
     }
 
     public static void getRemindTime(Context context, MyTime beginTime, MyTime endTime){
@@ -298,6 +306,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             endTime.hours = cursor.getInt(cursor.getColumnIndex(END_REMIND_HOURS));
             endTime.minutes = cursor.getInt(cursor.getColumnIndex(END_REMIND_MINUTES));
         }
+        database.close();
     }
 
 }

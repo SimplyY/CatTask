@@ -12,7 +12,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Space;
 import android.widget.TextView;
 
 import com.example.yuwei.killexam.MainActivity;
@@ -40,7 +39,6 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     Task theTask;
     MainActivity mMainActivity;
 
-    final int THE_MAX_CHINESE_WEIGHT = 36;
 
     private LayoutInflater inflater;
     List<Task> sortedTODOtasks;
@@ -65,10 +63,10 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
             @Override
             public void run() {
                 setActionBar();
-                handler.postDelayed(this, 10);
+                handler.postDelayed(this, 5);
             }
         };
-        handler.postDelayed(runnable, 10);
+        handler.postDelayed(runnable, 5);
     }
 
 
@@ -172,8 +170,6 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
 
         viewHolder.tagColorImageView = (ImageView) view.findViewById(R.id.taskListColorTagImageView);
 
-        viewHolder.space = (Space) view.findViewById(R.id.taskListSpace);
-
         viewHolder.isTaskFinishedCheckBox = (CheckBox) view.findViewById(R.id.taskListIsTaskFinishedCheckBox);
 
         viewHolder.taskFinishTimeTextView = (TextView) view.findViewById(R.id.taskListFinishTimeTextView);
@@ -196,16 +192,12 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     private void setSpaceWidth() {
         int spaceAmount = getSpaceNumber(theTask);
 
-        int spaceLength = 65;
-        LinearLayout.LayoutParams spaceParams = (LinearLayout.LayoutParams) viewHolder.space.getLayoutParams();
-        spaceParams.width = spaceLength * spaceAmount;
-        viewHolder.space.setLayoutParams(spaceParams);
+        int leftMarginUnit = 75;
 
         LinearLayout.LayoutParams checkboxParams = (LinearLayout.LayoutParams) viewHolder.isTaskFinishedCheckBox.getLayoutParams();
-        checkboxParams.width -= spaceParams.width/2;
+        checkboxParams.width -= leftMarginUnit * spaceAmount;
+        checkboxParams.leftMargin = leftMarginUnit * spaceAmount;
         viewHolder.isTaskFinishedCheckBox.setLayoutParams(checkboxParams);
-
-
     }
 
     private void setIsTaskFinishedCheckBox() {
@@ -225,7 +217,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Task checkedTask = new Task();
                 try {
-                    checkedTask = TaskTree.getTask(buttonView.getText().toString(), THE_MAX_CHINESE_WEIGHT/4 - 2);
+                    checkedTask = TaskTree.getTask(buttonView.getText().toString(), 4);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("checkedTask","checkedTask get wrong");
@@ -261,48 +253,10 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
 
         String taskName = theTask.getTaskName();
 
-        String taskNameInList = getTaskNameShowing(taskName);
-        viewHolder.isTaskFinishedCheckBox.setText(taskNameInList);
+        viewHolder.isTaskFinishedCheckBox.setText(taskName);
     }
 
-    private String getTaskNameShowing(String taskName){
 
-        int wholeWeight = 0;
-        wholeWeight += getSpaceNumber(theTask) * 5;
-        for (int i = 0; i < taskName.length(); i++){
-            char theChar = taskName.charAt(i);
-            int theWeight = 0;
-
-            if (theChar == 'm' || theChar == 'w'){
-                theWeight += 3;
-            }
-            else if (theChar == 'i' || theChar == '1' || theChar == 'l' || theChar == 't'|| theChar == 'j'){
-                theWeight += 1;
-            }
-            else if (theChar<='z'&&theChar>='a' || theChar<='Z'&&theChar>='A' || theChar<='9'&&theChar>='0'){
-                theWeight += 2;
-            }
-            else if (theChar == ' '){
-                theWeight += 1;
-            }
-            else {
-                theWeight += 4;
-            }
-            wholeWeight += theWeight;
-
-            if (wholeWeight >= THE_MAX_CHINESE_WEIGHT){
-                if (theWeight == 4 || theWeight == 3) {
-                    return (taskName.substring(0, i - 1) + "...");
-                }
-                else{
-                    return (taskName.substring(0, i) + "...");
-                }
-            }
-        }
-
-        return taskName;
-
-    }
 
     private void setTaskFinishTimeTextView() {
         viewHolder.taskFinishTimeTextView.setText(theTask.getFinishedDate().listShowString());
@@ -320,7 +274,6 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
 
     class ViewHolder {
         ImageView tagColorImageView;
-        Space space;
         CheckBox isTaskFinishedCheckBox;
         TextView taskFinishTimeTextView;
     }

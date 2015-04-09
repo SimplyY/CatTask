@@ -43,16 +43,16 @@ public class Task implements Serializable {
 
         int tagResId = R.drawable.tag_color_silver;
         switch (color) {
-            case "白色":
+            case "银色":
                 tagResId = R.drawable.tag_color_silver;
                 break;
-            case "紫色":
+            case "绿色":
                 tagResId = R.drawable.tag_color_green;
                 break;
             case "蓝色":
                 tagResId = R.drawable.tag_color_blue;
                 break;
-            case "红色":
+            case "紫色":
                 tagResId = R.drawable.tag_color_purple;
                 break;
         }

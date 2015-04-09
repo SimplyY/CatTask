@@ -73,9 +73,9 @@ public class EditTaskFragment extends EditableTaskFragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInsrtanceState) {
-        super.onSaveInstanceState(savedInsrtanceState);
-        savedInsrtanceState.putSerializable("task", newTask);
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable("task", newTask);
     }
 
     @Override

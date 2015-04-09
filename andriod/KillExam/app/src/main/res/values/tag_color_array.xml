@@ -3,7 +3,7 @@
     <string-array name="tag_color_array">
         <item>银色</item>
         <item>绿色</item>
-        <item>紫色</item>
         <item>蓝色</item>
+        <item>紫色</item>
     </string-array>
 </resources>
