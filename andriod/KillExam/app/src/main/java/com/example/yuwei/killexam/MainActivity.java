@@ -126,8 +126,8 @@ public class MainActivity extends ActionBarActivity {
         drawer.setProfile(
                 new DrawerProfile()
                         .setBackground(getResources().getDrawable(R.drawable.cat_background))
-                        .setName("a cat")
-                        .setDescription("look for task~")
+                        .setName("A cat")
+                        .setDescription("looks for task~")
                         .setOnProfileClickListener(new DrawerProfile.OnProfileClickListener() {
                             @Override
                             public void onClick(DrawerProfile drawerProfile) {

@@ -4,21 +4,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    style="@style/fragmentLinearLayoutStyle">
+    >
 
 
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@drawable/cat_background"/>
+        android:background="@drawable/cat_background"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginTop="10dp"
         android:gravity="start"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        style="@style/fragmentLinearLayoutStyle">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -69,7 +73,8 @@
         android:layout_height="80dp"
         android:layout_marginTop="10dp"
         android:gravity="start"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        style="@style/fragmentLinearLayoutStyle">
 
         <LinearLayout
             android:layout_width="0dp"
