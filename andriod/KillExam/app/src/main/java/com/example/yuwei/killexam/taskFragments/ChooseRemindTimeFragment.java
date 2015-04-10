@@ -46,6 +46,8 @@ public class ChooseRemindTimeFragment extends Fragment
         mView = inflater.inflate(R.layout.fragment_choose_remind_time, container, false);
         initPickers();
         initButton();
+
+        mMainActivity.getSupportActionBar().setBackgroundDrawable(null);
         return mView;
     }
 

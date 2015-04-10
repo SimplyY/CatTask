@@ -217,7 +217,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Task checkedTask = new Task();
                 try {
-                    checkedTask = TaskTree.getTask(buttonView.getText().toString(), 4);
+                    checkedTask = TaskTree.getTask(buttonView.getText().toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("checkedTask","checkedTask get wrong");

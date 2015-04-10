@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -222,10 +223,15 @@ public class MainActivity extends ActionBarActivity {
 
     public void replaceFragment(Fragment targetShowingFragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, targetShowingFragment)
-                .addToBackStack(null)
-                .commit();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, targetShowingFragment);
+
+        if (!targetShowingFragment.getClass().equals(TaskListFragment.class)){
+            fragmentTransaction.addToBackStack(null);
+        }
+
+        fragmentTransaction.commit();
+
 
         TaskListFragment.isEditMode = false;
         drawer.setDrawerListener(drawerToggle);

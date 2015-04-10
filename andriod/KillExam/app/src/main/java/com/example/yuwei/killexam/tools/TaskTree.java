@@ -198,10 +198,9 @@ public class TaskTree {
         return this;
     }
 
-    public static Task getTask(String taskName, int length) throws Exception {
+    public static Task getTask(String taskName) throws Exception {
         for (Task theTask : allTaskArrayList) {
-            taskName = getLegalTaskName(taskName, length);
-            String theTaskName = getLegalTaskName(theTask.getTaskName(), length);
+            String theTaskName = theTask.getTaskName();
 
             if (theTaskName.equals(taskName)) {
                 return theTask;
@@ -211,9 +210,6 @@ public class TaskTree {
         throw new Exception("cant find this task");
     }
 
-    private static String getLegalTaskName(String theTaskName, int length) {
-        return theTaskName.length() < length ? theTaskName : theTaskName.substring(0, length);
-    }
 
     //  this只能为firstTaskTree
     public boolean setFirstTaskTreeHasFinished() {

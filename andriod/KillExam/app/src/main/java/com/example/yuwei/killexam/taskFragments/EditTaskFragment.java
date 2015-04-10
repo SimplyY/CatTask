@@ -192,6 +192,7 @@ public class EditTaskFragment extends EditableTaskFragment {
         }
     }
 
+//  
     @Override
     protected void writeTaskInDataBase(){
         MyDatabaseHelper.updateTask(this.getActivity().getApplicationContext(), newTask, oldTaskName);
