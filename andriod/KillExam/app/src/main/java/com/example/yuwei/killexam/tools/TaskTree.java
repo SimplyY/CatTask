@@ -24,7 +24,7 @@ public class TaskTree {
     private static Context mContext;
 
     private static ArrayList<Task> allTaskArrayList;
-    private static ArrayList<Task> sortedTODOTaskArrayList;
+    private static ArrayList<Task> sortedTodoTaskArrayList;
     private static TaskTree root;
 
     private static TaskListAdapter mAdapter;
@@ -69,28 +69,28 @@ public class TaskTree {
     }
 
     private static void initSortedTaskArrayList(TaskTree taskTree) {
-        sortedTODOTaskArrayList = new ArrayList<>();
+        sortedTodoTaskArrayList = new ArrayList<>();
         for (TaskTree firstTaskTree : taskTree.childTaskTreeArrayList) {
             firstTaskTree.setFirstTaskTreeHasFinished();
 //          这里将已完成任务过滤
             if (firstTaskTree.getFirstTaskHasFinished() == 0) {
-                sortedTODOTaskArrayList.add(firstTaskTree.getmTask());
-                setSortedTODOTaskArrayList(firstTaskTree);
+                sortedTodoTaskArrayList.add(firstTaskTree.getmTask());
+                setSortedTodoTaskArrayList(firstTaskTree);
             }
         }
     }
 
-    private static void setSortedTODOTaskArrayList(TaskTree taskTree) {
+    private static void setSortedTodoTaskArrayList(TaskTree taskTree) {
         if (taskTree.isHasChild()) {
             for (TaskTree theTaskTree : taskTree.childTaskTreeArrayList) {
-                sortedTODOTaskArrayList.add(theTaskTree.getmTask());
-                setSortedTODOTaskArrayList(theTaskTree);
+                sortedTodoTaskArrayList.add(theTaskTree.getmTask());
+                setSortedTodoTaskArrayList(theTaskTree);
             }
         }
     }
 
     private static void initSortedTasksHeader() {
-        for (Task task : sortedTODOTaskArrayList) {
+        for (Task task : sortedTodoTaskArrayList) {
             TaskTree firstTaskTree = root.getFirstAttributeTaskTree(task);
             task.setHeaderDate(firstTaskTree.getTreeEarlyFinishTime());
         }
@@ -222,10 +222,10 @@ public class TaskTree {
         }
 
         firstTaskHasFinished = 1;
-        int theIndex = sortedTODOTaskArrayList.indexOf(mTask) + 1;
+        int theIndex = sortedTodoTaskArrayList.indexOf(mTask) + 1;
 //      向后找直到attribute == 1时停下,途中只要有一个就停下
         while (isMoveToTheFirstTask(theIndex)) {
-            if (sortedTODOTaskArrayList.get(theIndex).getHasFinished() == 0) {
+            if (sortedTodoTaskArrayList.get(theIndex).getHasFinished() == 0) {
                 firstTaskHasFinished = 0;
                 break;
             }
@@ -267,7 +267,7 @@ public class TaskTree {
     }
 //  删除一个taskTree
     private static void deleteFirstTaskTree(TaskTree taskTree) {
-        int theIndex = sortedTODOTaskArrayList.indexOf(taskTree.getmTask());
+        int theIndex = sortedTodoTaskArrayList.indexOf(taskTree.getmTask());
 
         deleteTask(theIndex);
 //      注意由于remove会使得后面的task的index前移1,所以theIndex不需要++
@@ -281,14 +281,14 @@ public class TaskTree {
     }
 //  向后找直到attribute == 1时停下,途中只要有一个没有完成就停下
     private static boolean isMoveToTheFirstTask(int theIndex){
-        return theIndex < sortedTODOTaskArrayList.size() &&
-                sortedTODOTaskArrayList.get(theIndex).getTaskAttribute().getSelectedPosition() != 0;
+        return theIndex < sortedTodoTaskArrayList.size() &&
+                sortedTodoTaskArrayList.get(theIndex).getTaskAttribute().getSelectedPosition() != 0;
     }
 //  单个任务的删除
     public static void deleteTask(int theIndex){
-        MyDatabaseHelper.deleteTask(mContext, sortedTODOTaskArrayList.get(theIndex));
+        MyDatabaseHelper.deleteTask(mContext, sortedTodoTaskArrayList.get(theIndex));
 
-        sortedTODOTaskArrayList.remove(theIndex);
+        sortedTodoTaskArrayList.remove(theIndex);
     }
     public int getFirstTaskHasFinished() {
         return firstTaskHasFinished;
@@ -367,8 +367,8 @@ public class TaskTree {
         }
     }
 
-    public static ArrayList<Task> getSortedTODOTaskArrayList() {
-        return sortedTODOTaskArrayList;
+    public static ArrayList<Task> getSortedTodoTaskArrayList() {
+        return sortedTodoTaskArrayList;
     }
 
     private int getChildAttribute() {

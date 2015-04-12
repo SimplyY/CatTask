@@ -71,7 +71,7 @@ public class RemindService extends Service{
     }
 
     private void checkRemindTask(){
-        ArrayList<Task> tasks = MyDatabaseHelper.getTaskArray(this);
+        ArrayList<Task> tasks = MyDatabaseHelper.getAllTaskArray(this);
 
         for (Task task : tasks){
             if(isNeedRemind(task)){

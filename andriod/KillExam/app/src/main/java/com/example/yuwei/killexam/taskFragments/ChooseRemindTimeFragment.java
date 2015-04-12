@@ -70,7 +70,7 @@ public class ChooseRemindTimeFragment extends Fragment
         mBeginPickerMinutes.setFormatter(this);
         mBeginPickerMinutes.setMaxValue(59);
         mBeginPickerMinutes.setMinValue(0);
-        mBeginPickerMinutes.setValue(0);
+        mBeginPickerMinutes.setValue(mBeginRemindTime.minutes);
 
 
         mEndPickerHours = (NumberPicker)mView.findViewById(R.id.endRemindHours);
@@ -85,7 +85,7 @@ public class ChooseRemindTimeFragment extends Fragment
         mEndPickerMinutes.setFormatter(this);
         mEndPickerMinutes.setMaxValue(59);
         mEndPickerMinutes.setMinValue(0);
-        mEndPickerMinutes.setValue(0);
+        mEndPickerMinutes.setValue(mBeginRemindTime.minutes);
     }
 
     private void initButton(){

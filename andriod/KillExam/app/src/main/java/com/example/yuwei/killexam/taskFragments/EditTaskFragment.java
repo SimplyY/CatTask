@@ -20,6 +20,9 @@ import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.serve.CheckTask;
 import com.example.yuwei.killexam.tools.MyDate;
 import com.example.yuwei.killexam.tools.Task;
+import com.example.yuwei.killexam.tools.TaskTree;
+
+import java.util.ArrayList;
 
 import info.hoang8f.widget.FButton;
 
@@ -192,10 +195,36 @@ public class EditTaskFragment extends EditableTaskFragment {
         }
     }
 
-//  
     @Override
     protected void writeTaskInDataBase(){
+//  在更改了父任务名字时，要把所有子任务的父任务名改掉
+        if (!oldTaskName.equals(newTask.getTaskName())){
+            updateChildTasks(newTask);
+        }
         MyDatabaseHelper.updateTask(this.getActivity().getApplicationContext(), newTask, oldTaskName);
+    }
+
+    private void updateChildTasks(Task newTask){
+        ArrayList<Task> sortedTodoTasks = TaskTree.getSortedTodoTaskArrayList();
+        boolean isFindNewTask = false;
+        for (Task theTask : sortedTodoTasks){
+            if (isFindNewTask){
+                int theTaskAttribute = theTask.getTaskAttribute().getSelectedPosition();
+                int newTaskAttribute = newTask.getTaskAttribute().getSelectedPosition();
+                if (theTaskAttribute == newTaskAttribute){
+                    return;
+                }
+                if (theTaskAttribute == newTaskAttribute +
+                        1){
+                    theTask.setBelongName(newTask.getTaskName());
+                    MyDatabaseHelper.updateTask(mMainActivity.getApplicationContext(), theTask);
+                }
+            }
+            if(newTask.getTaskName().equals(theTask.getTaskName())){
+                isFindNewTask = true;
+            }
+        }
+
     }
 
 
@@ -214,7 +243,6 @@ public class EditTaskFragment extends EditableTaskFragment {
         calendarDatePickerDialog.setTargetFragment(this, 1);
         calendarDatePickerDialog.show(fm, FRAG_TAG_DATE_PICKER);
     }
-
 
 
 }

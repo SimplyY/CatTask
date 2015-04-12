@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -100,11 +99,11 @@ public class TaskListFragment extends Fragment {
 
 //  通过读取数据库获取最新的taskArray，来初始化taskTree
     public static void initTaskList(){
-        ArrayList<Task> taskArrayList = MyDatabaseHelper.getTaskArray(mMainActivity);
+        ArrayList<Task> taskArrayList = MyDatabaseHelper.getAllTaskArray(mMainActivity);
         if (!taskArrayList.isEmpty()){
             taskTree = TaskTree.newInstance(taskArrayList, mMainActivity);
 
-            sortedTODOTaskArrayList = TaskTree.getSortedTODOTaskArrayList();
+            sortedTODOTaskArrayList = TaskTree.getSortedTodoTaskArrayList();
 
             adapter = new TaskListAdapter(mMainActivity, R.layout.task_item, sortedTODOTaskArrayList);
             taskListView.setAdapter(adapter);

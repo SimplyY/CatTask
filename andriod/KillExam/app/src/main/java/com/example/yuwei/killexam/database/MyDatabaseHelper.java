@@ -226,7 +226,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     }
 
 //  取出所有的task
-    public static ArrayList<Task> getTaskArray(Context context){
+    public static ArrayList<Task> getAllTaskArray(Context context){
         SQLiteDatabase database = getDatabase(context);
         ArrayList<Task> taskArrayList = new ArrayList<>();
 
@@ -240,6 +240,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         database.close();
         return taskArrayList;
     }
+
+
 
 //  更新任务
     public static void updateTask(Context context, Task theTask){
