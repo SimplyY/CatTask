@@ -96,6 +96,10 @@ public class ChooseRemindTimeFragment extends Fragment
                 mBeginRemindTime = new MyTime(mBeginPickerHours.getValue(), mBeginPickerMinutes.getValue());
                 mEndRemindTime = new MyTime(mEndPickerHours.getValue(), mEndPickerMinutes.getValue());
 
+                if(!mEndRemindTime.isLaterThan(mBeginRemindTime)){
+                    Toast.makeText(mMainActivity, "截止时间不能早于起始时间", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 MyDatabaseHelper.writeRemindTime(mMainActivity, mBeginRemindTime, mEndRemindTime);
 
                 Toast.makeText(mMainActivity, "提醒时间已设置", Toast.LENGTH_SHORT).show();

@@ -23,7 +23,7 @@ public class Task implements Serializable {
     private boolean hasBelong = false;
     private String belongName;
     private MyDate headerDate;
-    private MyDate recentestDayReminded = new MyDate("");
+    private MyDate recentestDayReminded = new MyDate(-1);
 
     public MyDate getRecentestDayReminded() {
         return recentestDayReminded;

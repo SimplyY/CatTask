@@ -137,6 +137,10 @@ public class RemindService extends Service{
             return false;
         }
 
+        if (currentDate.equals(finishDay)){
+            return true;
+        }
+
         if (task.getRemindMethod().getSelectedName().equals("不提醒")){
             return false;
         }
@@ -144,29 +148,17 @@ public class RemindService extends Service{
         switch (task.getRemindMethod().getSelectedName()){
             case "不提醒":
                 return false;
-
             case "智能":
-                return judgeByWise(task, recentestDayReminded, currentDate);
-
+                return judgeByWise(task, recentestDayReminded);
             case "每天":
                 if (recentestDayReminded.isBefore(finishDay)){
                     return true;
                 }
                 break;
             case "每周":
-                for (int i = 1; recentestDayReminded.isBefore(finishDay); i++) {
-                    if (recentestDayReminded.addDay(i * 7).equals(finishDay)) {
-                        return true;
-                    }
-                }
-                break;
+                return remindByDays(task, recentestDayReminded, 7);
             case "每月":
-                for (int i = 1; recentestDayReminded.isBefore(finishDay); i++){
-                    if (recentestDayReminded.addMonth(i).equals(finishDay)){
-                        return true;
-                    }
-                }
-                break;
+                return remindEveryMonth(task, recentestDayReminded);
             case "每年":
                 for (int i = 1; recentestDayReminded.isBefore(finishDay); i++){
                     if (recentestDayReminded.addYear(i).equals(finishDay)){
@@ -180,11 +172,46 @@ public class RemindService extends Service{
 
     }
 
-    private boolean judgeByWise(Task task, MyDate recentestDayReminded, MyDate current){
+    private boolean judgeByWise(Task task, MyDate recentestDayReminded){
+
         if (recentestDayReminded.isBefore(task.getFinishedDate())){
-            return true;
+
+            switch (task.getTagColor().getSelectedName()){
+                case "银色":
+                    return remindEveryMonth(task, recentestDayReminded);
+                case "绿色":
+                    return remindByDays(task, recentestDayReminded, 14);
+                case "蓝色":
+                    return remindByDays(task, recentestDayReminded, 7);
+                case "紫色":
+                    return remindByDays(task, recentestDayReminded, 3);
+            }
+
         }
 
+        return false;
+    }
+
+
+
+    private boolean remindByDays(Task task, MyDate recentestDayReminded, int days){
+        MyDate finishDay = task.getFinishedDate();
+        for (int i = 1; recentestDayReminded.isBefore(finishDay); i++) {
+            if (recentestDayReminded.addDay(i * 7).equals(finishDay)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    private boolean remindEveryMonth(Task task, MyDate recentestDayReminded){
+        MyDate finishDay = task.getFinishedDate();
+        for (int i = 1; recentestDayReminded.isBefore(finishDay); i++){
+            if (recentestDayReminded.addMonth(i).equals(finishDay)){
+                return true;
+            }
+        }
         return false;
     }
 
