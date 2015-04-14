@@ -26,7 +26,7 @@ public class MyDate implements Serializable {
     }
 
     public MyDate(int i) {
-        day = calendar.get(Calendar.DAY_OF_MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH) + i;
         month = calendar.get(Calendar.MONTH) + 1;//java 月份从零开始算
         year = calendar.get(Calendar.YEAR);
         this.addDay(i);
@@ -81,27 +81,25 @@ public class MyDate implements Serializable {
         MyDate myDate = new MyDate(getYear(), getMonth(), getDay());
 
         int amountDayOfMonth = myDate.getAmountDayOfMonth();
+        int newDay = myDate.getDay() + increaseDay;
 
-        if (myDate.getDay() + increaseDay > amountDayOfMonth) {
+        while (newDay > amountDayOfMonth) {
             myDate = myDate.addMonth(1);
-            myDate.setDay(myDate.getDay() + increaseDay - amountDayOfMonth);
+            newDay -= amountDayOfMonth;
         }
-        else {
-            myDate.setDay(myDate.getDay() + increaseDay);
-        }
+        myDate.setDay(newDay);
         return myDate;
-
     }
 
     public MyDate addMonth(int increaseMonth) {
         MyDate myDate = new MyDate(getYear(), getMonth(), getDay());
+        int newMonth = myDate.getMonth() + increaseMonth;
 
-        if (increaseMonth + myDate.getMonth() > 12) {
-            myDate.setYear(myDate.getYear() + 1);
-            myDate.setMonth(increaseMonth + myDate.getMonth() - 12);
-        } else {
-            myDate.setMonth(getMonth() + increaseMonth);
+        while (newMonth > 12){
+            myDate = myDate.addYear(1);
+            newMonth -= 12;
         }
+        myDate.setMonth(newMonth);
         return myDate;
     }
 

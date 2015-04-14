@@ -70,25 +70,27 @@ public class RemindService extends Service{
         return null;
     }
 
+//  if check right notify it
     private void checkRemindTask(){
         ArrayList<Task> tasks = MyDatabaseHelper.getAllTaskArray(this);
-
         for (Task task : tasks){
             if(isNeedRemind(task)){
-                remind(task);
-                Log.i("remind", "remind work");
+                buildNotification(task);
+                Log.i("buildNotification", "buildNotification work");
                 for (int i = 0; i < notifications.size(); i++) {
                     notificationManager.notify(notifyId, notifications.get(i));
-                    Log.i("remind", i + " remind work");
+                    Log.i("buildNotification", i + " buildNotification work");
                     notifyId++;
 
                 }
                 notifications.clear();
+                task.setRecentestDayReminded(new MyDate());
+                MyDatabaseHelper.updateTask(this, task);
             }
         }
     }
 
-    private void remind(Task task){
+    private void buildNotification(Task task){
         final String REMIND_TITLE = "任务提醒";
 
         Intent intent = new Intent(this,MainActivity.class);
@@ -106,16 +108,9 @@ public class RemindService extends Service{
                 .setContentTitle(task.getTaskName())
                 .setContentText(time);
 
-
         Notification notification = builder.build();
         notifications.add(notification);
-
-
-
-        task.setRecentestDayReminded(new MyDate());
-        MyDatabaseHelper.updateTask(this, task);
     }
-
 
     //  这里针对
     private boolean isNeedRemind(Task task){
@@ -123,13 +118,7 @@ public class RemindService extends Service{
         MyDate finishDay = task.getFinishedDate();
         MyDate currentDate = new MyDate();
 
-        MyTime currentTime = MyTime.getCurrentTime();
-        MyTime beginRemindTime = new MyTime();
-        MyTime endRemindTime = new MyTime();
-
-        MyDatabaseHelper.getRemindTime(MyContext, beginRemindTime, endRemindTime);
-
-        if (beginRemindTime.isLaterThan(currentTime) || currentTime.isLaterThan(endRemindTime)){
+        if(!isTimeInRemindTime()){
             return false;
         }
 
@@ -141,63 +130,62 @@ public class RemindService extends Service{
             return true;
         }
 
-        if (task.getRemindMethod().getSelectedName().equals("不提醒")){
-            return false;
-        }
-
         switch (task.getRemindMethod().getSelectedName()){
             case "不提醒":
                 return false;
             case "智能":
-                return judgeByWise(task, recentestDayReminded);
+                return judgeByWise(task);
             case "每天":
                 if (recentestDayReminded.isBefore(finishDay)){
                     return true;
                 }
                 break;
             case "每周":
-                return remindByDays(task, recentestDayReminded, 7);
+                return judgeByDays(task, 7);
             case "每月":
-                return remindEveryMonth(task, recentestDayReminded);
+                return judgeEveryMonth(task);
             case "每年":
-                for (int i = 1; recentestDayReminded.isBefore(finishDay); i++){
-                    if (recentestDayReminded.addYear(i).equals(finishDay)){
-                        return true;
-                    }
-                }
-                break;
-        }
+                return remindEveryYear(task);
 
+        }
         return false;
 
     }
 
-    private boolean judgeByWise(Task task, MyDate recentestDayReminded){
+    private boolean isTimeInRemindTime(){
+        MyTime beginRemindTime = new MyTime();
+        MyTime endRemindTime = new MyTime();
+        MyTime currentTime = MyTime.getCurrentTime();
 
-        if (recentestDayReminded.isBefore(task.getFinishedDate())){
+        MyDatabaseHelper.getRemindTime(MyContext, beginRemindTime, endRemindTime);
 
+        if (beginRemindTime.isLaterThan(currentTime) || currentTime.isLaterThan(endRemindTime)){
+            return false;
+        }
+        return true;
+    }
+
+    private boolean judgeByWise(Task task){
+        if (task.getRecentestDayReminded().isBefore(task.getFinishedDate())){
             switch (task.getTagColor().getSelectedName()){
                 case "银色":
-                    return remindEveryMonth(task, recentestDayReminded);
+                    return judgeEveryMonth(task);
                 case "绿色":
-                    return remindByDays(task, recentestDayReminded, 14);
+                    return judgeByDays(task, 14);
                 case "蓝色":
-                    return remindByDays(task, recentestDayReminded, 7);
+                    return judgeByDays(task, 7);
                 case "紫色":
-                    return remindByDays(task, recentestDayReminded, 3);
+                    return judgeByDays(task, 3);
             }
-
         }
-
         return false;
     }
 
-
-
-    private boolean remindByDays(Task task, MyDate recentestDayReminded, int days){
+    private boolean judgeByDays(Task task, int days){
         MyDate finishDay = task.getFinishedDate();
-        for (int i = 1; recentestDayReminded.isBefore(finishDay); i++) {
-            if (recentestDayReminded.addDay(i * 7).equals(finishDay)) {
+        MyDate currentDate = new MyDate();
+        for (int i = 1; currentDate.addDay(i * days).isBefore(finishDay.addDay(1)); i++) {
+            if (currentDate.addDay(i * days).equals(finishDay)) {
                 return true;
             }
         }
@@ -205,10 +193,22 @@ public class RemindService extends Service{
     }
 
 
-    private boolean remindEveryMonth(Task task, MyDate recentestDayReminded){
+    private boolean judgeEveryMonth(Task task){
         MyDate finishDay = task.getFinishedDate();
-        for (int i = 1; recentestDayReminded.isBefore(finishDay); i++){
-            if (recentestDayReminded.addMonth(i).equals(finishDay)){
+        MyDate currentDate = new MyDate();
+        for (int i = 1; currentDate.addMonth(i).isBefore(finishDay.addDay(1)); i++) {
+            if (currentDate.addMonth(i).equals(finishDay)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean remindEveryYear(Task task){
+        MyDate finishDay = task.getFinishedDate();
+        MyDate currentDate = new MyDate();
+        for (int i = 1; currentDate.addYear(i).isBefore(finishDay.addDay(1)); i++) {
+            if (currentDate.addYear(i).equals(finishDay)) {
                 return true;
             }
         }
