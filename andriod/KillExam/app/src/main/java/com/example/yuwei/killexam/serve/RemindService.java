@@ -49,10 +49,10 @@ public class RemindService extends Service{
             @Override
             public void run() {
                 checkRemindTask();
-                handler.postDelayed(this, 600 * 1000);
+                handler.postDelayed(this, 300 * 1000);
             }
         };
-        handler.postDelayed(runnable, 600 * 1000);
+        handler.postDelayed(runnable, 300 * 1000);
 
         checkRemindTask();
 
@@ -76,18 +76,19 @@ public class RemindService extends Service{
         for (Task task : tasks){
             if(isNeedRemind(task)){
                 buildNotification(task);
-                Log.i("buildNotification", "buildNotification work");
-                for (int i = 0; i < notifications.size(); i++) {
-                    notificationManager.notify(notifyId, notifications.get(i));
-                    Log.i("buildNotification", i + " buildNotification work");
-                    notifyId++;
 
-                }
-                notifications.clear();
+                Log.i("buildNotification", "buildNotification work");
                 task.setRecentestDayReminded(new MyDate());
                 MyDatabaseHelper.updateTask(this, task);
             }
         }
+
+        for (int i = 0; i < notifications.size(); i++) {
+            notificationManager.notify(notifyId, notifications.get(i));
+            notifyId ++;
+        }
+
+        notifications.clear();
     }
 
     private void buildNotification(Task task){
@@ -99,13 +100,15 @@ public class RemindService extends Service{
 
         String time = task.getFinishedDate().listShowString();
         Resources res = this.getResources();
+        final String title = task.getBelongName() == null ? task.getTaskName() :
+                task.getBelongName() + ":" + task.getTaskName();
         builder.setContentIntent(pendingIntent)
                 .setSmallIcon(task.getTagRes())
                 .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.cat))
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setTicker(REMIND_TITLE)
-                .setContentTitle(task.getTaskName())
+                .setContentTitle(title)
                 .setContentText(time);
 
         Notification notification = builder.build();

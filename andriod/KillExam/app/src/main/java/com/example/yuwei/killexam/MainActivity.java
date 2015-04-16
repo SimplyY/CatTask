@@ -56,7 +56,6 @@ public class MainActivity extends ActionBarActivity {
 
 
         setContentView(R.layout.activity_main);
-        setContentView(R.layout.activity_main);
 
         initToolBar();
 
@@ -229,12 +228,9 @@ public class MainActivity extends ActionBarActivity {
         if (!targetShowingFragment.getClass().equals(TaskListFragment.class)){
             fragmentTransaction.addToBackStack(null);
         }
-
         fragmentTransaction.commit();
 
-
         TaskListFragment.isEditMode = false;
-        drawer.setDrawerListener(drawerToggle);
         drawerToggle.syncState();
     }
 
