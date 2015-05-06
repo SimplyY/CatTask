@@ -59,9 +59,6 @@ public class Task implements Serializable {
         return tagResId;
     }
 
-    public String toString(){
-        return taskName;
-    }
 
     public String getTaskName() {
         return taskName;

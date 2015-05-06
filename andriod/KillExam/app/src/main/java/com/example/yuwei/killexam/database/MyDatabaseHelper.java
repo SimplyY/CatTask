@@ -294,6 +294,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     }
 
     public static void getRemindTime(Context context, MyTime beginTime, MyTime endTime){
+        if (context == null){
+            return;
+        }
+
         SQLiteDatabase database = getDatabase(context);
 
         String where = ID + "= 1";

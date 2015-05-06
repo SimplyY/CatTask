@@ -3,6 +3,7 @@ package com.example.yuwei.killexam.taskFragments;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ import info.hoang8f.widget.FButton;
  * Created by yuwei on 15/2/16.
  */
 
-public class CreateTaskFragment extends EditableTaskFragment {
+public class CreateTaskFragment extends EditableTaskFragment{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
 
