@@ -2,6 +2,9 @@ KillExam
 ========
 这里是 KillExam ，app已更名为Cat Task。
 
+
+[下载地址](http://simplyy.github.io)
+
 编写人员
 ---
 1. [SimplyY](http://simplyy.github.io/pages/about.html)：程序编写，功能设计。
