@@ -76,6 +76,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         DATABASE_NAME = name;
     }
 
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TASK_TABLE);

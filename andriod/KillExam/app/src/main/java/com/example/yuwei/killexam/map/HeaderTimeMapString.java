@@ -31,10 +31,13 @@ public class HeaderTimeMapString extends HashMap<Integer, String>{
     }
 
     public String getValue(Task task){
-
         return get(getKey(task));
-
     }
+
+    public int getImageId(Task task){
+        return imageId.get(getKey(task));
+    }
+
 
     public int getKey(Task task){
         MyDate headerDate = task.getHeaderDate();
@@ -42,7 +45,6 @@ public class HeaderTimeMapString extends HashMap<Integer, String>{
         if (headerDate.isBefore(current)){
             return 0;
         }
-
         else if (headerDate.equals(current)){
             return 1;
         }
@@ -53,9 +55,4 @@ public class HeaderTimeMapString extends HashMap<Integer, String>{
             return 3;
         }
     }
-
-    public int getImageId(Task task){
-        return imageId.get(getKey(task));
-    }
-
 }

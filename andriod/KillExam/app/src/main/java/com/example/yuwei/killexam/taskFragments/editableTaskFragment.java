@@ -26,7 +26,8 @@ import info.hoang8f.widget.FButton;
  * Created by yuwei on 15/2/23.
  */
 public abstract class EditableTaskFragment extends Fragment
-        implements View.OnClickListener , NumberPicker.OnValueChangeListener, NumberPicker.OnScrollListener,NumberPicker.Formatter,CalendarDatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener{
+        implements View.OnClickListener , NumberPicker.OnValueChangeListener, NumberPicker.OnScrollListener,
+        NumberPicker.Formatter,CalendarDatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener{
 
     protected View mView;
 
@@ -38,7 +39,6 @@ public abstract class EditableTaskFragment extends Fragment
     public NumberPicker mSpendTimePickerHours;
     public NumberPicker mSpendTimePickerMinutes;
     public Spinner mRemindMethodSpinner;
-    public FButton mCreateTaskButton;
     public TextView mIsHasBelongTextView;
 
     public MyDate mFinishDate;

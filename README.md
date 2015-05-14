@@ -3,7 +3,7 @@ KillExam
 这里是 KillExam ，app已更名为Cat Task。
 
 
-[下载地址](http://simplyy.github.io)
+[下载地址](https://github.com/jnSimpler/KillExam/releases)
 
 编写人员
 ---

@@ -3,7 +3,6 @@ package com.example.yuwei.killexam.taskFragments;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +31,7 @@ import info.hoang8f.widget.FButton;
 public class CreateTaskFragment extends EditableTaskFragment{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
+    public FButton mChooseBelongTaskButton;
 
     public void setNewTask(Task newTask) {
         this.newTask = newTask;
@@ -106,7 +106,7 @@ public class CreateTaskFragment extends EditableTaskFragment{
 
         initFinishDateButton();
 
-        initCreateButton();
+        initChooseBelongTaskButton();
 
         initIsHasBelongTextView();
     }
@@ -138,9 +138,9 @@ public class CreateTaskFragment extends EditableTaskFragment{
         mSpendTimePickerMinutes = (NumberPicker)mView.findViewById(R.id.spendTimePickerMinutes);
         initTimePickerValue();
     }
-    private void initCreateButton(){
-        mCreateTaskButton = (FButton)mView.findViewById(R.id.chooseBelongTask);
-        mCreateTaskButton.setOnClickListener(this);
+    private void initChooseBelongTaskButton(){
+        mChooseBelongTaskButton = (FButton)mView.findViewById(R.id.chooseBelongTask);
+        mChooseBelongTaskButton.setOnClickListener(this);
     }
     private void initIsHasBelongTextView(){
         mIsHasBelongTextView = (TextView) mView.findViewById(R.id.isHasBelongTextView);
