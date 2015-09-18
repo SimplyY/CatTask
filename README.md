@@ -12,10 +12,9 @@ KillExam
 
 示例
 ---
+![image](https://cloud.githubusercontent.com/assets/8455579/9954329/b5073ea0-5e1a-11e5-9f86-7a036818820d.png)
 
 ![image](https://cloud.githubusercontent.com/assets/8455579/9954332/b7233f18-5e1a-11e5-8635-a61c509dba5e.png)
-
-![image](https://cloud.githubusercontent.com/assets/8455579/9954329/b5073ea0-5e1a-11e5-9f86-7a036818820d.png)
 
 ![image](https://cloud.githubusercontent.com/assets/8455579/9954324/af8432da-5e1a-11e5-8a7c-0a830432d781.png)
 
