@@ -10,16 +10,12 @@ KillExam
 1. [SimplyY](http://simplyy.github.io/pages/about.html)：程序编写，功能设计。
 2. [putiwangsheng](https://github.com/putiwangsheng)：ui设计。
 
-示例
+效果图
 ---
-![image](https://cloud.githubusercontent.com/assets/8455579/9954329/b5073ea0-5e1a-11e5-9f86-7a036818820d.png)
 
-![image](https://cloud.githubusercontent.com/assets/8455579/9954332/b7233f18-5e1a-11e5-8635-a61c509dba5e.png)
+![](http://7xkpdt.com1.z0.glb.clouddn.com/be8fcd1c55fccfac5c28c7d99e3bd5f9.png)
 
-![image](https://cloud.githubusercontent.com/assets/8455579/9954324/af8432da-5e1a-11e5-8a7c-0a830432d781.png)
-
-![image](https://cloud.githubusercontent.com/assets/8455579/9954325/b29b3784-5e1a-11e5-90f2-0fc5f522b066.png)
-
+![](http://7xkpdt.com1.z0.glb.clouddn.com/8278494cf7d307b77d01687eb7b9f47c.png)
 
 
 
