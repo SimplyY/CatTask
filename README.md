@@ -1,6 +1,5 @@
-KillExam
+Cat Task
 ========
-这里是 KillExam ，app已更名为Cat Task。
 
 
 [下载地址](https://github.com/jnSimpler/KillExam/releases)
