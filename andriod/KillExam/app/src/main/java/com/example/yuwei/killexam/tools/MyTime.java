@@ -16,13 +16,6 @@ public class MyTime implements Serializable {
     }
 
     public static MyTime getCurrentTime(){
-//        long time=System.currentTimeMillis();
-//
-//        final Calendar mCalendar=Calendar.getInstance();
-//        mCalendar.setTimeInMillis(time);
-//        int hours=mCalendar.get(Calendar.HOUR);
-//        int minutes=mCalendar.get(Calendar.MINUTE);
-
 
         Time current = new Time();
         current.setToNow();

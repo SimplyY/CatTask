@@ -30,7 +30,6 @@ public class CheckTask {
     private NumberPicker mSpendTimePickerHours;
     private NumberPicker mSpendTimePickerMinutes;
     private Spinner mTaskAttributeSpinner;
-    private Button mCreateTaskButton;
     private TextView mIsHasBelongTextView;
 
     private MyDate mFinishDate;
@@ -46,7 +45,6 @@ public class CheckTask {
         mSpendTimePickerHours = fragment.mSpendTimePickerHours;
         mSpendTimePickerMinutes = fragment.mSpendTimePickerMinutes;
         mTaskAttributeSpinner = fragment.mTaskAttributeSpinner;
-        mCreateTaskButton = fragment.mCreateTaskButton;
         mIsHasBelongTextView = fragment.mIsHasBelongTextView;
         mTaskNameEditText = fragment.mTaskNameEditText;
 
@@ -69,7 +67,6 @@ public class CheckTask {
 
         final String BELONG_TASK_CHINESE = "父任务为  ";
         final String NULL_CHINESE = "空";
-        final String CHOOSE_CHINESE = "点击选择";
         selectedAttributePositionNow = mTaskAttributeSpinner.getSelectedItemPosition();
         selectedAttributePositionBefore = newTask.getTaskAttribute().getSelectedPosition();
         if (selectedAttributePositionNow != 0  ) {
@@ -82,7 +79,6 @@ public class CheckTask {
 //  还没设置好belong，或者更改了attribute，需重新设置belong
             else {
                 mIsHasBelongTextView.setText(BELONG_TASK_CHINESE + NULL_CHINESE);
-                mCreateTaskButton.setText(CHOOSE_CHINESE);
             }
         } else {
 //  attribute为1级

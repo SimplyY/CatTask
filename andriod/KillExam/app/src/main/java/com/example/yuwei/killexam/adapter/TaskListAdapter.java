@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 
 import com.example.yuwei.killexam.MainActivity;
@@ -30,53 +31,52 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 /**
  * Created by yuwei on 15/2/25.
  */
-public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHeadersAdapter {
-    View view;
-    ViewHolder viewHolder;
-    int viewHolderPosition;
-    int resourceId;
+    public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHeadersAdapter {
+        View view;
+        ViewHolder viewHolder;
+        int viewHolderPosition;
+        int resourceId;
 
-    Task theTask;
-    MainActivity mMainActivity;
-
-
-    private LayoutInflater inflater;
-    List<Task> sortedTODOtasks;
-
-    TaskListAdapter taskListAdapter;
-
-    int firstVisiblePosition;
-
-    public TaskListAdapter(Context context, int textViewResourceId, List<Task> objects) {
-        super(context, textViewResourceId, objects);
-
-        inflater = LayoutInflater.from(context);
-        mMainActivity = (MainActivity)context;
-        sortedTODOtasks = objects;
-
-        resourceId = textViewResourceId;
-
-        taskListAdapter = this;
-
-        final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                setActionBar();
-                handler.postDelayed(this, 5);
-            }
-        };
-        handler.postDelayed(runnable, 5);
-    }
+        Task theTask;
+        MainActivity mMainActivity;
 
 
-    @Override
-    public int getCount() {
-        return sortedTODOtasks.size();
-    }
+        private LayoutInflater inflater;
+        List<Task> sortedTODOtasks;
 
-    @Override
-    public Task getItem(int position) {
+        TaskListAdapter taskListAdapter;
+
+        int firstVisiblePosition;
+
+        public TaskListAdapter(Context context, int textViewResourceId, List<Task> objects) {
+            super(context, textViewResourceId, objects);
+
+            inflater = LayoutInflater.from(context);
+            mMainActivity = (MainActivity)context;
+            sortedTODOtasks = objects;
+
+            resourceId = textViewResourceId;
+
+            taskListAdapter = this;
+
+            final Handler handler = new Handler();
+            final Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    setActionBar();
+                    handler.postDelayed(this, 5);
+                }
+            };
+            handler.postDelayed(runnable, 5);
+        }
+
+
+        @Override
+        public int getCount() {
+            return sortedTODOtasks.size();
+        }
+
+        public Task getItem(int position) {
         return sortedTODOtasks.get(position);
     }
 
@@ -173,6 +173,8 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
         viewHolder.isTaskFinishedCheckBox = (CheckBox) view.findViewById(R.id.taskListIsTaskFinishedCheckBox);
 
         viewHolder.taskFinishTimeTextView = (TextView) view.findViewById(R.id.taskListFinishTimeTextView);
+
+        viewHolder.space = (Space) view.findViewById(R.id.taskSpace);
     }
 
     private void setTaskHolder() {
@@ -192,12 +194,11 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     private void setSpaceWidth() {
         int spaceAmount = getSpaceNumber(theTask);
 
-        int leftMarginUnit = 75;
+        int leftMarginUnit = 65;
 
-        LinearLayout.LayoutParams checkboxParams = (LinearLayout.LayoutParams) viewHolder.isTaskFinishedCheckBox.getLayoutParams();
-        checkboxParams.width -= leftMarginUnit * spaceAmount;
-        checkboxParams.leftMargin = leftMarginUnit * spaceAmount;
-        viewHolder.isTaskFinishedCheckBox.setLayoutParams(checkboxParams);
+        LinearLayout.LayoutParams spaceParams = (LinearLayout.LayoutParams) viewHolder.space.getLayoutParams();
+        spaceParams.width = leftMarginUnit * spaceAmount;
+        viewHolder.space.setLayoutParams(spaceParams);
     }
 
     private void setIsTaskFinishedCheckBox() {
@@ -273,6 +274,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> implements StickyListHea
     }
 
     class ViewHolder {
+        Space space;
         ImageView tagColorImageView;
         CheckBox isTaskFinishedCheckBox;
         TextView taskFinishTimeTextView;

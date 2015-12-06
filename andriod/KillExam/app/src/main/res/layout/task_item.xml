@@ -12,7 +12,10 @@
         android:layout_width="20dp"
         android:layout_height="20dp" />
 
-
+    <Space
+        android:id="@+id/taskSpace"
+        android:layout_width="14dp"
+        android:layout_height="52dp" />
     <CheckBox
         android:id="@+id/taskListIsTaskFinishedCheckBox"
         android:layout_gravity="center"
@@ -20,7 +23,7 @@
         android:textSize="18sp"
         android:textColor="@color/custom_text_color"
         android:gravity="center|start"
-        android:layout_width="255dp"
+        android:layout_width="245dp"
 
         android:layout_height="wrap_content"
         android:checked="false"

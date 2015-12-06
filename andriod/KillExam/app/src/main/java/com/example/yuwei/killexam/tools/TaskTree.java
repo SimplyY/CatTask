@@ -10,7 +10,9 @@ import com.example.yuwei.killexam.adapter.TaskListAdapter;
 import com.example.yuwei.killexam.database.MyDatabaseHelper;
 import com.example.yuwei.killexam.taskFragments.TaskListFragment;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by yuwei on 15/2/26.
@@ -93,6 +95,7 @@ public class TaskTree {
         for (Task task : sortedTodoTaskArrayList) {
             TaskTree firstTaskTree = root.getFirstAttributeTaskTree(task);
             task.setHeaderDate(firstTaskTree.getTreeEarlyFinishTime());
+
         }
     }
 
